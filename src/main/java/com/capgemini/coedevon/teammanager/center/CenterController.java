@@ -24,7 +24,7 @@ public class CenterController {
   @Autowired
   private BeanMapper beanMapper;
 
-  @RequestMapping(path = "/getAll/", method = RequestMethod.POST)
+  @RequestMapping(path = "/", method = RequestMethod.POST)
   public List<CenterDto> get() {
 
     return this.beanMapper.mapList(this.centerService.getAllCenters(), CenterDto.class);

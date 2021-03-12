@@ -38,8 +38,8 @@ public class PersonController {
     return person;
   }
 
-  @RequestMapping(path = "/create/", method = RequestMethod.PUT)
-  public boolean get(@RequestBody PersonDto dto) {
+  @RequestMapping(path = "/", method = RequestMethod.PUT)
+  public boolean create(@RequestBody PersonDto dto) {
 
     return this.personService.create(dto);
 

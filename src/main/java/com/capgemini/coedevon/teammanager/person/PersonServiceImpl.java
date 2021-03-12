@@ -36,12 +36,9 @@ public class PersonServiceImpl implements PersonService {
       personEntity.setActive(true);
       this.personRepository.save(personEntity);
       return true;
-    } else {
-      if (sagaNotExists(personDto.getSaga()))
-        return true;
-      else
-        return false;
     }
+
+    return sagaNotExists(personDto.getSaga());
   }
 
   private boolean personNotExists(String username, String saga) {
