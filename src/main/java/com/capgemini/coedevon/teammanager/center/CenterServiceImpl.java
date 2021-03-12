@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.capgemini.coedevon.teammanager.center.model.CenterDto;
 import com.capgemini.coedevon.teammanager.center.model.CenterEntity;
 
 /**
@@ -24,20 +23,13 @@ public class CenterServiceImpl implements CenterService {
   private static final Logger LOG = LoggerFactory.getLogger(CenterServiceImpl.class);
 
   @Override
-  public List<CenterDto> getAllCenters() {
+  public List<CenterEntity> getAllCenters() {
 
-    Iterable<CenterEntity> centersEntities;
-    centersEntities = this.centerRepository.findAll();
-    List<CenterDto> centerDtoList = new ArrayList<CenterDto>();
+    Iterable<CenterEntity> centersEntities = this.centerRepository.findAll();
+    List<CenterEntity> centerEntityList = new ArrayList<CenterEntity>();
+    centersEntities.forEach(centerEntityList::add);
 
-    for (CenterEntity entity : centersEntities) {
-      CenterDto centerDto = new CenterDto();
-      centerDto.setId(entity.getId());
-      centerDto.setName(entity.getName());
-      centerDtoList.add(centerDto);
-    }
-
-    return centerDtoList;
+    return centerEntityList;
   }
 
 }

@@ -1,6 +1,7 @@
 package com.capgemini.coedevon.teammanager.person;
 
 import com.capgemini.coedevon.teammanager.person.model.PersonDto;
+import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
 
 /**
  * @author aolmosca
@@ -8,7 +9,7 @@ import com.capgemini.coedevon.teammanager.person.model.PersonDto;
  */
 public interface PersonService {
 
-  PersonDto personExists(String username);
+  PersonEntity personExists(String username);
 
   boolean create(PersonDto person);
 

@@ -10,10 +10,10 @@ import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
  */
 public interface PersonRepository extends CrudRepository<PersonEntity, Long> {
 
-  PersonEntity findByUsername(String Username);
+  PersonEntity findByUsername(String username);
 
-  PersonEntity findByUsernameOrSaga(String Username, String Saga);
+  PersonEntity findByUsernameOrSaga(String username, String saga);
 
-  PersonEntity findBySaga(String Saga);
+  PersonEntity findBySaga(String saga);
 
 }

@@ -22,32 +22,41 @@ public class PersonServiceImpl implements PersonService {
   private static final Logger LOG = LoggerFactory.getLogger(PersonServiceImpl.class);
 
   @Override
-  public PersonDto personExists(String username) {
+  public PersonEntity personExists(String username) {
 
-    PersonEntity temp = new PersonEntity();
-    PersonDto dto = new PersonDto();
-
-    temp = this.personRepository.findByUsername(username);
-
-    if (temp != null)
-      BeanUtils.copyProperties(temp, dto);
-    return dto;
+    return this.personRepository.findByUsername(username);
   }
 
   @Override
-  public boolean create(PersonDto person) {
+  public boolean create(PersonDto personDto) {
 
-    if (this.personRepository.findByUsernameOrSaga(person.getUsername(), person.getSaga()) == null) {
-      PersonEntity temp = new PersonEntity();
-      BeanUtils.copyProperties(person, temp);
-      temp.setActive(1);
-      this.personRepository.save(temp);
+    if (personNotExists(personDto.getUsername(), personDto.getSaga())) {
+      PersonEntity personEntity = new PersonEntity();
+      BeanUtils.copyProperties(personDto, personEntity);
+      personEntity.setActive(true);
+      this.personRepository.save(personEntity);
       return true;
     } else {
-      if (this.personRepository.findBySaga(person.getSaga()) == null)
+      if (sagaNotExists(personDto.getSaga()))
         return true;
       else
         return false;
     }
+  }
+
+  private boolean personNotExists(String username, String saga) {
+
+    if (this.personRepository.findByUsernameOrSaga(username, saga) == null)
+      return true;
+    else
+      return false;
+  }
+
+  private boolean sagaNotExists(String saga) {
+
+    if (this.personRepository.findBySaga(saga) == null)
+      return true;
+    else
+      return false;
   }
 }

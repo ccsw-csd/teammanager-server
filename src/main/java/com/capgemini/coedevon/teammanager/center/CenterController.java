@@ -24,10 +24,10 @@ public class CenterController {
   @Autowired
   private BeanMapper beanMapper;
 
-  @RequestMapping(path = "/getAll/", method = RequestMethod.GET)
+  @RequestMapping(path = "/getAll/", method = RequestMethod.POST)
   public List<CenterDto> get() {
 
-    return this.centerService.getAllCenters();
+    return this.beanMapper.mapList(this.centerService.getAllCenters(), CenterDto.class);
 
   }
 

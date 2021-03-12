@@ -35,13 +35,13 @@ public class PersonEntity {
   private String lastname;
 
   @Column(name = "center_id")
-  private Integer center_id;
+  private Integer centerId;
 
   @Column(name = "businesscode")
   private String businesscode;
 
   @Column(name = "active", nullable = false)
-  private Integer active;
+  private boolean active;
 
   /**
    * @return id
@@ -144,7 +144,7 @@ public class PersonEntity {
    */
   public Integer getCenter_id() {
 
-    return this.center_id;
+    return this.centerId;
   }
 
   /**
@@ -152,7 +152,7 @@ public class PersonEntity {
    */
   public void setCenter_id(Integer center_id) {
 
-    this.center_id = center_id;
+    this.centerId = center_id;
   }
 
   /**
@@ -174,7 +174,7 @@ public class PersonEntity {
   /**
    * @return active
    */
-  public Integer getActive() {
+  public boolean getActive() {
 
     return this.active;
   }
@@ -182,7 +182,7 @@ public class PersonEntity {
   /**
    * @param active new value of {@link #getactive}.
    */
-  public void setActive(Integer active) {
+  public void setActive(boolean active) {
 
     this.active = active;
   }

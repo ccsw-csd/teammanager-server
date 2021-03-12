@@ -9,4 +9,5 @@ import com.capgemini.coedevon.teammanager.center.model.CenterEntity;
  *
  */
 public interface CenterRepository extends CrudRepository<CenterEntity, Long> {
+
 }
