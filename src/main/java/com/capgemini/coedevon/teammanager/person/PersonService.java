@@ -12,5 +12,4 @@ public interface PersonService {
   PersonEntity personExists(String username);
 
   boolean create(PersonDto person);
-
 }

@@ -140,19 +140,19 @@ public class PersonEntity {
   }
 
   /**
-   * @return center_id
+   * @return centerId
    */
-  public Integer getCenter_id() {
+  public Integer getCenterId() {
 
     return this.centerId;
   }
 
   /**
-   * @param center_id new value of {@link #getcenter_id}.
+   * @param centeId new value of {@link #getcenter_id}.
    */
-  public void setCenter_id(Integer center_id) {
+  public void setCenterId(Integer centerId) {
 
-    this.centerId = center_id;
+    this.centerId = centerId;
   }
 
   /**

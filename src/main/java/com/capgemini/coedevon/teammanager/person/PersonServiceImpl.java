@@ -30,15 +30,22 @@ public class PersonServiceImpl implements PersonService {
   @Override
   public boolean create(PersonDto personDto) {
 
-    if (personNotExists(personDto.getUsername(), personDto.getSaga())) {
+    if (personDto.getId() == null) {
+      if (personNotExists(personDto.getUsername(), personDto.getSaga())) {
+        PersonEntity personEntity = new PersonEntity();
+        BeanUtils.copyProperties(personDto, personEntity);
+        personEntity.setActive(true);
+        this.personRepository.save(personEntity);
+        return true;
+      }
+
+      return sagaNotExists(personDto.getSaga());
+    } else {
       PersonEntity personEntity = new PersonEntity();
       BeanUtils.copyProperties(personDto, personEntity);
-      personEntity.setActive(true);
       this.personRepository.save(personEntity);
       return true;
     }
-
-    return sagaNotExists(personDto.getSaga());
   }
 
   private boolean personNotExists(String username, String saga) {
