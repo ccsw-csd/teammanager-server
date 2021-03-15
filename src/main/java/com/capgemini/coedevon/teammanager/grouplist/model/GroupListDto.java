@@ -1,4 +1,4 @@
-package com.capgemini.coedevon.teammanager.groupList.model;
+package com.capgemini.coedevon.teammanager.grouplist.model;
 
 import java.util.List;
 
@@ -7,20 +7,20 @@ import java.util.List;
  *
  */
 public class GroupListDto {
-  private int id;
+  private Long id;
 
   private String name;
 
   private List<String> managers;
 
-  private List<String> usuarios;
+  private List<String> users;
 
-  private List<String> subgrupos;
+  private List<String> subgroups;
 
   /**
    * @return id
    */
-  public int getId() {
+  public Long getId() {
 
     return this.id;
   }
@@ -28,7 +28,7 @@ public class GroupListDto {
   /**
    * @param id new value of {@link #getid}.
    */
-  public void setId(int id) {
+  public void setId(Long id) {
 
     this.id = id;
   }
@@ -66,35 +66,35 @@ public class GroupListDto {
   }
 
   /**
-   * @return usuarios
+   * @return users
    */
-  public List<String> getUsuarios() {
+  public List<String> getUsers() {
 
-    return this.usuarios;
+    return this.users;
   }
 
   /**
-   * @param usuarios new value of {@link #getusuarios}.
+   * @param users new value of {@link #getusers}.
    */
-  public void setUsuarios(List<String> usuarios) {
+  public void setUsers(List<String> users) {
 
-    this.usuarios = usuarios;
+    this.users = users;
   }
 
   /**
-   * @return subgrupos
+   * @return subgroups
    */
-  public List<String> getSubgrupos() {
+  public List<String> getSubgroups() {
 
-    return this.subgrupos;
+    return this.subgroups;
   }
 
   /**
-   * @param subgrupos new value of {@link #getsubgrupos}.
+   * @param subgroups new value of {@link #getsubgroups}.
    */
-  public void setSubgrupos(List<String> subgrupos) {
+  public void setSubgroups(List<String> subgroups) {
 
-    this.subgrupos = subgrupos;
+    this.subgroups = subgroups;
   }
 
 }

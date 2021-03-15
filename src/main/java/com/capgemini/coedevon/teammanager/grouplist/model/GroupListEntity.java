@@ -1,9 +1,12 @@
-package com.capgemini.coedevon.teammanager.groupList.model;
+package com.capgemini.coedevon.teammanager.grouplist.model;
 
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -16,25 +19,29 @@ import javax.persistence.Table;
 public class GroupListEntity {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id", nullable = false)
-  private int id;
+  private Long id;
 
   @Column(name = "name", nullable = false)
   private String name;
 
+  @ElementCollection(targetClass = Integer.class)
   @Column(name = "managers")
-  private List<String> managers;
+  private List<Integer> managers;
 
+  @ElementCollection(targetClass = Integer.class)
   @Column(name = "users")
-  private List<String> users;
+  private List<Integer> users;
 
+  @ElementCollection(targetClass = Integer.class)
   @Column(name = "subgroups")
-  private List<String> subgrupos;
+  private List<Integer> subgroups;
 
   /**
    * @return id
    */
-  public int getId() {
+  public Long getId() {
 
     return this.id;
   }
@@ -42,7 +49,7 @@ public class GroupListEntity {
   /**
    * @param id new value of {@link #getid}.
    */
-  public void setId(int id) {
+  public void setId(Long id) {
 
     this.id = id;
   }
@@ -66,7 +73,7 @@ public class GroupListEntity {
   /**
    * @return managers
    */
-  public List<String> getManagers() {
+  public List<Integer> getManagers() {
 
     return this.managers;
   }
@@ -74,40 +81,41 @@ public class GroupListEntity {
   /**
    * @param managers new value of {@link #getmanagers}.
    */
-  public void setManagers(List<String> managers) {
+  public void setManagers(List<Integer> managers) {
 
     this.managers = managers;
   }
 
   /**
-   * @return usuarios
+   * @return users
    */
-  public List<String> getUsuarios() {
+  public List<Integer> getUsers() {
 
     return this.users;
   }
 
   /**
-   * @param usuarios new value of {@link #getusuarios}.
+   * @param users new value of {@link #getusers}.
    */
-  public void setUsuarios(List<String> users) {
+  public void setUsers(List<Integer> users) {
 
     this.users = users;
   }
 
   /**
-   * @return subgrupos
+   * @return subgroups
    */
-  public List<String> getSubgrupos() {
+  public List<Integer> getSubgroups() {
 
-    return this.subgrupos;
+    return this.subgroups;
   }
 
   /**
-   * @param subgrupos new value of {@link #getsubgrupos}.
+   * @param subgroups new value of {@link #getsubgroups}.
    */
-  public void setSubgrupos(List<String> subgrupos) {
+  public void setSubgroups(List<Integer> subgroups) {
 
-    this.subgrupos = subgrupos;
+    this.subgroups = subgroups;
   }
+
 }
