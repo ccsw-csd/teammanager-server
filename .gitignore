@@ -5,6 +5,7 @@ bin/
 !**/src/main/**
 !**/src/test/**
 logs/
+data/
 
 ### STS ###
 .apt_generated
