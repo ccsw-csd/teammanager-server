@@ -17,7 +17,7 @@ public class PersonEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
-  private String id;
+  private Integer id;
 
   @Column(name = "saga", nullable = false)
   private String saga;
@@ -46,7 +46,7 @@ public class PersonEntity {
   /**
    * @return id
    */
-  public String getId() {
+  public Integer getId() {
 
     return this.id;
   }
@@ -54,7 +54,7 @@ public class PersonEntity {
   /**
    * @param id new value of {@link #getid}.
    */
-  public void setId(String id) {
+  public void setId(Integer id) {
 
     this.id = id;
   }

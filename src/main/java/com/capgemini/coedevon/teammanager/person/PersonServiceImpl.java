@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.capgemini.coedevon.teammanager.center.CenterService;
 import com.capgemini.coedevon.teammanager.person.model.PersonDto;
 import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
 
@@ -19,6 +20,9 @@ public class PersonServiceImpl implements PersonService {
   @Autowired
   PersonRepository personRepository;
 
+  @Autowired
+  CenterService centerService;
+
   private static final Logger LOG = LoggerFactory.getLogger(PersonServiceImpl.class);
 
   @Override
@@ -28,24 +32,43 @@ public class PersonServiceImpl implements PersonService {
   }
 
   @Override
-  public boolean create(PersonDto personDto) {
+  public PersonEntity getById(Integer id) {
+
+    return getById(id);
+  }
+
+  @Override
+  public boolean createOrUpdate(PersonDto personDto) {
 
     if (personDto.getId() == null) {
       if (personNotExists(personDto.getUsername(), personDto.getSaga())) {
-        PersonEntity personEntity = new PersonEntity();
-        BeanUtils.copyProperties(personDto, personEntity);
-        personEntity.setActive(true);
-        this.personRepository.save(personEntity);
+        create(personDto);
         return true;
       }
-
       return sagaNotExists(personDto.getSaga());
     } else {
-      PersonEntity personEntity = new PersonEntity();
-      BeanUtils.copyProperties(personDto, personEntity);
-      this.personRepository.save(personEntity);
+      update(personDto);
       return true;
     }
+  }
+
+  @Override
+  public void create(PersonDto personDto) {
+
+    PersonEntity personEntity = new PersonEntity();
+    BeanUtils.copyProperties(personDto, personEntity, "id");
+    personEntity.setActive(true);
+    this.personRepository.save(personEntity);
+
+  }
+
+  @Override
+  public void update(PersonDto personDto) {
+
+    PersonEntity personEntity = getById(personDto.getId());
+    BeanUtils.copyProperties(personDto, personEntity);
+    this.personRepository.save(personEntity);
+
   }
 
   private boolean personNotExists(String username, String saga) {

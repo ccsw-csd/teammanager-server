@@ -5,7 +5,7 @@ package com.capgemini.coedevon.teammanager.person.model;
  *
  */
 public class PersonDto {
-  private String id;
+  private Integer id;
 
   private String saga;
 
@@ -26,7 +26,7 @@ public class PersonDto {
   /**
    * @return id
    */
-  public String getId() {
+  public Integer getId() {
 
     return this.id;
   }
@@ -34,7 +34,7 @@ public class PersonDto {
   /**
    * @param id new value of {@link #getid}.
    */
-  public void setId(String id) {
+  public void setId(Integer id) {
 
     this.id = id;
   }

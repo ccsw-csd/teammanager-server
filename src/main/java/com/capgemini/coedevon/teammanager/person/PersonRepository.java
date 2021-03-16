@@ -16,4 +16,6 @@ public interface PersonRepository extends CrudRepository<PersonEntity, Long> {
 
   PersonEntity findBySaga(String saga);
 
+  PersonEntity findById(Integer id);
+
 }
