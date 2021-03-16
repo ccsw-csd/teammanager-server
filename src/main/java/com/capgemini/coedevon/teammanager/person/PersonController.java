@@ -41,7 +41,7 @@ public class PersonController {
   @RequestMapping(path = "/", method = RequestMethod.PUT)
   public boolean create(@RequestBody PersonDto dto) {
 
-    return this.personService.create(dto);
+    return this.personService.createOrUpdate(dto);
 
   }
 }
