@@ -94,8 +94,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     http.authorizeRequests()
         // Allow Options request
         .antMatchers(HttpMethod.OPTIONS).permitAll()
-        // Allow Static Resources
-        .antMatchers(HttpMethod.GET, WebConfig.STATIC_RESOURCES).permitAll()
         // Allow unsecured resources
         .antMatchers(unsecuredResources).permitAll()
         // Authenticate all other requests
