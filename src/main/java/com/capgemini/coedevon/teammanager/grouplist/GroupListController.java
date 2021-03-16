@@ -24,11 +24,13 @@ public class GroupListController {
   @RequestMapping(path = "/", method = RequestMethod.POST)
   public Page<GroupListDto> findPage(@RequestBody GroupListSearchDto dto) {
 
-    System.out.println("\nGroupListController\n");
-
     return this.beanMapper.mapPage(this.groupListService.findPage(dto), GroupListDto.class);
   }
 
+  /**
+   * @param data
+   * @return
+   */
   @RequestMapping(path = "/", method = RequestMethod.PUT)
   public GroupListDto save(@RequestBody GroupListDto data) {
 

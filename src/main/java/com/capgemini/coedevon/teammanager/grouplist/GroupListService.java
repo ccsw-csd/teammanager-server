@@ -16,5 +16,9 @@ public interface GroupListService {
    */
   Page<GroupListEntity> findPage(GroupListSearchDto dto);
 
+  /**
+   * @param data
+   * @return
+   */
   GroupListEntity save(GroupListDto data);
 }
