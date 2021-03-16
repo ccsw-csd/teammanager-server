@@ -6,14 +6,14 @@ package com.capgemini.coedevon.teammanager.center.model;
  */
 public class CenterDto {
 
-  private String id;
+  private Integer id;
 
   private String name;
 
   /**
    * @return id
    */
-  public String getId() {
+  public Integer getId() {
 
     return this.id;
   }
@@ -21,7 +21,7 @@ public class CenterDto {
   /**
    * @param id new value of {@link #getid}.
    */
-  public void setId(String id) {
+  public void setId(Integer id) {
 
     this.id = id;
   }
