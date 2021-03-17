@@ -1,9 +1,6 @@
 package com.capgemini.coedevon.teammanager.grouplist.model;
 
-import java.util.List;
-
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,17 +23,14 @@ public class GroupListEntity {
   @Column(name = "name", nullable = false)
   private String name;
 
-  @ElementCollection(targetClass = Integer.class)
-  @Column(name = "managers")
-  private List<Integer> managers;
+  @Column(name = "manager")
+  private String manager;
 
-  @ElementCollection(targetClass = Integer.class)
-  @Column(name = "users")
-  private List<Integer> users;
+  @Column(name = "members")
+  private Long members;
 
-  @ElementCollection(targetClass = Integer.class)
   @Column(name = "subgroups")
-  private List<Integer> subgroups;
+  private Long subgroups;
 
   /**
    * @return id
@@ -71,41 +65,41 @@ public class GroupListEntity {
   }
 
   /**
-   * @return managers
+   * @return manager
    */
-  public List<Integer> getManagers() {
+  public String getManager() {
 
-    return this.managers;
+    return this.manager;
   }
 
   /**
-   * @param managers new value of {@link #getmanagers}.
+   * @param managers new value of {@link #getmanager}.
    */
-  public void setManagers(List<Integer> managers) {
+  public void setManager(String manager) {
 
-    this.managers = managers;
+    this.manager = manager;
   }
 
   /**
-   * @return users
+   * @return members
    */
-  public List<Integer> getUsers() {
+  public Long getMembers() {
 
-    return this.users;
+    return this.members;
   }
 
   /**
-   * @param users new value of {@link #getusers}.
+   * @param members new value of {@link #getmembers}.
    */
-  public void setUsers(List<Integer> users) {
+  public void setMembers(Long members) {
 
-    this.users = users;
+    this.members = members;
   }
 
   /**
    * @return subgroups
    */
-  public List<Integer> getSubgroups() {
+  public Long getSubgroups() {
 
     return this.subgroups;
   }
@@ -113,7 +107,7 @@ public class GroupListEntity {
   /**
    * @param subgroups new value of {@link #getsubgroups}.
    */
-  public void setSubgroups(List<Integer> subgroups) {
+  public void setSubgroups(Long subgroups) {
 
     this.subgroups = subgroups;
   }

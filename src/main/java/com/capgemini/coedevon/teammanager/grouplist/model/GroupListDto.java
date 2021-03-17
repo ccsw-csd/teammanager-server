@@ -1,7 +1,5 @@
 package com.capgemini.coedevon.teammanager.grouplist.model;
 
-import java.util.List;
-
 /**
  * TODO apastorm This type ...
  *
@@ -11,11 +9,11 @@ public class GroupListDto {
 
   private String name;
 
-  private List<String> managers;
+  private String manager;
 
-  private List<String> users;
+  private Long members;
 
-  private List<String> subgroups;
+  private Long subgroups;
 
   /**
    * @return id
@@ -50,41 +48,41 @@ public class GroupListDto {
   }
 
   /**
-   * @return managers
+   * @return manager
    */
-  public List<String> getManagers() {
+  public String getManager() {
 
-    return this.managers;
+    return this.manager;
   }
 
   /**
-   * @param managers new value of {@link #getmanagers}.
+   * @param manager new value of {@link #getmanager}.
    */
-  public void setManagers(List<String> managers) {
+  public void setManager(String manager) {
 
-    this.managers = managers;
+    this.manager = manager;
   }
 
   /**
    * @return users
    */
-  public List<String> getUsers() {
+  public Long getMembers() {
 
-    return this.users;
+    return this.members;
   }
 
   /**
    * @param users new value of {@link #getusers}.
    */
-  public void setUsers(List<String> users) {
+  public void setMembers(Long members) {
 
-    this.users = users;
+    this.members = members;
   }
 
   /**
    * @return subgroups
    */
-  public List<String> getSubgroups() {
+  public Long getSubgroups() {
 
     return this.subgroups;
   }
@@ -92,7 +90,7 @@ public class GroupListDto {
   /**
    * @param subgroups new value of {@link #getsubgroups}.
    */
-  public void setSubgroups(List<String> subgroups) {
+  public void setSubgroups(Long subgroups) {
 
     this.subgroups = subgroups;
   }

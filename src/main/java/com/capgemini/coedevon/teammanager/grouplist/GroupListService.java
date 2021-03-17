@@ -12,7 +12,7 @@ import com.capgemini.coedevon.teammanager.grouplist.model.GroupListSearchDto;
  */
 public interface GroupListService {
   /**
-   * @return Lista de grupos con id, nombre, managers, usuarios, subgrupos
+   * @return Lista de grupos con id, name, manager, members, subgroups
    */
   Page<GroupListEntity> findPage(GroupListSearchDto dto);
 
