@@ -1,20 +1,14 @@
 package com.capgemini.coedevon.teammanager.ldap;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Hashtable;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
-
-import javax.naming.Context;
-import javax.naming.NameNotFoundException;
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
-import javax.naming.directory.Attributes;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.InitialDirContext;
-import javax.naming.directory.SearchControls;
-import javax.naming.directory.SearchResult;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,23 +29,11 @@ public class PersonLdapRepositoryImpl implements PersonLdapRepository {
 
   private static final Logger LOG = LoggerFactory.getLogger(PersonLdapRepositoryImpl.class);
 
-  private static final String LDAP_QUERY = "OU=ES,OU=Employees,DC=CORP,DC=CAPGEMINI,DC=COM";
-
-  private static final String[] ATTRIBUTES = new String[] { "cn", "userPrincipalName", "employeeNumber", "givenName",
-  "sn", "st", "capgemini-Grade", "capgemini-opBusinessCode", "Capgemini-puCode", "capgemini-StartDate",
-  "capgemini-JobRole" };
-
   @Autowired
   private JdbcTemplate jdbcTemplate;
 
-  @Value("${ldap.username}")
-  private String ldapUsername;
-
-  @Value("${ldap.password}")
-  private String ldapPassword;
-
-  @Value("${ldap.url}")
-  private String ldapUrl;
+  @Value("${files.path}")
+  private String filesPath;
 
   /**
    * {@inheritDoc}
@@ -130,91 +112,62 @@ public class PersonLdapRepositoryImpl implements PersonLdapRepository {
   @Override
   public List<PersonRawDto> findAllPersonFromLDAP() {
 
-    Hashtable<String, String> env = new Hashtable<>();
-    env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-    env.put(Context.PROVIDER_URL, this.ldapUrl.concat(LDAP_QUERY));
-    env.put(Context.SECURITY_AUTHENTICATION, "simple");
-    env.put(Context.SECURITY_PRINCIPAL, this.ldapUsername);
-    env.put(Context.SECURITY_CREDENTIALS, this.ldapPassword);
-
-    DirContext ctx;
     try {
-      ctx = new InitialDirContext(env);
-    } catch (NamingException e) {
-      throw new RuntimeException(e);
+      String fileName = this.filesPath + "/ldapPerson.csv";
+      List<String> contentFile = readFromFile(fileName);
+
+      List<PersonRawDto> persons = new ArrayList<>(contentFile.size());
+
+      for (String line : contentFile) {
+        persons.add(getPersonDtoFromLine(line));
+      }
+      return persons;
+
+    } catch (Exception e) {
+      LOG.error("Error read csv.", e);
+      return new ArrayList<>();
     }
 
-    List<PersonRawDto> list = new LinkedList<>();
-    NamingEnumeration<?> results = null;
-    try {
-      SearchControls controls = new SearchControls();
-      controls.setSearchScope(SearchControls.SUBTREE_SCOPE);
-      controls.setReturningAttributes(ATTRIBUTES);
-
-      results = ctx.search("", "(objectclass=user)", controls);
-
-      while (results.hasMoreElements()) {
-        SearchResult searchResult = (SearchResult) results.next();
-        Attributes attributes = searchResult.getAttributes();
-
-        list.add(getPersonEtoFromAttributes(attributes));
-      }
-    } catch (NameNotFoundException e) {
-      LOG.error("The base context was not found.", e);
-    } catch (NamingException e) {
-      throw new RuntimeException(e);
-    } finally {
-      if (results != null) {
-        try {
-          results.close();
-        } catch (Exception e) {
-          LOG.error("Error trying to close the NamingEnumeration", e);
-        }
-      }
-      if (ctx != null) {
-        try {
-          ctx.close();
-        } catch (Exception e) {
-          LOG.error("Error trying to close the DirContext", e);
-        }
-      }
-    }
-    return list;
   }
 
-  private PersonRawDto getPersonEtoFromAttributes(Attributes attributes) {
+  private PersonRawDto getPersonDtoFromLine(String line) {
 
     PersonRawDto person = new PersonRawDto();
     try {
-      person.setUsername(get(attributes, "cn"));
-      person.setEmail(get(attributes, "userPrincipalName"));
-      person.setSaga(get(attributes, "employeeNumber"));
-      person.setName(get(attributes, "givenName"));
-      person.setLastname(get(attributes, "sn"));
-      person.setCenter(get(attributes, "st"));
-      person.setGrade(get(attributes, "capgemini-Grade"));
-      person.setBusinesscode(get(attributes, "capgemini-opBusinessCode"));
-      person.setPucode(get(attributes, "Capgemini-puCode"));
-      person.setStartdate(get(attributes, "capgemini-StartDate"));
-      person.setJobRole(get(attributes, "capgemini-JobRole"));
-    } catch (NamingException e) {
-      LOG.error("Error trying to get an attribute.", e);
+
+      line += " "; //Añadimos un espacio en blanco para que haga el split correctamente aunque acabe en ;
+      String dataRaw[] = line.split(";");
+
+      person.setUsername(dataRaw[0]);
+      person.setEmail(dataRaw[1]);
+      person.setSaga(dataRaw[2]);
+      person.setName(dataRaw[3]);
+      person.setLastname(dataRaw[4]);
+      person.setCenter(dataRaw[5]);
+      person.setGrade(dataRaw[6]);
+      person.setBusinesscode(dataRaw[7]);
+      person.setPucode(dataRaw[8]);
+      person.setStartdate(dataRaw[9]);
+      person.setJobRole(dataRaw[10].trim());
+
+    } catch (Exception e) {
+      LOG.error("Error read csv line: [" + line + "]", e);
     }
 
     return person;
   }
 
-  private String get(Attributes attributes, String key) throws NamingException {
+  private List<String> readFromFile(String fileName) throws IOException {
 
-    if (attributes == null)
-      return "";
-    if (attributes.get(key) == null)
-      return "";
-    if (attributes.get(key).get() == null)
-      return "";
+    InputStream inputStream = new FileInputStream(fileName);
+    List<String> result = new ArrayList<>();
 
-    return attributes.get(key).get().toString();
-
+    try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
+      String line;
+      while ((line = br.readLine()) != null) {
+        result.add(line);
+      }
+    }
+    return result;
   }
-
 }

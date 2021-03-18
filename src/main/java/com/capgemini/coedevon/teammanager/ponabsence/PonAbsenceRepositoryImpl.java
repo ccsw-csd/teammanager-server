@@ -1,5 +1,6 @@
 package com.capgemini.coedevon.teammanager.ponabsence;
 
+import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -10,14 +11,13 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.client.RestTemplate;
 
-import com.capgemini.coedevon.teammanager.config.SSLUtil;
 import com.capgemini.coedevon.teammanager.ponabsence.model.PonAbsenceDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author pajimene
@@ -27,6 +27,9 @@ import com.capgemini.coedevon.teammanager.ponabsence.model.PonAbsenceDto;
 public class PonAbsenceRepositoryImpl implements PonAbsenceRepository {
 
   private static final Logger LOG = LoggerFactory.getLogger(PonAbsenceRepositoryImpl.class);
+
+  @Value("${files.path}")
+  private String filesPath;
 
   @Autowired
   private JdbcTemplate jdbcTemplate;
@@ -45,6 +48,8 @@ public class PonAbsenceRepositoryImpl implements PonAbsenceRepository {
    */
   @Override
   public void moveTemporaryToRealAbsence() {
+
+    this.jdbcTemplate.setQueryTimeout(10 * 60);
 
     this.jdbcTemplate.update("delete from absence_pon where year in (select distinct year from t_absence)");
     this.jdbcTemplate.update("delete from t_absence where status = 'R'");
@@ -106,16 +111,11 @@ public class PonAbsenceRepositoryImpl implements PonAbsenceRepository {
   @Override
   public List<PonAbsenceDto> findAllAbsencesFromPon() throws Exception {
 
-    RestTemplate restTemplate = new RestTemplate();
+    ObjectMapper mapper = new ObjectMapper();
 
-    SSLUtil.turnOffSslChecking();
+    PonAbsenceDto[] absences = mapper.readValue(new File(this.filesPath + "/absences.json"), PonAbsenceDto[].class);
 
-    String url = "https://alexandra.es.capgemini.com/public/absences/get/?user=teamManager&password=teamManager.2021";
-    ResponseEntity<PonAbsenceDto[]> responseEntity = restTemplate.getForEntity(url, PonAbsenceDto[].class);
-
-    SSLUtil.turnOnSslChecking();
-
-    return Arrays.asList(responseEntity.getBody());
+    return Arrays.asList(absences);
   }
 
 }

@@ -10,4 +10,6 @@ import com.capgemini.coedevon.teammanager.center.model.CenterEntity;
  */
 public interface CenterService {
   List<CenterEntity> getAllCenters();
+
+  CenterEntity getById(Integer id);
 }

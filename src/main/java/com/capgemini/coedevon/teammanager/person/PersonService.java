@@ -11,6 +11,11 @@ public interface PersonService {
 
   PersonEntity personExists(String username);
 
-  boolean create(PersonDto person);
+  boolean createOrUpdate(PersonDto person);
 
+  void create(PersonDto personDto);
+
+  void update(PersonDto personDto);
+
+  PersonEntity getById(Integer id);
 }

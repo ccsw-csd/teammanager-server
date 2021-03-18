@@ -32,4 +32,10 @@ public class CenterServiceImpl implements CenterService {
     return centerEntityList;
   }
 
+  @Override
+  public CenterEntity getById(Integer id) {
+
+    return this.centerRepository.findById(id);
+  }
+
 }
