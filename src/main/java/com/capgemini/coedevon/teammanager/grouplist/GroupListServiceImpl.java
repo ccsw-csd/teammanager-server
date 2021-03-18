@@ -1,7 +1,5 @@
 package com.capgemini.coedevon.teammanager.grouplist;
 
-import java.util.List;
-
 import javax.transaction.Transactional;
 
 import org.springframework.beans.BeanUtils;
@@ -25,20 +23,16 @@ public class GroupListServiceImpl implements GroupListService {
   @Autowired
   GroupListRepository groupListRepository;
 
-  @Autowired
-  GroupListCustomRepository groupListCustomRepository;
-
   @Override
   public Page<GroupListEntity> findPage(GroupListSearchDto dto) {
 
     Page<GroupListEntity> page = null;
-    List<GroupListEntity> list = null;
-    if (UserUtils.getUserDetails().getRole() == "ADMIN") {
+
+    if (UserUtils.getUserDetails().getRole().equalsIgnoreCase("ADMIN")) {
       page = this.groupListRepository.findAll(dto.getPageable());
-    } else if (UserUtils.getUserDetails().getRole() == "GESTOR") {
-      list = this.groupListCustomRepository.findAllGroupListWithPagination(UserUtils.getUserDetails().getUsername());
+    } else if (UserUtils.getUserDetails().getRole().equalsIgnoreCase("GESTOR")) {
+      page = this.groupListRepository.filtrarGestor(dto.getPageable(), UserUtils.getUserDetails().getUsername());
     }
-    System.out.println("\n " + page + "\n " + list + "\n");
     return page;
   }
 

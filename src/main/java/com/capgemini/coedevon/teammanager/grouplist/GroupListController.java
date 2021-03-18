@@ -16,10 +16,10 @@ import com.capgemini.coedevon.teammanager.grouplist.model.GroupListSearchDto;
 public class GroupListController {
 
   @Autowired
-  private BeanMapper beanMapper;
+  private GroupListService groupListService;
 
   @Autowired
-  private GroupListService groupListService;
+  private BeanMapper beanMapper;
 
   @RequestMapping(path = "/", method = RequestMethod.POST)
   public Page<GroupListDto> findPage(@RequestBody GroupListSearchDto dto) {

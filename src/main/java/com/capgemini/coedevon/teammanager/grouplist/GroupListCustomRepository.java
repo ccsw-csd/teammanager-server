@@ -1,8 +1,8 @@
 package com.capgemini.coedevon.teammanager.grouplist;
 
-import java.awt.print.Pageable;
-
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.capgemini.coedevon.teammanager.grouplist.model.GroupListEntity;
 
@@ -11,6 +11,12 @@ import com.capgemini.coedevon.teammanager.grouplist.model.GroupListEntity;
  *
  */
 public interface GroupListCustomRepository {
-  Page<GroupListEntity> findAllGroupListWithPagination(Pageable pageable, String username);
-
+  /**
+   * @param pageable
+   * @param username
+   * @return
+   */
+  @Query(value = "select * from v_group_list vgl where id in (select gm.group_id from group_manager gm join person p on gm.person_id = p.id where p.username = :username)", nativeQuery = true)
+  public Page<GroupListEntity> filtrarGestor(org.springframework.data.domain.Pageable pageable,
+      @Param("username") String username);
 }
