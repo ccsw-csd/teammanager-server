@@ -7,10 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import com.capgemini.coedevon.teammanager.grouplist.model.GroupListEntity;
 
-/**
- * TODO apastorm This type ...
- *
- */
 @Repository
 public interface GroupListRepository extends CrudRepository<GroupListEntity, Long>, GroupListCustomRepository {
 
@@ -19,5 +15,4 @@ public interface GroupListRepository extends CrudRepository<GroupListEntity, Lon
    * @return Returns the view v_group_list id name managers users subgroups
    */
   Page<GroupListEntity> findAll(Pageable page);
-
 }
