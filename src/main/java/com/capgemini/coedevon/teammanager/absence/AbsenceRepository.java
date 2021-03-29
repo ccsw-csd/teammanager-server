@@ -14,10 +14,13 @@ public interface AbsenceRepository extends CrudRepository<AbsenceEntity, String>
 
   /**
    * Recupera la ausencias de un año para un usuario
+   *
    * @param year
    * @param username
    * @return
    */
   List<AbsenceEntity> findAbsenceByYearAndUsername(Integer year, String username);
+
+  List<AbsenceEntity> findAbsenceBySagaIn(List<String> saga);
 
 }
