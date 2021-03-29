@@ -1,4 +1,4 @@
-package com.capgemini.coedevon.teammanager.grouplist.model;
+package com.capgemini.coedevon.teammanager.group.model;
 
 /**
  * TODO apastorm This type ...

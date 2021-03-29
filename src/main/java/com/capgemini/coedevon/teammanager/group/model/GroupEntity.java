@@ -1,4 +1,4 @@
-package com.capgemini.coedevon.teammanager.grouplist.model;
+package com.capgemini.coedevon.teammanager.group.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

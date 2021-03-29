@@ -1,7 +1,5 @@
 package com.capgemini.coedevon.teammanager.person;
 
-import java.util.List;
-
 import org.springframework.data.repository.CrudRepository;
 
 import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
@@ -10,7 +8,7 @@ import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
  * @author aolmosca
  *
  */
-public interface PersonRepository extends CrudRepository<PersonEntity, Long> {
+public interface PersonRepository extends CrudRepository<PersonEntity, Long>, PersonCustomRepository {
 
   PersonEntity findByUsername(String username);
 
@@ -19,7 +17,5 @@ public interface PersonRepository extends CrudRepository<PersonEntity, Long> {
   PersonEntity findBySaga(String saga);
 
   PersonEntity findById(Integer id);
-
-  List<PersonEntity> findByNameContaining(String name);
 
 }

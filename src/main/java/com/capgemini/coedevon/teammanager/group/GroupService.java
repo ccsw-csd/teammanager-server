@@ -1,8 +1,8 @@
-package com.capgemini.coedevon.teammanager.grouplist;
+package com.capgemini.coedevon.teammanager.group;
 
 import java.util.List;
 
-import com.capgemini.coedevon.teammanager.grouplist.model.GroupEntity;
+import com.capgemini.coedevon.teammanager.group.model.GroupEntity;
 import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
 
 /**

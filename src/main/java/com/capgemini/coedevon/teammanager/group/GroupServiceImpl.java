@@ -1,4 +1,4 @@
-package com.capgemini.coedevon.teammanager.grouplist;
+package com.capgemini.coedevon.teammanager.group;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.capgemini.coedevon.teammanager.grouplist.model.GroupEntity;
+import com.capgemini.coedevon.teammanager.group.model.GroupEntity;
 import com.capgemini.coedevon.teammanager.person.PersonRepository;
 import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
 
@@ -28,13 +28,13 @@ public class GroupServiceImpl implements GroupService {
   @Override
   public List<GroupEntity> getSubgroups(String name) {
 
-    return this.groupRepository.findByNameContaining(name);
+    return this.groupRepository.filtrarGrupos(name);
   }
 
   @Override
   public List<PersonEntity> getPersons(String name) {
 
-    return this.personRepository.findByNameContaining(name);
+    return this.personRepository.filtrarPersonas(name);
   }
 
 }
