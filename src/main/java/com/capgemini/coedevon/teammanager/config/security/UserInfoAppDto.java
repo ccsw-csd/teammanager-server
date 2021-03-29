@@ -12,6 +12,8 @@ public class UserInfoAppDto extends UserInfoDto {
 
   private String role;
 
+  private String jwt;
+
   private Date expiration;
 
   /**
@@ -35,7 +37,7 @@ public class UserInfoAppDto extends UserInfoDto {
    */
   public Date getExpiration() {
 
-    return expiration;
+    return this.expiration;
   }
 
   /**
@@ -44,6 +46,22 @@ public class UserInfoAppDto extends UserInfoDto {
   public void setExpiration(Date expiration) {
 
     this.expiration = expiration;
+  }
+
+  /**
+   * @return jwt
+   */
+  public String getJwt() {
+
+    return jwt;
+  }
+
+  /**
+   * @param jwt new value of {@link #getjwt}.
+   */
+  public void setJwt(String jwt) {
+
+    this.jwt = jwt;
   }
 
 }

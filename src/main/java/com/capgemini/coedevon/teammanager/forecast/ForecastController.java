@@ -36,7 +36,7 @@ public class ForecastController {
    * @return
    */
   @RequestMapping(path = "/", method = RequestMethod.POST)
-  public Map<String, List<VAbsenceDto>> findAbsenceByUsername(@RequestBody VAbsenceSearchDto dto) {
+  public Map<String, List<VAbsenceDto>> getGroupAbsenceByDate(@RequestBody VAbsenceSearchDto dto) {
 
     return this.vAbsenceService.getGroupAbsenceByDate(dto.getGroupId(), dto.getInit(), dto.getEnd());
   }
