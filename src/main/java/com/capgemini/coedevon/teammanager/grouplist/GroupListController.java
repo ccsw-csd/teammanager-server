@@ -64,8 +64,9 @@ public class GroupListController {
    * @return
    */
   @RequestMapping(path = "/", method = RequestMethod.PUT)
-  public GroupListDto save(@RequestBody GroupListDto data) {
+  public GroupDto save(@RequestBody GroupDto data) {
 
-    return this.beanMapper.map(this.groupListService.save(data), GroupListDto.class);
+    System.out.println("\n Llega de front \n" + data.toString());
+    return this.beanMapper.map(this.groupService.save(data), GroupDto.class);
   }
 }
