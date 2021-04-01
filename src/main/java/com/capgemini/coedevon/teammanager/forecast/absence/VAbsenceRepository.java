@@ -15,4 +15,5 @@ public interface VAbsenceRepository extends CrudRepository<VAbsenceEntity, Strin
 
   List<VAbsenceEntity> findByGroupIdAndDateBetween(Long groupId, Date init, Date end);
 
+  List<VAbsenceEntity> findByYearAndPerson_Username(Integer year, String username);
 }

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.capgemini.coedevon.teammanager.config.mapper.BeanMapper;
 import com.capgemini.coedevon.teammanager.forecast.absence.model.VAbsenceDto;
+import com.capgemini.coedevon.teammanager.forecast.absence.model.VAbsenceEntity;
 
 /**
  * @author aolmosca
@@ -42,6 +43,12 @@ public class VAbsenceServiceImpl implements VAbsenceService {
     }
 
     return hashAbsence;
+  }
+
+  @Override
+  public List<VAbsenceEntity> findYearAndUsername(String username, Integer year) {
+
+    return this.vabsenceRepository.findByYearAndPerson_Username(year, username);
   }
 
 }

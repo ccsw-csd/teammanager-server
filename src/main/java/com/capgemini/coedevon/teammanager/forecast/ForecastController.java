@@ -4,14 +4,17 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.capgemini.coedevon.teammanager.config.mapper.BeanMapper;
+import com.capgemini.coedevon.teammanager.config.security.UserUtils;
 import com.capgemini.coedevon.teammanager.forecast.absence.VAbsenceService;
 import com.capgemini.coedevon.teammanager.forecast.absence.model.VAbsenceDto;
+import com.capgemini.coedevon.teammanager.forecast.absence.model.VAbsenceEntity;
 import com.capgemini.coedevon.teammanager.forecast.absence.model.VAbsenceSearchDto;
 
 /**
@@ -39,5 +42,14 @@ public class ForecastController {
   public Map<String, List<VAbsenceDto>> getGroupAbsenceByDate(@RequestBody VAbsenceSearchDto dto) {
 
     return this.vAbsenceService.getGroupAbsenceByDate(dto.getGroupId(), dto.getInit(), dto.getEnd());
+  }
+
+  @RequestMapping(path = "/{year}/fromUser/", method = RequestMethod.GET)
+  public List<VAbsenceDto> getYearAndUsername(@PathVariable("year") Integer year) {
+
+    String username = UserUtils.getUserDetails().getUsername();
+    List<VAbsenceEntity> list = this.vAbsenceService.findYearAndUsername(username, year);
+    return this.beanMapper.mapList(list, VAbsenceDto.class);
+
   }
 }
