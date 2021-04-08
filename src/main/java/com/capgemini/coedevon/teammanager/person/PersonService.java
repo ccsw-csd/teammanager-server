@@ -18,4 +18,10 @@ public interface PersonService {
   void update(PersonDto personDto);
 
   PersonEntity getById(Integer id);
+
+  /**
+   * @param username
+   * @return
+   */
+  PersonEntity getManager(String username);
 }

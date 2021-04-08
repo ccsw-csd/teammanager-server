@@ -2,21 +2,22 @@ package com.capgemini.coedevon.teammanager.group.model;
 
 import java.util.List;
 
+import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
+
 /**
  * TODO apastorm This type ...
  *
  */
-public class GroupDto {
-
+public class EditGroup {
   private Long id;
 
   private String name;
 
-  private List<GroupMemberEntity> members;
+  private List<PersonEntity> managers;
 
-  private List<GroupManagerEntity> managers;
+  private List<PersonEntity> members;
 
-  private List<GroupSubgroupEntity> subgroups;
+  private List<GroupEntity> subgroups;
 
   /**
    * @return id
@@ -51,25 +52,9 @@ public class GroupDto {
   }
 
   /**
-   * @return members
-   */
-  public List<GroupMemberEntity> getMembers() {
-
-    return this.members;
-  }
-
-  /**
-   * @param members new value of {@link #getmembers}.
-   */
-  public void setMembers(List<GroupMemberEntity> members) {
-
-    this.members = members;
-  }
-
-  /**
    * @return managers
    */
-  public List<GroupManagerEntity> getManagers() {
+  public List<PersonEntity> getManagers() {
 
     return this.managers;
   }
@@ -77,15 +62,31 @@ public class GroupDto {
   /**
    * @param managers new value of {@link #getmanagers}.
    */
-  public void setManagers(List<GroupManagerEntity> managers) {
+  public void setManagers(List<PersonEntity> managers) {
 
     this.managers = managers;
   }
 
   /**
+   * @return members
+   */
+  public List<PersonEntity> getMembers() {
+
+    return this.members;
+  }
+
+  /**
+   * @param members new value of {@link #getmembers}.
+   */
+  public void setMembers(List<PersonEntity> members) {
+
+    this.members = members;
+  }
+
+  /**
    * @return subgroups
    */
-  public List<GroupSubgroupEntity> getSubgroups() {
+  public List<GroupEntity> getSubgroups() {
 
     return this.subgroups;
   }
@@ -93,7 +94,7 @@ public class GroupDto {
   /**
    * @param subgroups new value of {@link #getsubgroups}.
    */
-  public void setSubgroups(List<GroupSubgroupEntity> subgroups) {
+  public void setSubgroups(List<GroupEntity> subgroups) {
 
     this.subgroups = subgroups;
   }

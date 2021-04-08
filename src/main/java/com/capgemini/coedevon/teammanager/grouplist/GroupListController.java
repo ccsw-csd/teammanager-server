@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.capgemini.coedevon.teammanager.config.mapper.BeanMapper;
 import com.capgemini.coedevon.teammanager.group.GroupService;
+import com.capgemini.coedevon.teammanager.group.model.EditGroup;
 import com.capgemini.coedevon.teammanager.group.model.GroupDto;
 import com.capgemini.coedevon.teammanager.grouplist.model.GroupListDto;
 import com.capgemini.coedevon.teammanager.grouplist.model.GroupListSearchDto;
@@ -50,6 +51,26 @@ public class GroupListController {
   }
 
   /**
+   * @param name
+   * @return
+   */
+  @RequestMapping(path = "/grupoNuevo/", method = RequestMethod.POST)
+  public PersonDto getManager(@RequestBody String username) {
+
+    return this.beanMapper.map(this.personService.getManager(username), PersonDto.class);
+  }
+
+  /**
+   * @param name
+   * @return
+   */
+  @RequestMapping(path = "/editgroup/", method = RequestMethod.POST)
+  public EditGroup getGroup(@RequestBody Long id) {
+
+    return this.beanMapper.map(this.groupService.getGroup(id), EditGroup.class);
+  }
+
+  /**
    * @param prefix
    * @return
    */
@@ -66,7 +87,6 @@ public class GroupListController {
   @RequestMapping(path = "/", method = RequestMethod.PUT)
   public GroupDto save(@RequestBody GroupDto data) {
 
-    System.out.println("\n Llega de front \n" + data.toString());
     return this.beanMapper.map(this.groupService.save(data), GroupDto.class);
   }
 }

@@ -86,4 +86,10 @@ public class PersonServiceImpl implements PersonService {
     else
       return false;
   }
+
+  @Override
+  public PersonEntity getManager(String username) {
+
+    return this.personRepository.findByUsername(username);
+  }
 }

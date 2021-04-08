@@ -8,6 +8,7 @@ import com.capgemini.coedevon.teammanager.group.model.GroupSubgroupEntity;
  * TODO apastorm This type ...
  *
  */
-public interface GroupSubgroupRepository extends CrudRepository<GroupSubgroupEntity, Long> {
+public interface GroupSubgroupRepository
+    extends CrudRepository<GroupSubgroupEntity, Long>, GroupSubgroupCustomRepository {
 
 }
