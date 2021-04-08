@@ -48,7 +48,7 @@ public class ForecastController {
 
     String username = UserUtils.getUserDetails().getUsername();
 
-    return this.vAbsenceService.findYearAndUsername("pajimene", 2020);
+    return this.vAbsenceService.findYearAndUsername(username, year);
 
   }
 }
