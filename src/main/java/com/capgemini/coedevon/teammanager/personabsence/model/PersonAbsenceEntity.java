@@ -1,30 +1,42 @@
-package com.capgemini.coedevon.teammanager.forecast.absence.model;
+package com.capgemini.coedevon.teammanager.personabsence.model;
 
 import java.util.Date;
 
-import com.capgemini.coedevon.teammanager.grouplist.model.GroupListEntity;
-import com.capgemini.coedevon.teammanager.person.model.PersonDto;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
 
 /**
  * @author aolmosca
  *
  */
-public class VAbsenceDto {
+@Entity
+@Table(name = "v_person_absence")
+public class PersonAbsenceEntity {
 
+  @Id
+  @Column(name = "id", nullable = false)
   private String id;
 
-  private GroupListEntity group;
+  @ManyToOne
+  @JoinColumn(name = "person_id")
+  private PersonEntity person;
 
-  private PersonDto person;
-
+  @Column(name = "year")
   private Integer year;
 
+  @Column(name = "month")
   private Integer month;
 
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+  @Column(name = "date")
   private Date date;
 
+  @Column(name = "type")
   private String type;
 
   /**
@@ -44,25 +56,9 @@ public class VAbsenceDto {
   }
 
   /**
-   * @return group
-   */
-  public GroupListEntity getGroup() {
-
-    return this.group;
-  }
-
-  /**
-   * @param group new value of {@link #getgroup}.
-   */
-  public void setGroup(GroupListEntity group) {
-
-    this.group = group;
-  }
-
-  /**
    * @return person
    */
-  public PersonDto getPerson() {
+  public PersonEntity getPerson() {
 
     return this.person;
   }
@@ -70,7 +66,7 @@ public class VAbsenceDto {
   /**
    * @param person new value of {@link #getperson}.
    */
-  public void setPerson(PersonDto person) {
+  public void setPerson(PersonEntity person) {
 
     this.person = person;
   }

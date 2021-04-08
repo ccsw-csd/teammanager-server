@@ -12,10 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.capgemini.coedevon.teammanager.config.mapper.BeanMapper;
 import com.capgemini.coedevon.teammanager.config.security.UserUtils;
-import com.capgemini.coedevon.teammanager.forecast.absence.VAbsenceService;
-import com.capgemini.coedevon.teammanager.forecast.absence.model.VAbsenceDto;
-import com.capgemini.coedevon.teammanager.forecast.absence.model.VAbsenceEntity;
-import com.capgemini.coedevon.teammanager.forecast.absence.model.VAbsenceSearchDto;
+import com.capgemini.coedevon.teammanager.forecast.absence.PersonGroupAbsenceService;
+import com.capgemini.coedevon.teammanager.forecast.absence.model.PersonGroupAbsenceDto;
+import com.capgemini.coedevon.teammanager.forecast.absence.model.PersonGroupAbsenceSearchDto;
 
 /**
  * @author aolmosca
@@ -29,7 +28,7 @@ public class ForecastController {
   private BeanMapper beanMapper;
 
   @Autowired
-  private VAbsenceService vAbsenceService;
+  private PersonGroupAbsenceService vAbsenceService;
 
   /**
    * Recupera la ausencias de una persona para un año
@@ -39,17 +38,17 @@ public class ForecastController {
    * @return
    */
   @RequestMapping(path = "/", method = RequestMethod.POST)
-  public Map<String, List<VAbsenceDto>> getGroupAbsenceByDate(@RequestBody VAbsenceSearchDto dto) {
+  public Map<String, List<PersonGroupAbsenceDto>> getGroupAbsenceByDate(@RequestBody PersonGroupAbsenceSearchDto dto) {
 
     return this.vAbsenceService.getGroupAbsenceByDate(dto.getGroupId(), dto.getInit(), dto.getEnd());
   }
 
   @RequestMapping(path = "/{year}/fromUser/", method = RequestMethod.GET)
-  public List<VAbsenceDto> getYearAndUsername(@PathVariable("year") Integer year) {
+  public Map<Integer, List<PersonGroupAbsenceDto>> getYearAndUsername(@PathVariable("year") Integer year) {
 
     String username = UserUtils.getUserDetails().getUsername();
-    List<VAbsenceEntity> list = this.vAbsenceService.findYearAndUsername(username, year);
-    return this.beanMapper.mapList(list, VAbsenceDto.class);
+
+    return this.vAbsenceService.findYearAndUsername("pajimene", 2020);
 
   }
 }
