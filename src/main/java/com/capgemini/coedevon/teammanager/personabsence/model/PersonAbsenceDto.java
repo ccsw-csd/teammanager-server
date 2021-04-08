@@ -1,47 +1,27 @@
-package com.capgemini.coedevon.teammanager.forecast.absence.model;
+package com.capgemini.coedevon.teammanager.personabsence.model;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-import com.capgemini.coedevon.teammanager.grouplist.model.GroupListEntity;
-import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
+import com.capgemini.coedevon.teammanager.person.model.PersonDto;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * @author aolmosca
  *
  */
-@Entity
-@Table(name = "v_person_absence")
-public class VAbsenceEntity {
+public class PersonAbsenceDto {
 
-  @Id
-  @Column(name = "id", nullable = false)
   private String id;
 
-  @ManyToOne
-  @JoinColumn(name = "group_id")
-  private GroupListEntity group;
+  private PersonDto person;
 
-  @ManyToOne
-  @JoinColumn(name = "person_id")
-  private PersonEntity person;
-
-  @Column(name = "year")
   private Integer year;
 
-  @Column(name = "month")
   private Integer month;
 
-  @Column(name = "date")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Europe/Madrid")
   private Date date;
 
-  @Column(name = "type")
   private String type;
 
   /**
@@ -61,25 +41,9 @@ public class VAbsenceEntity {
   }
 
   /**
-   * @return group
-   */
-  public GroupListEntity getGroup() {
-
-    return this.group;
-  }
-
-  /**
-   * @param group new value of {@link #getgroup}.
-   */
-  public void setGroup(GroupListEntity group) {
-
-    this.group = group;
-  }
-
-  /**
    * @return person
    */
-  public PersonEntity getPerson() {
+  public PersonDto getPerson() {
 
     return this.person;
   }
@@ -87,7 +51,7 @@ public class VAbsenceEntity {
   /**
    * @param person new value of {@link #getperson}.
    */
-  public void setPerson(PersonEntity person) {
+  public void setPerson(PersonDto person) {
 
     this.person = person;
   }
