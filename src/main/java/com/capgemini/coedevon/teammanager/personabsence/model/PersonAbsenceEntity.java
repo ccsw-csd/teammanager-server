@@ -1,4 +1,4 @@
-package com.capgemini.coedevon.teammanager.forecast.absence.model;
+package com.capgemini.coedevon.teammanager.personabsence.model;
 
 import java.util.Date;
 
@@ -9,7 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.capgemini.coedevon.teammanager.grouplist.model.GroupListEntity;
 import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
 
 /**
@@ -18,15 +17,11 @@ import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
  */
 @Entity
 @Table(name = "v_person_absence")
-public class VAbsenceEntity {
+public class PersonAbsenceEntity {
 
   @Id
   @Column(name = "id", nullable = false)
   private String id;
-
-  @ManyToOne
-  @JoinColumn(name = "group_id")
-  private GroupListEntity group;
 
   @ManyToOne
   @JoinColumn(name = "person_id")
@@ -58,22 +53,6 @@ public class VAbsenceEntity {
   public void setId(String id) {
 
     this.id = id;
-  }
-
-  /**
-   * @return group
-   */
-  public GroupListEntity getGroup() {
-
-    return this.group;
-  }
-
-  /**
-   * @param group new value of {@link #getgroup}.
-   */
-  public void setGroup(GroupListEntity group) {
-
-    this.group = group;
   }
 
   /**
