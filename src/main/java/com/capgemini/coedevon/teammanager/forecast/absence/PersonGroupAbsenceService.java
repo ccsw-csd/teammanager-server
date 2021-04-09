@@ -13,6 +13,4 @@ import com.capgemini.coedevon.teammanager.forecast.absence.model.PersonGroupAbse
 public interface PersonGroupAbsenceService {
 
   Map<String, List<PersonGroupAbsenceDto>> getGroupAbsenceByDate(Long groupId, Date init, Date end);
-
-  Map<Integer, List<PersonGroupAbsenceDto>> findYearAndUsername(String username, Integer year);
 }

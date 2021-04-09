@@ -35,7 +35,7 @@ public class PersonAbsenceController {
    * @return
    */
 
-  @RequestMapping(path = "/{year}/fromUser/", method = RequestMethod.GET)
+  @RequestMapping(path = "/{year}/fromUser-groupByMonth/", method = RequestMethod.GET)
   public Map<Integer, List<PersonAbsenceDto>> getYearAndUsername(@PathVariable("year") Integer year) {
 
     String username = UserUtils.getUserDetails().getUsername();
