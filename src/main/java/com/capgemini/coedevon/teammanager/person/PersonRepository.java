@@ -8,7 +8,7 @@ import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
  * @author aolmosca
  *
  */
-public interface PersonRepository extends CrudRepository<PersonEntity, Long> {
+public interface PersonRepository extends CrudRepository<PersonEntity, Long>, PersonCustomRepository {
 
   PersonEntity findByUsername(String username);
 
