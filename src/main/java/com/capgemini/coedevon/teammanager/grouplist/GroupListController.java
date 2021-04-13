@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.capgemini.coedevon.teammanager.config.mapper.BeanMapper;
 import com.capgemini.coedevon.teammanager.group.GroupService;
+import com.capgemini.coedevon.teammanager.group.Response;
 import com.capgemini.coedevon.teammanager.group.model.EditGroup;
 import com.capgemini.coedevon.teammanager.group.model.GroupDto;
 import com.capgemini.coedevon.teammanager.grouplist.model.GroupListDto;
@@ -89,4 +90,15 @@ public class GroupListController {
 
     return this.beanMapper.map(this.groupService.save(data), GroupDto.class);
   }
+
+  /**
+   * @param data
+   * @return
+   */
+  @RequestMapping(path = "/validarUsuario/", method = RequestMethod.POST)
+  public Response validarUsuario(@RequestBody Long id) {
+
+    return this.beanMapper.map(this.groupService.validarUsuario(id), Response.class);
+  }
+
 }

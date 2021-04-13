@@ -29,4 +29,16 @@ public interface GroupService {
    */
   GroupEntity save(GroupDto data);
 
+  /**
+   * @param data
+   * @return
+   */
+  Response validarUsuario(Long id);
+
+  /**
+   * @param data
+   * @return
+   */
+  void borrarGrupo(Long data);
+
 }
