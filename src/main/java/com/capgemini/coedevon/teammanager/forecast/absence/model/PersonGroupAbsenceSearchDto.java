@@ -6,7 +6,7 @@ import java.util.Date;
  * @author aolmosca
  *
  */
-public class VAbsenceSearchDto {
+public class PersonGroupAbsenceSearchDto {
 
   private Long groupId;
 

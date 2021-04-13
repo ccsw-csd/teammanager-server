@@ -1,10 +1,7 @@
-package com.capgemini.coedevon.teammanager.forecast.absence.model;
+package com.capgemini.coedevon.teammanager.personabsence.model;
 
 import java.util.Date;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.capgemini.coedevon.teammanager.grouplist.model.GroupListEntity;
 import com.capgemini.coedevon.teammanager.person.model.PersonDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -12,11 +9,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * @author aolmosca
  *
  */
-public class VAbsenceDto {
+public class PersonAbsenceDto {
 
   private String id;
-
-  private GroupListEntity group;
 
   private PersonDto person;
 
@@ -24,8 +19,7 @@ public class VAbsenceDto {
 
   private Integer month;
 
-  @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT+1")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Europe/Madrid")
   private Date date;
 
   private String type;
@@ -44,22 +38,6 @@ public class VAbsenceDto {
   public void setId(String id) {
 
     this.id = id;
-  }
-
-  /**
-   * @return group
-   */
-  public GroupListEntity getGroup() {
-
-    return this.group;
-  }
-
-  /**
-   * @param group new value of {@link #getgroup}.
-   */
-  public void setGroup(GroupListEntity group) {
-
-    this.group = group;
   }
 
   /**
