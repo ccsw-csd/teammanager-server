@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.capgemini.coedevon.teammanager.config.security.UserUtils;
 import com.capgemini.coedevon.teammanager.group.model.EditGroup;
 import com.capgemini.coedevon.teammanager.group.model.GroupDto;
 import com.capgemini.coedevon.teammanager.group.model.GroupEntity;
@@ -17,17 +18,17 @@ import com.capgemini.coedevon.teammanager.group.model.GroupMemberEntity;
 import com.capgemini.coedevon.teammanager.group.model.GroupSubgroupEntity;
 import com.capgemini.coedevon.teammanager.person.PersonRepository;
 import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
+import com.capgemini.coedevon.teammanager.user.UserRepository;
 
-/**
- * TODO apastorm This type ...
- *
- */
 @Service
 @Transactional
 public class GroupServiceImpl implements GroupService {
 
   @Autowired
   PersonRepository personRepository;
+
+  @Autowired
+  UserRepository userRepository;
 
   @Autowired
   GroupRepository groupRepository;
@@ -121,5 +122,43 @@ public class GroupServiceImpl implements GroupService {
     editGroup.setSubgroups(subgroups);
 
     return editGroup;
+  }
+
+  @Override
+  public Response validarUsuario(Long group_id) {
+
+    Response response = new Response();
+    PersonEntity userId = new PersonEntity();
+    userId = this.personRepository.findIdByUsername(UserUtils.getUserDetails().getUsername());
+
+    Long existe = this.groupManagerRepository.validarGestor(Long.valueOf(group_id), Long.valueOf(userId.getId()));
+
+    if (UserUtils.getUserDetails().getRole().equalsIgnoreCase("ADMIN")) {
+      if (this.groupSubgroupRepository.comprobarSubgrupo(group_id) != 0) {
+        response.setResponse("El grupo tiene subgrupos asignados. No se puede borrar.");
+      } else {
+        response.setResponse("El grupo se borrara, orden de admin.");
+        borrarGrupo(group_id);
+      }
+    } else if (existe != 0) {
+      if (this.groupSubgroupRepository.comprobarSubgrupo(group_id) != 0) {
+        response.setResponse("El grupo tiene subgrupos asignados. No se puede borrar.");
+      } else {
+        response.setResponse("El grupo se borrara, orden de gerente.");
+        borrarGrupo(group_id);
+      }
+    } else
+      response.setResponse("No eres ni gestor ni admin, no puedes borrar el grupo.");
+
+    return response;
+  }
+
+  @Override
+  public void borrarGrupo(Long subgroup_id) {
+
+    this.groupManagerRepository.deleteAllById(subgroup_id);
+    this.groupMemberRepository.deleteAllById(subgroup_id);
+    this.groupSubgroupRepository.deleteAllById(subgroup_id);
+    this.groupRepository.deleteById(subgroup_id);
   }
 }
