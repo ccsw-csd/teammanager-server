@@ -5,6 +5,7 @@ import java.util.List;
 import com.capgemini.coedevon.teammanager.group.model.EditGroup;
 import com.capgemini.coedevon.teammanager.group.model.GroupDto;
 import com.capgemini.coedevon.teammanager.group.model.GroupEntity;
+import com.capgemini.coedevon.teammanager.group.model.RespuestaValidarBorradoDto;
 import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
 
 /**
@@ -33,7 +34,7 @@ public interface GroupService {
    * @param data
    * @return
    */
-  Response validarUsuario(Long id);
+  RespuestaValidarBorradoDto validarUsuario(Long id);
 
   /**
    * @param data

@@ -20,7 +20,7 @@ public interface GroupSubgroupRepository extends CrudRepository<GroupSubgroupEnt
    * @param id
    * @return
    */
-  @Query(value = "select sg from GroupEntity sg where sg.id in (select gsub.group_id from GroupSubgroupEntity gsub where gsub.group_id = :id)")
+  @Query(value = "select sg from GroupEntity sg where sg.id in (select gsub.subgroup_id from GroupSubgroupEntity gsub where gsub.group_id = :id)")
   public List<GroupEntity> filtrarSubgruposDelGrupo(@Param("id") long id);
 
   /**
