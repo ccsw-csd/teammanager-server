@@ -13,4 +13,7 @@ import com.capgemini.coedevon.teammanager.personabsence.model.PersonAbsenceDto;
 public interface PersonAbsenceService {
 
   Map<Integer, List<PersonAbsenceDto>> findYearAndUsername(String username, Integer year);
+
+  void save(List<Date> dates, List<PersonAbsenceDto> absence, String username);
+
 }

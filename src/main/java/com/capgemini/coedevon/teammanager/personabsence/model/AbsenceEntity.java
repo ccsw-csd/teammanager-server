@@ -7,28 +7,23 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
 
 /**
  * @author aolmosca
  *
  */
 @Entity
-@Table(name = "v_person_absence")
-public class PersonAbsenceEntity {
+@Table(name = "absence_local")
+public class AbsenceEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
-  private String id;
+  private Integer id;
 
-  @ManyToOne
-  @JoinColumn(name = "person_id")
-  private PersonEntity person;
+  @Column(name = "saga")
+  private String saga;
 
   @Column(name = "year")
   private Integer year;
@@ -39,13 +34,10 @@ public class PersonAbsenceEntity {
   @Column(name = "date")
   private Date date;
 
-  @Column(name = "type")
-  private String type;
-
   /**
    * @return id
    */
-  public String getId() {
+  public Integer getId() {
 
     return this.id;
   }
@@ -53,25 +45,25 @@ public class PersonAbsenceEntity {
   /**
    * @param id new value of {@link #getid}.
    */
-  public void setId(String id) {
+  public void setId(Integer id) {
 
     this.id = id;
   }
 
   /**
-   * @return person
+   * @return saga
    */
-  public PersonEntity getPerson() {
+  public String getSaga() {
 
-    return this.person;
+    return this.saga;
   }
 
   /**
-   * @param person new value of {@link #getperson}.
+   * @param saga new value of {@link #getsaga}.
    */
-  public void setPerson(PersonEntity person) {
+  public void setSaga(String saga) {
 
-    this.person = person;
+    this.saga = saga;
   }
 
   /**
@@ -120,22 +112,6 @@ public class PersonAbsenceEntity {
   public void setDate(Date date) {
 
     this.date = date;
-  }
-
-  /**
-   * @return type
-   */
-  public String getType() {
-
-    return this.type;
-  }
-
-  /**
-   * @param type new value of {@link #gettype}.
-   */
-  public void setType(String type) {
-
-    this.type = type;
   }
 
 }
