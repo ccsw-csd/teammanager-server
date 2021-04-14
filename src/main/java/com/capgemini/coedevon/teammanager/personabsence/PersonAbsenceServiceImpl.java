@@ -54,9 +54,11 @@ public class PersonAbsenceServiceImpl implements PersonAbsenceService {
 
   @Transactional(readOnly = false)
   @Override
-  public void save(List<Date> dates, List<PersonAbsenceDto> absences, String username) {
+  public void save(Integer year, List<Date> dates, String username) {
 
-    PersonEntity personEntity = this.personRepository.findByUsername(username);
+    PersonEntity personEntity = this.personRepository.findByUsernameActive(username);
+    this.absenceRepository.deleteBySagaAndYear(personEntity.getSaga(), year);
+
     for (int i = 0; i < dates.size(); i++) {
       AbsenceEntity newAbsenceEntity = new AbsenceEntity();
       Calendar calendar = dateToCalendar(dates.get(i));
@@ -66,12 +68,6 @@ public class PersonAbsenceServiceImpl implements PersonAbsenceService {
       newAbsenceEntity.setMonth(calendar.get(Calendar.MONTH) + 1);
       newAbsenceEntity.setYear(calendar.get(Calendar.YEAR));
       this.absenceRepository.save(newAbsenceEntity);
-    }
-
-    for (int j = 0; j < absences.size(); j++) {
-      AbsenceEntity absenceEntity = this.absenceRepository.findByDateAndSaga(absences.get(j).getDate(),
-          absences.get(j).getPerson().getSaga());
-      this.absenceRepository.delete(absenceEntity);
     }
 
   }

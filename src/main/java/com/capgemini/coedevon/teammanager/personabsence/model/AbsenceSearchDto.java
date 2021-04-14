@@ -8,9 +8,9 @@ import java.util.List;
  *
  */
 public class AbsenceSearchDto {
-  List<Date> dates;
+  private List<Date> dates;
 
-  List<PersonAbsenceDto> absences;
+  private Integer year;
 
   /**
    * @return dates
@@ -29,19 +29,19 @@ public class AbsenceSearchDto {
   }
 
   /**
-   * @return absences
+   * @return year
    */
-  public List<PersonAbsenceDto> getAbsences() {
+  public Integer getYear() {
 
-    return this.absences;
+    return year;
   }
 
   /**
-   * @param absences new value of {@link #getabsences}.
+   * @param year new value of {@link #getyear}.
    */
-  public void setAbsences(List<PersonAbsenceDto> absences) {
+  public void setYear(Integer year) {
 
-    this.absences = absences;
+    this.year = year;
   }
 
 }

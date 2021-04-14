@@ -14,4 +14,6 @@ public interface AbsenceRepository extends CrudRepository<AbsenceEntity, Integer
 
   AbsenceEntity findByDateAndSaga(Date date, String saga);
 
+  Long deleteBySagaAndYear(String saga, Integer year);
+
 }

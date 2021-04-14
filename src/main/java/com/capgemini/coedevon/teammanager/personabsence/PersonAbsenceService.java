@@ -14,6 +14,6 @@ public interface PersonAbsenceService {
 
   Map<Integer, List<PersonAbsenceDto>> findYearAndUsername(String username, Integer year);
 
-  void save(List<Date> dates, List<PersonAbsenceDto> absence, String username);
+  void save(Integer year, List<Date> dates, String username);
 
 }
