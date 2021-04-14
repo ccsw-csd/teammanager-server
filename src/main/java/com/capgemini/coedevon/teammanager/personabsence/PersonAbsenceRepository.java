@@ -1,6 +1,5 @@
 package com.capgemini.coedevon.teammanager.personabsence;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
