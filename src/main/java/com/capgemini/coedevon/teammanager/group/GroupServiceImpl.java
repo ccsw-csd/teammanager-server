@@ -16,6 +16,7 @@ import com.capgemini.coedevon.teammanager.group.model.GroupEntity;
 import com.capgemini.coedevon.teammanager.group.model.GroupManagerEntity;
 import com.capgemini.coedevon.teammanager.group.model.GroupMemberEntity;
 import com.capgemini.coedevon.teammanager.group.model.GroupSubgroupEntity;
+import com.capgemini.coedevon.teammanager.group.model.RespuestaValidarBorradoDto;
 import com.capgemini.coedevon.teammanager.person.PersonRepository;
 import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
 import com.capgemini.coedevon.teammanager.user.UserRepository;
@@ -125,30 +126,34 @@ public class GroupServiceImpl implements GroupService {
   }
 
   @Override
-  public Response validarUsuario(Long group_id) {
+  public RespuestaValidarBorradoDto validarUsuario(Long group_id) {
 
-    Response response = new Response();
+    RespuestaValidarBorradoDto response = new RespuestaValidarBorradoDto();
+    response.setTitulo("Error de validacion.");
     PersonEntity userId = new PersonEntity();
     userId = this.personRepository.findIdByUsername(UserUtils.getUserDetails().getUsername());
-
     Long existe = this.groupManagerRepository.validarGestor(Long.valueOf(group_id), Long.valueOf(userId.getId()));
 
     if (UserUtils.getUserDetails().getRole().equalsIgnoreCase("ADMIN")) {
       if (this.groupSubgroupRepository.comprobarSubgrupo(group_id) != 0) {
-        response.setResponse("El grupo tiene subgrupos asignados. No se puede borrar.");
+        response.setInformacion("El grupo tiene subgrupos asignados. No se puede borrar.");
+        response.setActivo(true);
       } else {
-        response.setResponse("El grupo se borrara, orden de admin.");
         borrarGrupo(group_id);
+        response.setActivo(false);
       }
     } else if (existe != 0) {
       if (this.groupSubgroupRepository.comprobarSubgrupo(group_id) != 0) {
-        response.setResponse("El grupo tiene subgrupos asignados. No se puede borrar.");
+        response.setInformacion("El grupo tiene subgrupos asignados. No se puede borrar.");
+        response.setActivo(true);
       } else {
-        response.setResponse("El grupo se borrara, orden de gerente.");
         borrarGrupo(group_id);
+        response.setActivo(false);
       }
-    } else
-      response.setResponse("No eres ni gestor ni admin, no puedes borrar el grupo.");
+    } else {
+      response.setInformacion("No eres ni gestor ni admin, no puedes borrar el grupo.");
+      response.setActivo(true);
+    }
 
     return response;
   }
