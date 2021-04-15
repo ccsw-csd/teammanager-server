@@ -129,14 +129,14 @@ public class GroupServiceImpl implements GroupService {
   public RespuestaValidarBorradoDto validarUsuario(Long group_id) {
 
     RespuestaValidarBorradoDto response = new RespuestaValidarBorradoDto();
+    response.setTitulo("Error de validacion.");
     PersonEntity userId = new PersonEntity();
     userId = this.personRepository.findIdByUsername(UserUtils.getUserDetails().getUsername());
-    response.setResponse("");
     Long existe = this.groupManagerRepository.validarGestor(Long.valueOf(group_id), Long.valueOf(userId.getId()));
 
     if (UserUtils.getUserDetails().getRole().equalsIgnoreCase("ADMIN")) {
       if (this.groupSubgroupRepository.comprobarSubgrupo(group_id) != 0) {
-        response.setResponse("El grupo tiene subgrupos asignados. No se puede borrar.");
+        response.setInformacion("El grupo tiene subgrupos asignados. No se puede borrar.");
         response.setActivo(true);
       } else {
         borrarGrupo(group_id);
@@ -144,14 +144,14 @@ public class GroupServiceImpl implements GroupService {
       }
     } else if (existe != 0) {
       if (this.groupSubgroupRepository.comprobarSubgrupo(group_id) != 0) {
-        response.setResponse("El grupo tiene subgrupos asignados. No se puede borrar.");
+        response.setInformacion("El grupo tiene subgrupos asignados. No se puede borrar.");
         response.setActivo(true);
       } else {
         borrarGrupo(group_id);
         response.setActivo(false);
       }
     } else {
-      response.setResponse("No eres ni gestor ni admin, no puedes borrar el grupo.");
+      response.setInformacion("No eres ni gestor ni admin, no puedes borrar el grupo.");
       response.setActivo(true);
     }
 

@@ -5,9 +5,27 @@ package com.capgemini.coedevon.teammanager.group.model;
  *
  */
 public class RespuestaValidarBorradoDto {
-  private String response;
+  private String informacion;
 
   private boolean activo;
+
+  private String titulo;
+
+  /**
+   * @return informacion
+   */
+  public String getInformacion() {
+
+    return this.informacion;
+  }
+
+  /**
+   * @param informacion new value of {@link #getinformacion}.
+   */
+  public void setInformacion(String informacion) {
+
+    this.informacion = informacion;
+  }
 
   /**
    * @return activo
@@ -26,19 +44,19 @@ public class RespuestaValidarBorradoDto {
   }
 
   /**
-   * @return Response
+   * @return titulo
    */
-  public String getResponse() {
+  public String getTitulo() {
 
-    return this.response;
+    return this.titulo;
   }
 
   /**
-   * @param Response new value of {@link #getresponse}.
+   * @param titulo new value of {@link #gettitulo}.
    */
-  public void setResponse(String response) {
+  public void setTitulo(String titulo) {
 
-    this.response = response;
+    this.titulo = titulo;
   }
 
 }
