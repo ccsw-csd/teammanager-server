@@ -56,7 +56,7 @@ public class PersonAbsenceServiceImpl implements PersonAbsenceService {
   @Override
   public void save(Integer year, List<Date> dates, String username) {
 
-    PersonEntity personEntity = this.personRepository.findByUsernameActive(username);
+    PersonEntity personEntity = this.personRepository.findByUsernameAndActiveTrue(username);
     this.absenceRepository.deleteBySagaAndYear(personEntity.getSaga(), year);
 
     for (int i = 0; i < dates.size(); i++) {
