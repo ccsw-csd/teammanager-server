@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.capgemini.coedevon.teammanager.config.mapper.BeanMapper;
-import com.capgemini.coedevon.teammanager.forecast.absence.PersonGroupAbsenceService;
-import com.capgemini.coedevon.teammanager.forecast.absence.model.PersonGroupAbsenceDto;
-import com.capgemini.coedevon.teammanager.forecast.absence.model.PersonGroupAbsenceSearchDto;
+import com.capgemini.coedevon.teammanager.forecast.model.ForecastDto;
+import com.capgemini.coedevon.teammanager.forecast.model.ForecastSearchDto;
 
 /**
  * @author aolmosca
@@ -26,7 +25,7 @@ public class ForecastController {
   private BeanMapper beanMapper;
 
   @Autowired
-  private PersonGroupAbsenceService vAbsenceService;
+  private ForecastService vAbsenceService;
 
   /**
    * Recupera la ausencias de una persona para un año
@@ -36,7 +35,7 @@ public class ForecastController {
    * @return
    */
   @RequestMapping(path = "/", method = RequestMethod.POST)
-  public Map<String, List<PersonGroupAbsenceDto>> getGroupAbsenceByDate(@RequestBody PersonGroupAbsenceSearchDto dto) {
+  public Map<String, List<ForecastDto>> getGroupAbsenceByDate(@RequestBody ForecastSearchDto dto) {
 
     return this.vAbsenceService.getGroupAbsenceByDate(dto.getGroupId(), dto.getInit(), dto.getEnd());
   }
