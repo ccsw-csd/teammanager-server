@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.capgemini.coedevon.teammanager.center.model.CenterDto;
+import com.capgemini.coedevon.teammanager.center.model.ListadoCentrosFestivosDto;
 import com.capgemini.coedevon.teammanager.config.mapper.BeanMapper;
 
 /**
@@ -28,6 +29,13 @@ public class CenterController {
   public List<CenterDto> get() {
 
     return this.beanMapper.mapList(this.centerService.getAllCenters(), CenterDto.class);
+
+  }
+
+  @RequestMapping(path = "/festiveCenter/", method = RequestMethod.GET)
+  public List<ListadoCentrosFestivosDto> getListadoCentrosFestivos() {
+
+    return this.beanMapper.mapList(this.centerService.listadoCentrosFestivos(), ListadoCentrosFestivosDto.class);
 
   }
 

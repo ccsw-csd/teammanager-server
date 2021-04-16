@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.capgemini.coedevon.teammanager.center.model.CenterEntity;
+import com.capgemini.coedevon.teammanager.center.model.ListadoCentrosFestivosEntity;
 
 /**
  * @author aolmosca
@@ -19,6 +20,9 @@ public class CenterServiceImpl implements CenterService {
 
   @Autowired
   CenterRepository centerRepository;
+
+  @Autowired
+  ListadoCentrosFestivosRepository listadoCentrosFestivosRepository;
 
   private static final Logger LOG = LoggerFactory.getLogger(CenterServiceImpl.class);
 
@@ -38,4 +42,10 @@ public class CenterServiceImpl implements CenterService {
     return this.centerRepository.findById(id);
   }
 
+  @Override
+  public List<ListadoCentrosFestivosEntity> listadoCentrosFestivos() {
+
+    return this.listadoCentrosFestivosRepository.findAll();
+
+  }
 }
