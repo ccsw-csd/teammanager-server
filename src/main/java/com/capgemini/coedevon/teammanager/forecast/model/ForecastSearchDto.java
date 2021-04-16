@@ -1,4 +1,4 @@
-package com.capgemini.coedevon.teammanager.forecast.absence.model;
+package com.capgemini.coedevon.teammanager.forecast.model;
 
 import java.util.Date;
 
@@ -6,7 +6,7 @@ import java.util.Date;
  * @author aolmosca
  *
  */
-public class PersonGroupAbsenceSearchDto {
+public class ForecastSearchDto {
 
   private Long groupId;
 

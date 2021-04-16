@@ -5,6 +5,7 @@ import java.util.List;
 import com.capgemini.coedevon.teammanager.group.model.EditGroup;
 import com.capgemini.coedevon.teammanager.group.model.GroupDto;
 import com.capgemini.coedevon.teammanager.group.model.GroupEntity;
+import com.capgemini.coedevon.teammanager.group.model.RespuestaValidarBorradoDto;
 import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
 
 /**
@@ -28,5 +29,17 @@ public interface GroupService {
    * @return
    */
   GroupEntity save(GroupDto data);
+
+  /**
+   * @param data
+   * @return
+   */
+  RespuestaValidarBorradoDto validarUsuario(Long id);
+
+  /**
+   * @param data
+   * @return
+   */
+  void borrarGrupo(Long data);
 
 }

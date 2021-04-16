@@ -1,22 +1,16 @@
-package com.capgemini.coedevon.teammanager.forecast.absence.model;
+package com.capgemini.coedevon.teammanager.forecast.model;
 
 import java.util.Date;
 
-import com.capgemini.coedevon.teammanager.grouplist.model.GroupListEntity;
-import com.capgemini.coedevon.teammanager.person.model.PersonDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * @author aolmosca
  *
  */
-public class PersonGroupAbsenceDto {
+public class ForecastDto {
 
   private String id;
-
-  private GroupListEntity group;
-
-  private PersonDto person;
 
   private Integer year;
 
@@ -41,38 +35,6 @@ public class PersonGroupAbsenceDto {
   public void setId(String id) {
 
     this.id = id;
-  }
-
-  /**
-   * @return group
-   */
-  public GroupListEntity getGroup() {
-
-    return this.group;
-  }
-
-  /**
-   * @param group new value of {@link #getgroup}.
-   */
-  public void setGroup(GroupListEntity group) {
-
-    this.group = group;
-  }
-
-  /**
-   * @return person
-   */
-  public PersonDto getPerson() {
-
-    return this.person;
-  }
-
-  /**
-   * @param person new value of {@link #getperson}.
-   */
-  public void setPerson(PersonDto person) {
-
-    this.person = person;
   }
 
   /**

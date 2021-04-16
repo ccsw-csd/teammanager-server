@@ -18,4 +18,8 @@ public interface PersonRepository extends CrudRepository<PersonEntity, Long>, Pe
 
   PersonEntity findById(Integer id);
 
+  PersonEntity findIdByUsername(String username);
+
+  PersonEntity findByUsernameAndActiveTrue(String username);
+
 }
