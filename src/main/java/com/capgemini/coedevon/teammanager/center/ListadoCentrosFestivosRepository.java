@@ -12,6 +12,5 @@ import com.capgemini.coedevon.teammanager.center.model.ListadoCentrosFestivosEnt
  */
 public interface ListadoCentrosFestivosRepository extends CrudRepository<ListadoCentrosFestivosEntity, Long> {
 
-  @Override
-  List<ListadoCentrosFestivosEntity> findAll();
+  List<ListadoCentrosFestivosEntity> findAllByOrderByNameAsc();
 }
