@@ -45,7 +45,7 @@ public class CenterServiceImpl implements CenterService {
   @Override
   public List<ListadoCentrosFestivosEntity> listadoCentrosFestivos() {
 
-    return this.listadoCentrosFestivosRepository.findAll();
+    return this.listadoCentrosFestivosRepository.findAllByOrderByNameAsc();
 
   }
 }
