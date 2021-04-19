@@ -38,7 +38,7 @@ public class ForecastServiceImpl implements ForecastService {
     List<VGroupMembersAllEntity> groupMembersList = this.groupMembersAllRepository
         .findByGroup_IdOrderByPersonUsername(groupId);
 
-    List<Long> personIds = extractListPersonId(groupMembersList);
+    List<Integer> personIds = extractListPersonId(groupMembersList);
 
     List<PersonAbsenceEntity> absenceList = this.personAbsenceRepository.findByPerson_IdInAndDateBetween(personIds,
         init, end);
@@ -55,13 +55,13 @@ public class ForecastServiceImpl implements ForecastService {
     return hashAbsence;
   }
 
-  private List<ForecastDto> extractAbsencesFromList(Long personId, List<PersonAbsenceEntity> absenceList) {
+  private List<ForecastDto> extractAbsencesFromList(Integer integer, List<PersonAbsenceEntity> absenceList) {
 
     List<ForecastDto> listAbsence = new ArrayList<>();
     Map<Date, ForecastDto> mapAbsences = new HashMap<>();
     for (PersonAbsenceEntity absence : absenceList) {
 
-      if (personId.equals(absence.getPerson().getId()) == false)
+      if (integer.equals(absence.getPerson().getId()) == false)
         continue;
 
       int weekDay = absence.getDate().getDay();
@@ -101,9 +101,9 @@ public class ForecastServiceImpl implements ForecastService {
   /**
    * @param groupId
    */
-  private List<Long> extractListPersonId(List<VGroupMembersAllEntity> groupMembersList) {
+  private List<Integer> extractListPersonId(List<VGroupMembersAllEntity> groupMembersList) {
 
-    List<Long> personIds = new ArrayList<>();
+    List<Integer> personIds = new ArrayList<>();
 
     for (VGroupMembersAllEntity groupMember : groupMembersList) {
       personIds.add(groupMember.getPerson().getId());

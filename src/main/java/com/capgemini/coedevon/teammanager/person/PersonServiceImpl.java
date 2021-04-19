@@ -32,21 +32,17 @@ public class PersonServiceImpl implements PersonService {
   }
 
   @Override
-  public PersonEntity getById(Integer id) {
-
-    return getById(id);
-  }
-
-  @Override
   public boolean createOrUpdate(PersonDto personDto) {
 
-    if (personDto.getId() == null) {
+    PersonEntity person = this.personRepository.findByUsername(personDto.getUsername());
+    if (person.getId() == null) {
       if (personNotExists(personDto.getUsername(), personDto.getSaga())) {
         create(personDto);
         return true;
       }
       return sagaNotExists(personDto.getSaga());
     } else {
+      personDto.setId((Integer) person.getId());
       update(personDto);
       return true;
     }
@@ -65,7 +61,7 @@ public class PersonServiceImpl implements PersonService {
   @Override
   public void update(PersonDto personDto) {
 
-    PersonEntity personEntity = getById(personDto.getId());
+    PersonEntity personEntity = this.personRepository.findById(personDto.getId());
     BeanUtils.copyProperties(personDto, personEntity);
     this.personRepository.save(personEntity);
 
