@@ -46,12 +46,14 @@ public class GroupServiceImpl implements GroupService {
   @Override
   public List<GroupEntity> getSubgroups(String name) {
 
+    name = name.replaceAll(" ", "%");
     return this.groupRepository.filtrarGrupos(name);
   }
 
   @Override
   public List<PersonEntity> getPersons(String name) {
 
+    name = name.replaceAll(" ", "%");
     return this.personRepository.filtrarPersonas(name);
   }
 
