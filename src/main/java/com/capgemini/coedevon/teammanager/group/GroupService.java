@@ -2,7 +2,7 @@ package com.capgemini.coedevon.teammanager.group;
 
 import java.util.List;
 
-import com.capgemini.coedevon.teammanager.group.model.EditGroup;
+import com.capgemini.coedevon.teammanager.group.model.EditGroupDto;
 import com.capgemini.coedevon.teammanager.group.model.GroupDto;
 import com.capgemini.coedevon.teammanager.group.model.GroupEntity;
 import com.capgemini.coedevon.teammanager.group.model.RespuestaValidarBorradoDto;
@@ -14,7 +14,7 @@ import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
  */
 public interface GroupService {
 
-  EditGroup getGroup(long id);
+  EditGroupDto getGroup(long id);
 
   /**
    * @param inicioNombre

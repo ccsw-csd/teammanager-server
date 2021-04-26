@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.capgemini.coedevon.teammanager.config.security.UserUtils;
-import com.capgemini.coedevon.teammanager.group.model.EditGroup;
+import com.capgemini.coedevon.teammanager.group.model.EditGroupDto;
 import com.capgemini.coedevon.teammanager.group.model.GroupDto;
 import com.capgemini.coedevon.teammanager.group.model.GroupEntity;
 import com.capgemini.coedevon.teammanager.group.model.GroupManagerEntity;
@@ -108,9 +108,9 @@ public class GroupServiceImpl implements GroupService {
   }
 
   @Override
-  public EditGroup getGroup(long id) {
+  public EditGroupDto getGroup(long id) {
 
-    EditGroup editGroup = new EditGroup();
+    EditGroupDto editGroup = new EditGroupDto();
     editGroup.setId(id);
     editGroup.setName(this.groupRepository.findById(id).get().getName());
 

@@ -24,14 +24,31 @@ public class GroupListServiceImpl implements GroupListService {
   @Override
   public Page<GroupListEntity> findPage(GroupListSearchDto dto) {
 
-    Page<GroupListEntity> page = null;
-
-    if (UserUtils.getUserDetails().getRole().equalsIgnoreCase("ADMIN")) {
-      page = this.groupListRepository.findAll(dto.getPageable());
-    } else if (UserUtils.getUserDetails().getRole().equalsIgnoreCase("GESTOR")) {
-      page = this.groupListRepository.filtrarGestor(dto.getPageable(), UserUtils.getUserDetails().getUsername());
+    if (isAdmin() && dto.getViewAdmin()) {
+      return this.groupListRepository.findAll(dto.getPageable());
     }
-    return page;
+
+    if (isGestor()) {
+      return this.groupListRepository.filtrarGestor(dto.getPageable(), UserUtils.getUserDetails().getUsername());
+    }
+
+    return null;
+  }
+
+  /**
+   * @return
+   */
+  private boolean isGestor() {
+
+    return isAdmin() || UserUtils.getUserDetails().getRole().equalsIgnoreCase("GESTOR");
+  }
+
+  /**
+   * @return
+   */
+  private boolean isAdmin() {
+
+    return UserUtils.getUserDetails().getRole().equalsIgnoreCase("ADMIN");
   }
 
 }
