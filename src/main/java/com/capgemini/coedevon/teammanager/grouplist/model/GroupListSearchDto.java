@@ -7,6 +7,9 @@ import org.springframework.data.domain.Pageable;
  *
  */
 public class GroupListSearchDto {
+
+  private Boolean viewAdmin = false;
+
   private Pageable pageable;
 
   /**
@@ -23,6 +26,22 @@ public class GroupListSearchDto {
   public void setPageable(Pageable pageable) {
 
     this.pageable = pageable;
+  }
+
+  /**
+   * @return viewAdmin
+   */
+  public Boolean getViewAdmin() {
+
+    return viewAdmin;
+  }
+
+  /**
+   * @param viewAdmin new value of {@link #getviewAdmin}.
+   */
+  public void setViewAdmin(Boolean viewAdmin) {
+
+    this.viewAdmin = viewAdmin;
   }
 
 }

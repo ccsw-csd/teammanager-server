@@ -32,6 +32,9 @@ public class GroupListEntity {
   @Column(name = "subgroups")
   private Long subgroups;
 
+  @Column(name = "external_id")
+  private String externalId;
+
   /**
    * @return id
    */
@@ -110,6 +113,22 @@ public class GroupListEntity {
   public void setSubgroups(Long subgroups) {
 
     this.subgroups = subgroups;
+  }
+
+  /**
+   * @return externalId
+   */
+  public String getExternalId() {
+
+    return this.externalId;
+  }
+
+  /**
+   * @param externalId new value of {@link #getexternalId}.
+   */
+  public void setExternalId(String externalId) {
+
+    this.externalId = externalId;
   }
 
 }
