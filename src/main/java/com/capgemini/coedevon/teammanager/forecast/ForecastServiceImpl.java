@@ -46,7 +46,7 @@ public class ForecastServiceImpl implements ForecastService {
 
     for (PersonEntity member : groupMembersList) {
 
-      String key = member.getLastname() + " " + member.getName();
+      String key = member.getLastname() + ", " + member.getName();
 
       hashAbsence.put(key, extractAbsencesFromList(member.getId(), absenceList));
     }
