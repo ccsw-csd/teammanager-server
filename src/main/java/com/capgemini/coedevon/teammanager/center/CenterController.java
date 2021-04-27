@@ -32,11 +32,13 @@ public class CenterController {
 
   }
 
+  /**
+   * @return
+   */
   @RequestMapping(path = "/festiveCenter/", method = RequestMethod.GET)
   public List<ListadoCentrosFestivosDto> getListadoCentrosFestivos() {
 
     return this.beanMapper.mapList(this.centerService.listadoCentrosFestivos(), ListadoCentrosFestivosDto.class);
-
   }
 
 }
