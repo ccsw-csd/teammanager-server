@@ -15,10 +15,11 @@ import com.capgemini.coedevon.teammanager.centerFestive.model.CenterFestiveEntit
 public interface CenterFestiveRepository extends CrudRepository<CenterFestiveEntity, Long> {
 
   /**
+   * @param centerid
    * @param year
-   * @param centerID
    * @return
    */
+
   List<CenterFestiveEntity> findAllByCenteridAndYear(long centerid, int year);
 
   /**

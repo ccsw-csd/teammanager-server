@@ -13,23 +13,7 @@ public class CenterFestiveSaveDto {
 
   private List<Date> dates;
 
-  private int centerid;
-
-  /**
-   * @return centerid
-   */
-  public int getCenterid() {
-
-    return this.centerid;
-  }
-
-  /**
-   * @param centerid new value of {@link #getcenterid}.
-   */
-  public void setCenterid(int centerid) {
-
-    this.centerid = centerid;
-  }
+  private long centerid;
 
   /**
    * @return year
@@ -61,6 +45,22 @@ public class CenterFestiveSaveDto {
   public void setDates(List<Date> dates) {
 
     this.dates = dates;
+  }
+
+  /**
+   * @return centerid
+   */
+  public long getCenterid() {
+
+    return this.centerid;
+  }
+
+  /**
+   * @param centerid new value of {@link #getcenterid}.
+   */
+  public void setCenterid(long centerid) {
+
+    this.centerid = centerid;
   }
 
 }

@@ -9,5 +9,5 @@ import com.capgemini.coedevon.teammanager.centerFestive.model.CenterFestiveEntit
 public interface FestiveRepository {
 
   @SuppressWarnings("javadoc")
-  CenterFestiveEntity findAllByCenterIDAndYear(long CenterID, int year);
+  CenterFestiveEntity findAllByCenteridAndYear(long centerid, int year);
 }

@@ -8,7 +8,7 @@ public class CenterFestiveSearchDto {
 
   private int year;
 
-  private long centerID;
+  private long centerid;
 
   /**
    * @return year
@@ -29,17 +29,17 @@ public class CenterFestiveSearchDto {
   /**
    * @return centerID
    */
-  public long getCenterID() {
+  public long getCenterid() {
 
-    return this.centerID;
+    return this.centerid;
   }
 
   /**
    * @param centerID new value of {@link #getcenterID}.
    */
-  public void setCenterID(long centerID) {
+  public void setCenterid(long centerid) {
 
-    this.centerID = centerID;
+    this.centerid = centerid;
   }
 
 }

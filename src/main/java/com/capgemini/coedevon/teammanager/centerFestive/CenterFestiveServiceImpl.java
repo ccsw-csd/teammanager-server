@@ -21,7 +21,7 @@ public class CenterFestiveServiceImpl implements CenterFestiveService {
   CenterFestiveRepository centerFestiveRepository;
 
   /**
-   * @param centerID
+   * @param centerid
    * @param year
    * @return
    */
@@ -36,7 +36,7 @@ public class CenterFestiveServiceImpl implements CenterFestiveService {
   }
 
   @Override
-  public void crearFestivos(int centerid, int year, List<Date> dates) {
+  public void crearFestivos(int year, long centerid, List<Date> dates) {
 
     this.centerFestiveRepository.deleteAllByCenterid(centerid);
 

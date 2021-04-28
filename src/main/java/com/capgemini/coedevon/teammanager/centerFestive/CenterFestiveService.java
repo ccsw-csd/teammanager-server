@@ -12,7 +12,7 @@ import com.capgemini.coedevon.teammanager.centerFestive.model.CenterFestiveEntit
 public interface CenterFestiveService {
 
   /**
-   * @param centerID
+   * @param centerid
    * @param year
    * @return
    */
@@ -23,5 +23,5 @@ public interface CenterFestiveService {
    * @param year
    * @param dates
    */
-  void crearFestivos(int centerid, int year, List<Date> dates);
+  void crearFestivos(int year, long centerid, List<Date> dates);
 }

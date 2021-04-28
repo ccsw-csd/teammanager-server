@@ -25,27 +25,24 @@ public class CenterFestiveController {
   CenterFestiveService centerFestiveService;
 
   /**
-   * @param centerID
-   * @param year
+   * @param dtoEdit
    * @return
    */
   @RequestMapping(path = "/editFestives/", method = RequestMethod.POST)
-  public List<CenterFestiveDto> editFestives(@RequestBody CenterFestiveSearchDto dto) {
+  public List<CenterFestiveDto> editFestives(@RequestBody CenterFestiveSearchDto dtoEdit) {
 
-    return this.beanMapper.mapList(this.centerFestiveService.findFestiveAndCenter(dto.getCenterID(), dto.getYear()),
+    return this.beanMapper.mapList(
+        this.centerFestiveService.findFestiveAndCenter(dtoEdit.getCenterid(), dtoEdit.getYear()),
         CenterFestiveDto.class);
-
   }
 
   /**
-   * @param year
-   * @param fechas
-   * @param dto
+   * @param dtoSave
    */
   @RequestMapping(path = "/save/", method = RequestMethod.POST)
-  public void saveFestives(@RequestBody CenterFestiveSaveDto dto) {
+  public void saveFestives(@RequestBody CenterFestiveSaveDto dtoSave) {
 
-    this.centerFestiveService.crearFestivos(dto.getCenterid(), dto.getYear(), dto.getDates());
+    this.centerFestiveService.crearFestivos(dtoSave.getYear(), dtoSave.getCenterid(), dtoSave.getDates());
 
   }
 }
