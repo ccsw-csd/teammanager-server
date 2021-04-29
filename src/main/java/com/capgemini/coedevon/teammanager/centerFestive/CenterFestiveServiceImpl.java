@@ -1,7 +1,6 @@
 package com.capgemini.coedevon.teammanager.centerFestive;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -9,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.capgemini.coedevon.teammanager.centerFestive.model.CenterFestiveEntity;
+import com.capgemini.coedevon.teammanager.centerFestive.model.CenterFestiveSaveDto;
 
 /**
- * TODO apastorm This type ...
  *
  */
 @Service
@@ -21,28 +20,30 @@ public class CenterFestiveServiceImpl implements CenterFestiveService {
   CenterFestiveRepository centerFestiveRepository;
 
   /**
-   * @param centerid
-   * @param year
-   * @return
+   * {@inheritDoc}
    */
   @Override
-  public List<CenterFestiveEntity> findFestiveAndCenter(long centerid, int year) {
+  public List<CenterFestiveEntity> find(long centerId, int year) {
 
-    List<CenterFestiveEntity> centerFestiveEntity = new ArrayList<CenterFestiveEntity>();
+    return this.centerFestiveRepository.findAllByCenterIdAndYear(centerId, year);
 
-    centerFestiveEntity = this.centerFestiveRepository.findAllByCenteridAndYear(centerid, year);
-
-    return centerFestiveEntity;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
-  public void crearFestivos(int year, long centerid, List<Date> dates) {
+  public void save(CenterFestiveSaveDto dto) {
 
-    this.centerFestiveRepository.deleteAllByCenterid(centerid);
+    int year = dto.getYear();
+    long centerId = dto.getCenterid();
+    List<Date> dates = dto.getDates();
+
+    this.centerFestiveRepository.deleteAllByCenterIdAndYear(centerId, year);
 
     for (int i = 0; i < dates.size(); i++) {
       CenterFestiveEntity festivo = new CenterFestiveEntity();
-      festivo.setCenterid(centerid);
+      festivo.setCenterId(centerId);
       festivo.setDate(dates.get(i));
       festivo.setYear(year);
       Calendar calendar = Calendar.getInstance();

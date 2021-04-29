@@ -4,6 +4,7 @@ package com.capgemini.coedevon.teammanager.centerFestive;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.capgemini.coedevon.teammanager.centerFestive.model.CenterFestiveDto;
 import com.capgemini.coedevon.teammanager.centerFestive.model.CenterFestiveSaveDto;
-import com.capgemini.coedevon.teammanager.centerFestive.model.CenterFestiveSearchDto;
 import com.capgemini.coedevon.teammanager.config.mapper.BeanMapper;
 
 @RequestMapping(value = "/festives")
@@ -25,24 +25,23 @@ public class CenterFestiveController {
   CenterFestiveService centerFestiveService;
 
   /**
-   * @param dtoEdit
+   * @param centerId
+   * @param year
    * @return
    */
-  @RequestMapping(path = "/editFestives/", method = RequestMethod.POST)
-  public List<CenterFestiveDto> editFestives(@RequestBody CenterFestiveSearchDto dtoEdit) {
+  @RequestMapping(path = "/{centerId}/{year}", method = RequestMethod.GET)
+  public List<CenterFestiveDto> find(@PathVariable("centerId") long centerId, @PathVariable("year") int year) {
 
-    return this.beanMapper.mapList(
-        this.centerFestiveService.findFestiveAndCenter(dtoEdit.getCenterid(), dtoEdit.getYear()),
-        CenterFestiveDto.class);
+    return this.beanMapper.mapList(this.centerFestiveService.find(centerId, year), CenterFestiveDto.class);
   }
 
   /**
    * @param dtoSave
    */
   @RequestMapping(path = "/save/", method = RequestMethod.POST)
-  public void saveFestives(@RequestBody CenterFestiveSaveDto dtoSave) {
+  public void save(@RequestBody CenterFestiveSaveDto dtoSave) {
 
-    this.centerFestiveService.crearFestivos(dtoSave.getYear(), dtoSave.getCenterid(), dtoSave.getDates());
+    this.centerFestiveService.save(dtoSave);
 
   }
 }

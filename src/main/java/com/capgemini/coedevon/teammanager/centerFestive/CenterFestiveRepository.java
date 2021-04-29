@@ -9,7 +9,6 @@ import org.springframework.data.repository.CrudRepository;
 import com.capgemini.coedevon.teammanager.centerFestive.model.CenterFestiveEntity;
 
 /**
- * TODO apastorm This type ...
  *
  */
 public interface CenterFestiveRepository extends CrudRepository<CenterFestiveEntity, Long> {
@@ -20,12 +19,13 @@ public interface CenterFestiveRepository extends CrudRepository<CenterFestiveEnt
    * @return
    */
 
-  List<CenterFestiveEntity> findAllByCenteridAndYear(long centerid, int year);
+  List<CenterFestiveEntity> findAllByCenterIdAndYear(long centerid, int year);
 
   /**
-   * @param Centerid
+   * @param centerId
+   * @param year
    */
   @Transactional
-  void deleteAllByCenterid(long Centerid);
+  void deleteAllByCenterIdAndYear(long centerId, int year);
 
 }

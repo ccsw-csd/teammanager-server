@@ -19,7 +19,7 @@ public class CenterFestiveEntity {
   public long id;
 
   @Column(name = "center_id")
-  public long centerid;
+  public long centerId;
 
   @Column(name = "year")
   public int year;
@@ -47,19 +47,19 @@ public class CenterFestiveEntity {
   }
 
   /**
-   * @return centerid
+   * @return centerId
    */
-  public long getCenterid() {
+  public long getCenterId() {
 
-    return this.centerid;
+    return this.centerId;
   }
 
   /**
-   * @param centerid new value of {@link #getcenterid}.
+   * @param centerId new value of {@link #getcenterId}.
    */
-  public void setCenterid(long centerid) {
+  public void setCenterId(long centerId) {
 
-    this.centerid = centerid;
+    this.centerId = centerId;
   }
 
   /**
