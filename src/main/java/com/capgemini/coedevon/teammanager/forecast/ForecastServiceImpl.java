@@ -181,7 +181,7 @@ public class ForecastServiceImpl implements ForecastService {
     List<XSSFSheet> sheets = new ArrayList<>();
     for (int l = initDate.getMonthValue(); l <= endDate.getMonthValue(); l++) {
       XSSFSheet sheet = workbook.createSheet(months.get(l));
-      Row totalRow = sheet.createRow(absences.size() + 2);
+      Row totalRow = sheet.createRow(absences.size() + 1);
       org.apache.poi.ss.usermodel.Cell cellName = totalRow.createCell(0);
       cellName.setCellValue("Total");
       org.apache.poi.ss.usermodel.Cell cellLab = totalRow.createCell(1);
@@ -190,6 +190,8 @@ public class ForecastServiceImpl implements ForecastService {
       cellAu.setCellValue(0);
       org.apache.poi.ss.usermodel.Cell cellFes = totalRow.createCell(3);
       cellFes.setCellValue(0);
+      headerCaptionColor(absences, headerCellStyleAusencia, headerCellStyleFestivo, headerCellStyleWeekend, sheet);
+
       sheets.add(sheet);
     }
 
@@ -199,24 +201,27 @@ public class ForecastServiceImpl implements ForecastService {
       Row headerLower = sheets.get(0).createRow(0);
       org.apache.poi.ss.usermodel.Cell cellName = headerLower.createCell(0);
       cellName.setCellValue("Name");
-      org.apache.poi.ss.usermodel.Cell cellLab = headerLower.createCell(1);
-      cellLab.setCellValue("Labor");
-      org.apache.poi.ss.usermodel.Cell cellAu = headerLower.createCell(2);
-      cellAu.setCellValue("Absence");
-      org.apache.poi.ss.usermodel.Cell cellFes = headerLower.createCell(3);
-      cellFes.setCellValue("Festive");
+      org.apache.poi.ss.usermodel.Cell cellLabH = headerLower.createCell(1);
+      cellLabH.setCellValue("Labor");
+      org.apache.poi.ss.usermodel.Cell cellAuH = headerLower.createCell(2);
+      cellAuH.setCellValue("Absence");
+      org.apache.poi.ss.usermodel.Cell cellFesH = headerLower.createCell(3);
+      cellFesH.setCellValue("Festive");
 
       LocalDate dateCount = LocalDate.of(initDate.getYear(), initDate.getMonthValue(), initDate.lengthOfMonth());
       long countAusencia = countAusenciasOFestivosMonth(initDate.getMonthValue(), true, entry.getValue());
       long countFestivos = countAusenciasOFestivosMonth(initDate.getMonthValue(), false, entry.getValue());
       long countLaborales = countBusinessDaysBetween(initDate, dateCount, Optional.empty()) + 1
           - (countFestivos + countAusencia);
-      Row totalRow = sheets.get(0).getRow(absences.size() + 2);
-      cellLab = totalRow.getCell(1);
+      Row totalRow = sheets.get(0).getRow(absences.size() + 1);
+      org.apache.poi.ss.usermodel.Cell cellLab = totalRow.getCell(1);
+      cellLab.setCellType(CellType.NUMERIC);
       cellLab.setCellValue(countLaborales + cellLab.getNumericCellValue());
-      cellAu = totalRow.getCell(2);
+      org.apache.poi.ss.usermodel.Cell cellAu = totalRow.getCell(2);
+      cellAu.setCellType(CellType.NUMERIC);
       cellAu.setCellValue(countAusencia + cellAu.getNumericCellValue());
-      cellFes = totalRow.getCell(3);
+      org.apache.poi.ss.usermodel.Cell cellFes = totalRow.getCell(3);
+      cellFes.setCellType(CellType.NUMERIC);
       cellFes.setCellValue(countFestivos + cellFes.getNumericCellValue());
 
       cellName = absencesRowMonth.createCell(0);
@@ -306,6 +311,35 @@ public class ForecastServiceImpl implements ForecastService {
 
   /**
    * @param absences
+   * @param headerCellStyleAusencia
+   * @param headerCellStyleFestivo
+   * @param headerCellStyleWeekend
+   * @param sheet
+   */
+  private void headerCaptionColor(Map<String, List<ForecastDto>> absences, XSSFCellStyle headerCellStyleAusencia,
+      XSSFCellStyle headerCellStyleFestivo, XSSFCellStyle headerCellStyleWeekend, XSSFSheet sheet) {
+
+    org.apache.poi.ss.usermodel.Cell cellName;
+    Row leyendaRow = sheet.createRow(absences.size() + 3);
+    cellName = leyendaRow.createCell(0);
+    cellName = leyendaRow.createCell(1);
+    cellName.setCellValue("Weekend");
+    cellName = leyendaRow.createCell(2);
+    cellName.setCellValue("Inactivity");
+    cellName = leyendaRow.createCell(3);
+    cellName.setCellValue("Festive");
+    Row leyendaRowColor = sheet.createRow(absences.size() + 4);
+    cellName = leyendaRowColor.createCell(0);
+    cellName = leyendaRowColor.createCell(1);
+    cellName.setCellStyle(headerCellStyleWeekend);
+    cellName = leyendaRowColor.createCell(2);
+    cellName.setCellStyle(headerCellStyleAusencia);
+    cellName = leyendaRowColor.createCell(3);
+    cellName.setCellStyle(headerCellStyleFestivo);
+  }
+
+  /**
+   * @param absences
    * @param initDate
    * @param endDate
    * @param sheet
@@ -327,6 +361,7 @@ public class ForecastServiceImpl implements ForecastService {
     cellTotalAu.setCellValue(0);
     org.apache.poi.ss.usermodel.Cell cellTotalFes = totalRow.createCell(3);
     cellTotalFes.setCellValue(0);
+    headerCaptionColor(absences, headerCellStyleAusencia, headerCellStyleFestivo, headerCellStyleWeekend, sheet);
     for (Map.Entry<String, List<ForecastDto>> entry : absences.entrySet()) {
       int dateCellCount = 4;
       Row absencesRow = sheet.createRow(rowCount);
