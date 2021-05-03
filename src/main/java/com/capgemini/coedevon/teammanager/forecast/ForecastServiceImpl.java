@@ -272,7 +272,7 @@ public class ForecastServiceImpl implements ForecastService {
             rowCount++;
 
         }
-        sheet.autoSizeColumn(0);
+        //sheet.autoSizeColumn(0);
     }
 
     private String typeOfDay(LocalDate date, List<ForecastDto> absences) {
