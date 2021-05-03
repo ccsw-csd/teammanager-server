@@ -8,7 +8,7 @@ import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
  * TODO apastorm This type ...
  *
  */
-public class EditGroup {
+public class EditGroupDto {
   private Long id;
 
   private String name;

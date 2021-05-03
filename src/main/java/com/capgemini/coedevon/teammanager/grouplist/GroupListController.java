@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.capgemini.coedevon.teammanager.config.mapper.BeanMapper;
 import com.capgemini.coedevon.teammanager.group.GroupService;
-import com.capgemini.coedevon.teammanager.group.model.EditGroup;
+import com.capgemini.coedevon.teammanager.group.model.EditGroupDto;
 import com.capgemini.coedevon.teammanager.group.model.GroupDto;
 import com.capgemini.coedevon.teammanager.group.model.RespuestaValidarBorradoDto;
 import com.capgemini.coedevon.teammanager.grouplist.model.GroupListDto;
@@ -66,9 +66,9 @@ public class GroupListController {
    * @return
    */
   @RequestMapping(path = "/editgroup/", method = RequestMethod.POST)
-  public EditGroup getGroup(@RequestBody Long id) {
+  public EditGroupDto getGroup(@RequestBody Long id) {
 
-    return this.beanMapper.map(this.groupService.getGroup(id), EditGroup.class);
+    return this.beanMapper.map(this.groupService.getGroup(id), EditGroupDto.class);
   }
 
   /**

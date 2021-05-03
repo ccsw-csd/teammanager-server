@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.capgemini.coedevon.teammanager.person.PersonService;
+import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
 import com.capgemini.coedevon.teammanager.user.UserService;
 import com.capgemini.coedevon.teammanager.user.model.UserEntity;
 
@@ -58,6 +60,9 @@ public class JsonWebTokenUtility {
 
   @Autowired
   private UserService userService;
+
+  @Autowired
+  private PersonService personService;
 
   private Map<String, UserInfoAppDto> userCache = new HashMap<>();
 
@@ -112,7 +117,6 @@ public class JsonWebTokenUtility {
 
       if (userDetails == null || isExpired(userDetails.getExpiration())
           || jwtToken.equals(userDetails.getJwt()) == false) {
-        LOG.info("Creamos y cacheamos el usuario: " + username);
         userDetails = createNewUserDetails(username, jwtToken);
         addCustomPropertiesJwtToUserDetails(claims, userDetails);
         this.userCache.put(username, userDetails);
@@ -121,7 +125,6 @@ public class JsonWebTokenUtility {
       return userDetails;
 
     } catch (ExpiredJwtException ex) {
-      LOG.info("User token expired " + jwtToken);
       return null;
     }
 
@@ -139,6 +142,13 @@ public class JsonWebTokenUtility {
       userDetails.setRole("USER");
     else {
       userDetails.setRole(user.getRole());
+    }
+
+    PersonEntity person = this.personService.personExists(username);
+    if (person != null) {
+      userDetails.setWithPON(person.isWithPON());
+    } else {
+      userDetails.setWithPON(false);
     }
 
     return userDetails;

@@ -11,6 +11,7 @@ import com.capgemini.coedevon.teammanager.group.model.GroupEntity;
 
 @Repository
 public interface GroupRepository extends CrudRepository<GroupEntity, Long> {
-  @Query(value = "select * from `group` where name LIKE :prefix% LIMIT 15", nativeQuery = true)
-  public List<GroupEntity> filtrarGrupos(@Param("prefix") String prefix);
+
+  @Query(value = "select * from `group` where name LIKE %:name% LIMIT 15", nativeQuery = true)
+  public List<GroupEntity> filtrarGrupos(@Param("name") String name);
 }

@@ -16,6 +16,8 @@ public class UserInfoAppDto extends UserInfoDto {
 
   private Date expiration;
 
+  private boolean withPON;
+
   /**
    * @return role
    */
@@ -53,7 +55,7 @@ public class UserInfoAppDto extends UserInfoDto {
    */
   public String getJwt() {
 
-    return jwt;
+    return this.jwt;
   }
 
   /**
@@ -62,6 +64,22 @@ public class UserInfoAppDto extends UserInfoDto {
   public void setJwt(String jwt) {
 
     this.jwt = jwt;
+  }
+
+  /**
+   * @return withPON
+   */
+  public boolean isWithPON() {
+
+    return withPON;
+  }
+
+  /**
+   * @param withPON new value of {@link #getwithPON}.
+   */
+  public void setWithPON(boolean withPON) {
+
+    this.withPON = withPON;
   }
 
 }

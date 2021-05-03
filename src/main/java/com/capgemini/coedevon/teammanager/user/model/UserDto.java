@@ -18,6 +18,8 @@ public class UserDto {
 
   private String firstName;
 
+  private boolean withPON;
+
   /**
    * @return username
    */
@@ -112,6 +114,22 @@ public class UserDto {
   public void setFirstName(String firstName) {
 
     this.firstName = firstName;
+  }
+
+  /**
+   * @return withPON
+   */
+  public boolean isWithPON() {
+
+    return withPON;
+  }
+
+  /**
+   * @param withPON new value of {@link #getwithPON}.
+   */
+  public void setWithPON(boolean withPON) {
+
+    this.withPON = withPON;
   }
 
 }

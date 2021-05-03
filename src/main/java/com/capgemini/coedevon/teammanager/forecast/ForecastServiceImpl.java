@@ -32,7 +32,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.capgemini.coedevon.teammanager.forecast.model.ForecastDto;
-import com.capgemini.coedevon.teammanager.forecast.model.VGroupMembersAllEntity;
+import com.capgemini.coedevon.teammanager.person.PersonRepository;
+import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
 import com.capgemini.coedevon.teammanager.personabsence.PersonAbsenceRepository;
 import com.capgemini.coedevon.teammanager.personabsence.model.PersonAbsenceEntity;
 
@@ -45,10 +46,10 @@ import com.capgemini.coedevon.teammanager.personabsence.model.PersonAbsenceEntit
 public class ForecastServiceImpl implements ForecastService {
 
   @Autowired
-  VGroupMembersAllRepository groupMembersAllRepository;
+  PersonAbsenceRepository personAbsenceRepository;
 
   @Autowired
-  PersonAbsenceRepository personAbsenceRepository;
+  PersonRepository personRepository;
 
   /**
    * {@inheritDoc}
@@ -56,21 +57,19 @@ public class ForecastServiceImpl implements ForecastService {
   @Override
   public Map<String, List<ForecastDto>> getGroupAbsenceByDate(Long groupId, Date init, Date end) {
 
-    List<VGroupMembersAllEntity> groupMembersList = this.groupMembersAllRepository
-        .findByGroup_IdOrderByPersonUsername(groupId);
+    List<PersonEntity> groupMembersList = this.personRepository.findPersonByGroupId(groupId);
 
     List<Integer> personIds = extractListPersonId(groupMembersList);
-
     List<PersonAbsenceEntity> absenceList = this.personAbsenceRepository.findByPerson_IdInAndDateBetween(personIds,
         init, end);
 
     HashMap<String, List<ForecastDto>> hashAbsence = new HashMap<>();
 
-    for (VGroupMembersAllEntity member : groupMembersList) {
+    for (PersonEntity member : groupMembersList) {
 
-      String key = member.getPerson().getName() + " " + member.getPerson().getLastname();
+      String key = member.getLastname() + ", " + member.getName();
 
-      hashAbsence.put(key, extractAbsencesFromList(member.getPerson().getId(), absenceList));
+      hashAbsence.put(key, extractAbsencesFromList(member.getId(), absenceList));
     }
 
     return hashAbsence;
@@ -533,12 +532,12 @@ public class ForecastServiceImpl implements ForecastService {
   /**
    * @param groupId
    */
-  private List<Integer> extractListPersonId(List<VGroupMembersAllEntity> groupMembersList) {
+  private List<Integer> extractListPersonId(List<PersonEntity> groupMembersList) {
 
     List<Integer> personIds = new ArrayList<>();
 
-    for (VGroupMembersAllEntity groupMember : groupMembersList) {
-      personIds.add(groupMember.getPerson().getId());
+    for (PersonEntity groupMember : groupMembersList) {
+      personIds.add(groupMember.getId());
     }
 
     return personIds;

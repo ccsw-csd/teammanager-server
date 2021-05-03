@@ -15,6 +15,8 @@ public class GroupListDto {
 
   private Long subgroups;
 
+  private String externalId;
+
   /**
    * @return id
    */
@@ -93,6 +95,22 @@ public class GroupListDto {
   public void setSubgroups(Long subgroups) {
 
     this.subgroups = subgroups;
+  }
+
+  /**
+   * @return externalId
+   */
+  public String getExternalId() {
+
+    return externalId;
+  }
+
+  /**
+   * @param externalId new value of {@link #getexternalId}.
+   */
+  public void setExternalId(String externalId) {
+
+    this.externalId = externalId;
   }
 
 }

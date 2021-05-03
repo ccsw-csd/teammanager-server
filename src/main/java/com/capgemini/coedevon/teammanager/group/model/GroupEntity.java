@@ -23,6 +23,9 @@ public class GroupEntity {
   @Column(name = "name", nullable = false)
   private String name;
 
+  @Column(name = "external_id")
+  private String externalId;
+
   /**
    * @return id
    */
@@ -53,6 +56,23 @@ public class GroupEntity {
   public void setName(String name) {
 
     this.name = name;
+
+  }
+
+  /**
+   * @return externalId
+   */
+  public String getExternalId() {
+
+    return this.externalId;
+  }
+
+  /**
+   * @param externalId new value of {@link #getexternalId}.
+   */
+  public void setExternalId(String externalId) {
+
+    this.externalId = externalId;
   }
 
 }

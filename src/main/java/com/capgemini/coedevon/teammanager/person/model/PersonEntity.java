@@ -43,6 +43,9 @@ public class PersonEntity {
   @Column(name = "active", nullable = false)
   private boolean active;
 
+  @Column(name = "with_pon", nullable = false)
+  private boolean withPON;
+
   /**
    * @return id
    */
@@ -185,6 +188,22 @@ public class PersonEntity {
   public void setActive(boolean active) {
 
     this.active = active;
+  }
+
+  /**
+   * @return withPON
+   */
+  public boolean isWithPON() {
+
+    return this.withPON;
+  }
+
+  /**
+   * @param withPON new value of {@link #getwithPON}.
+   */
+  public void setWithPON(boolean withPON) {
+
+    this.withPON = withPON;
   }
 
 }
