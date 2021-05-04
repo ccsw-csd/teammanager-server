@@ -347,6 +347,20 @@ public class ForecastServiceImpl implements ForecastService {
             headersUpper.add(months.get(endDate.getMonthValue() - 1));
         }
 
+        LOG.info("");
+
+        LOG.info("Inicio: " + initDate.toString());
+        LOG.info("Fin: " + endDate.toString());
+        LOG.info("initMonth: " + initMonth);
+
+        String mDays = "";
+        for (Integer d : monthsDays)
+            mDays += d + ", ";
+
+        LOG.info("monthsDays: " + mDays);
+
+        LOG.info("");
+
         //sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 3));
         org.apache.poi.ss.usermodel.Cell cell;
         int accumulatedPosition = 0;
