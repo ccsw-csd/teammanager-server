@@ -347,21 +347,6 @@ public class ForecastServiceImpl implements ForecastService {
             headersUpper.add(months.get(endDate.getMonthValue() - 1));
         }
 
-        LOG.info("");
-
-        LOG.info("Inicio: " + initDate.toString());
-        LOG.info("Fin: " + endDate.toString());
-        LOG.info("initMonth: " + initMonth);
-
-        String mDays = "";
-        for (Integer d : monthsDays)
-            mDays += d + ", ";
-
-        LOG.info("monthsDays: " + mDays);
-
-        LOG.info("");
-
-        //sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 3));
         org.apache.poi.ss.usermodel.Cell cell;
         int accumulatedPosition = 0;
 
@@ -383,32 +368,11 @@ public class ForecastServiceImpl implements ForecastService {
             for (int j = initCol + 1; j <= endCol; j++)
                 cell = headerRowUpper.createCell(j);
 
-            LOG.info("");
-            LOG.info("Creamos " + accumulatedPosition);
-            LOG.info("Creamos " + (initCol + 1) + " - " + endCol);
-            LOG.info("Mergeamos " + (initCol) + " - " + endCol);
-            LOG.info("");
-
-            sheet.addMergedRegion(new CellRangeAddress(0, 0, initCol, endCol));
+            if (endCol > initCol)
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, initCol, endCol));
 
             accumulatedPosition += actualDays + 1;
         }
-
-        /*
-        for (int i = 0; i < headersUpper.size(); i++) {
-            int index = 0;
-            if (!headersUpper.get(i).equals("Detail"))
-                index = months.indexOf(headersUpper.get(i)) + 1;
-        
-            cell = headerRowUpper.createCell(merges + 1);
-        
-            if (i >= 1)
-                cell.setCellValue(headersUpper.get(i));
-            cell.setCellStyle(headerCellStyle);
-        
-            merges += (monthsDays[index]);
-        }
-        */
 
         for (int i = 0; i < headersLower.size(); i++) {
             cell = headerRow.createCell(i);
