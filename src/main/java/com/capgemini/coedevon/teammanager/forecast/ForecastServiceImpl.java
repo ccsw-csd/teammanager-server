@@ -23,10 +23,10 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -97,14 +97,17 @@ public class ForecastServiceImpl implements ForecastService {
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFCellStyle headerCellStyle = workbook.createCellStyle();
         headerCellStyle.setAlignment(HorizontalAlignment.CENTER);
+
         XSSFCellStyle headerCellStyleAusencia = workbook.createCellStyle();
-        headerCellStyleAusencia.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
+        headerCellStyleAusencia.setFillForegroundColor(new XSSFColor(new java.awt.Color(255, 255, 170)));
         headerCellStyleAusencia.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
         XSSFCellStyle headerCellStyleFestivo = workbook.createCellStyle();
-        headerCellStyleFestivo.setFillForegroundColor(IndexedColors.BLUE.getIndex());
+        headerCellStyleFestivo.setFillForegroundColor(new XSSFColor(new java.awt.Color(170, 227, 255)));
         headerCellStyleFestivo.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
         XSSFCellStyle headerCellStyleWeekend = workbook.createCellStyle();
-        headerCellStyleWeekend.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        headerCellStyleWeekend.setFillForegroundColor(new XSSFColor(new java.awt.Color(218, 218, 218)));
         headerCellStyleWeekend.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
         if (type == 2) {
@@ -220,16 +223,29 @@ public class ForecastServiceImpl implements ForecastService {
             XSSFWorkbook workbook, XSSFCellStyle headerCellStyleAusencia, XSSFCellStyle headerCellStyleFestivo,
             XSSFCellStyle headerCellStyleWeekend, XSSFSheet sheet) {
 
+        XSSFFont headerFont = workbook.createFont();
+        headerFont.setBold(true);
+
+        // Create a CellStyle with the font
+        CellStyle totalCellStyle = workbook.createCellStyle();
+        totalCellStyle.setFont(headerFont);
+
         int rowCount = 2;
         Row totalRow = sheet.createRow(absences.size() + 2);
         org.apache.poi.ss.usermodel.Cell cellTotalName = totalRow.createCell(0);
         cellTotalName.setCellValue("Total");
         org.apache.poi.ss.usermodel.Cell cellTotalLab = totalRow.createCell(1);
         cellTotalLab.setCellValue(0);
-        org.apache.poi.ss.usermodel.Cell cellTotalAu = totalRow.createCell(2);
-        cellTotalAu.setCellValue(0);
-        org.apache.poi.ss.usermodel.Cell cellTotalFes = totalRow.createCell(3);
+        org.apache.poi.ss.usermodel.Cell cellTotalFes = totalRow.createCell(2);
         cellTotalFes.setCellValue(0);
+        org.apache.poi.ss.usermodel.Cell cellTotalAu = totalRow.createCell(3);
+        cellTotalAu.setCellValue(0);
+
+        cellTotalName.setCellStyle(totalCellStyle);
+        cellTotalLab.setCellStyle(totalCellStyle);
+        cellTotalFes.setCellStyle(totalCellStyle);
+        cellTotalAu.setCellStyle(totalCellStyle);
+
         headerCaptionColor(absences, headerCellStyleAusencia, headerCellStyleFestivo, headerCellStyleWeekend, sheet);
         for (Map.Entry<String, List<ForecastDto>> entry : absences.entrySet()) {
             int dateCellCount = 4;
@@ -242,10 +258,10 @@ public class ForecastServiceImpl implements ForecastService {
             cellName.setCellValue(entry.getKey());
             org.apache.poi.ss.usermodel.Cell cellLab = absencesRow.createCell(1);
             cellLab.setCellValue(countLaborales);
-            org.apache.poi.ss.usermodel.Cell cellAu = absencesRow.createCell(2);
-            cellAu.setCellValue(countAusencia);
-            org.apache.poi.ss.usermodel.Cell cellFes = absencesRow.createCell(3);
+            org.apache.poi.ss.usermodel.Cell cellFes = absencesRow.createCell(2);
             cellFes.setCellValue(countFestivos);
+            org.apache.poi.ss.usermodel.Cell cellAu = absencesRow.createCell(3);
+            cellAu.setCellValue(countAusencia);
             totalRow = sheet.getRow(absences.size() + 2);
 
             cellTotalLab.setCellValue(countLaborales + cellTotalLab.getNumericCellValue());
@@ -470,10 +486,10 @@ public class ForecastServiceImpl implements ForecastService {
         return personIds;
     }
 
-    private int countAusenciasOFestivos(boolean type, List<ForecastDto> absences) {
+    private int countAusenciasOFestivos(boolean countAbsences, List<ForecastDto> absences) {
 
         int count = 0;
-        if (type) {
+        if (countAbsences) {
             for (ForecastDto absence : absences) {
 
                 if ((absence.getType().equals("A") || absence.getType().equals("P")))
