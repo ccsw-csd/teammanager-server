@@ -30,6 +30,8 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +49,8 @@ import com.capgemini.coedevon.teammanager.personabsence.model.PersonAbsenceEntit
 @Service
 @Transactional(readOnly = true)
 public class ForecastServiceImpl implements ForecastService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ForecastServiceImpl.class);
 
     @Autowired
     PersonAbsenceRepository personAbsenceRepository;
@@ -364,6 +368,12 @@ public class ForecastServiceImpl implements ForecastService {
 
             for (int j = initCol + 1; j <= endCol; j++)
                 cell = headerRowUpper.createCell(j);
+
+            LOG.info("");
+            LOG.info("Creamos " + accumulatedPosition);
+            LOG.info("Creamos " + (initCol + 1) + " - " + endCol);
+            LOG.info("Mergeamos " + (initCol) + " - " + endCol);
+            LOG.info("");
 
             sheet.addMergedRegion(new CellRangeAddress(0, 0, initCol, endCol));
 
