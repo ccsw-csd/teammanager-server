@@ -46,6 +46,9 @@ public class PersonEntity {
   @Column(name = "with_pon", nullable = false)
   private boolean withPON;
 
+  @Column(name = "grade")
+  private String grade;
+
   /**
    * @return id
    */
@@ -204,6 +207,16 @@ public class PersonEntity {
   public void setWithPON(boolean withPON) {
 
     this.withPON = withPON;
+  }
+
+  public String getGrade() {
+
+    return grade;
+  }
+
+  public void setGrade(String grade) {
+
+    this.grade = grade;
   }
 
 }
