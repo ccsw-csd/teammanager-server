@@ -285,7 +285,7 @@ public class ForecastServiceImpl implements ForecastService {
       Row absencesRow = sheet.createRow(rowCount);
       long countAusencia = countAusenciasOFestivos(true, entry.getValue());
       long countFestivos = countAusenciasOFestivos(false, entry.getValue());
-      long countLaborales = (countBusinessDaysBetween(initDate, endDate, Optional.empty()) - 1)
+      long countLaborales = (countBusinessDaysBetween(initDate, endDate, Optional.empty()))
           - (countAusencia - countFestivos);
       org.apache.poi.ss.usermodel.Cell cellName = absencesRow.createCell(0);
       cellName.setCellValue(entry.getKey());
@@ -325,7 +325,7 @@ public class ForecastServiceImpl implements ForecastService {
       rowCount++;
 
     }
-    //dsheet.autoSizeColumn(0);
+    // dsheet.autoSizeColumn(0);
   }
 
   private String typeOfDay(LocalDate date, List<ForecastDto> absences) {
@@ -503,7 +503,7 @@ public class ForecastServiceImpl implements ForecastService {
 
     long daysBetween = ChronoUnit.DAYS.between(startDate, endDate);
 
-    long businessDays = Stream.iterate(startDate, date -> date.plusDays(1)).limit(daysBetween)
+    long businessDays = Stream.iterate(startDate, date -> date.plusDays(1)).limit(daysBetween + 1)
         .filter(isHoliday.or(isWeekend).negate()).count();
     return businessDays;
   }
