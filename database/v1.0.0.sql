@@ -248,6 +248,7 @@ CREATE TABLE `person` (
 
 
 
+
 INSERT INTO team_management.center (id, name) VALUES(1, 'Barcelona');
 INSERT INTO team_management.center (id, name) VALUES(2, 'Madrid');
 INSERT INTO team_management.center (id, name) VALUES(3, 'Asturias');
