@@ -286,7 +286,7 @@ public class ForecastServiceImpl implements ForecastService {
       long countAusencia = countAusenciasOFestivos(true, entry.getValue());
       long countFestivos = countAusenciasOFestivos(false, entry.getValue());
       long countLaborales = (countBusinessDaysBetween(initDate, endDate, Optional.empty()))
-          - (countAusencia - countFestivos);
+          - (countAusencia + countFestivos);
       org.apache.poi.ss.usermodel.Cell cellName = absencesRow.createCell(0);
       cellName.setCellValue(entry.getKey());
       org.apache.poi.ss.usermodel.Cell cellLab = absencesRow.createCell(1);
