@@ -283,8 +283,8 @@ public class ForecastServiceImpl implements ForecastService {
     for (Map.Entry<String, List<ForecastDto>> entry : absences.entrySet()) {
       int dateCellCount = 4;
       Row absencesRow = sheet.createRow(rowCount);
-      long countAusencia = countAusenciasOFestivos(true, entry.getValue());
-      long countFestivos = countAusenciasOFestivos(false, entry.getValue());
+      long countAusencia = countAusenciasOFestivos(true, entry.getValue(), initDate, endDate);
+      long countFestivos = countAusenciasOFestivos(false, entry.getValue(), initDate, endDate);
       long countLaborales = (countBusinessDaysBetween(initDate, endDate, Optional.empty()))
           - (countAusencia + countFestivos);
       org.apache.poi.ss.usermodel.Cell cellName = absencesRow.createCell(0);
@@ -522,21 +522,29 @@ public class ForecastServiceImpl implements ForecastService {
     return personIds;
   }
 
-  private int countAusenciasOFestivos(boolean countAbsences, List<ForecastDto> absences) {
+  private int countAusenciasOFestivos(boolean countAbsences, List<ForecastDto> absences, LocalDate initLocalDate,
+      LocalDate endLocalDate) {
 
     int count = 0;
-    if (countAbsences) {
-      for (ForecastDto absence : absences) {
 
+    Date initDate = Date.from(initLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    Date endDate = Date.from(endLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+    for (ForecastDto absence : absences) {
+
+      if (absence.getDate().before(initDate))
+        continue;
+      if (absence.getDate().after(endDate))
+        continue;
+
+      if (countAbsences) {
         if ((absence.getType().equals("A") || absence.getType().equals("P")))
           count++;
-      }
-    } else {
-      for (ForecastDto absence : absences) {
+      } else {
         if ((absence.getType().equals("F")))
           count++;
-      }
 
+      }
     }
     return count;
   }
