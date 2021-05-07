@@ -20,6 +20,8 @@ public class UserDto {
 
   private boolean withPON;
 
+  private boolean withPublicGroups;
+
   /**
    * @return username
    */
@@ -130,6 +132,16 @@ public class UserDto {
   public void setWithPON(boolean withPON) {
 
     this.withPON = withPON;
+  }
+
+  public boolean isWithPublicGroups() {
+
+    return withPublicGroups;
+  }
+
+  public void setWithPublicGroups(boolean withPublicGroups) {
+
+    this.withPublicGroups = withPublicGroups;
   }
 
 }

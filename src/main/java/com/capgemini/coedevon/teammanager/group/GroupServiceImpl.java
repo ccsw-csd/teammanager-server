@@ -16,6 +16,7 @@ import com.capgemini.coedevon.teammanager.group.model.GroupEntity;
 import com.capgemini.coedevon.teammanager.group.model.GroupManagerEntity;
 import com.capgemini.coedevon.teammanager.group.model.GroupMemberEntity;
 import com.capgemini.coedevon.teammanager.group.model.GroupSubgroupEntity;
+import com.capgemini.coedevon.teammanager.group.model.PublicGroupEntity;
 import com.capgemini.coedevon.teammanager.group.model.RespuestaValidarBorradoDto;
 import com.capgemini.coedevon.teammanager.person.PersonRepository;
 import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
@@ -42,6 +43,16 @@ public class GroupServiceImpl implements GroupService {
 
   @Autowired
   GroupMemberRepository groupMemberRepository;
+
+  @Autowired
+  PublicGroupRepository publicGroupRepository;
+
+  public List<PublicGroupEntity> findPublicGroupsFromConnectedUser() {
+
+    String username = UserUtils.getUserDetails().getUsername();
+
+    return publicGroupRepository.findByUsername(username);
+  }
 
   @Override
   public List<GroupEntity> getSubgroups(String name) {
