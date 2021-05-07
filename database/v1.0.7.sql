@@ -8,3 +8,8 @@ select concat(group_id, '-MAN-', gm.person_id) as id, group_id, gm.person_id, p.
 where g.public = 1;
 
 
+ALTER TABLE team_management.person ADD created_by_ldap BIT default 0 NULL;
+
+update person set created_by_ldap = 1;
+
+commit;

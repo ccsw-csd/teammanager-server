@@ -35,14 +35,14 @@ public class PersonServiceImpl implements PersonService {
   public boolean createOrUpdate(PersonDto personDto) {
 
     PersonEntity person = this.personRepository.findByUsername(personDto.getUsername());
-    if (person.getId() == null) {
+    if (person == null || person.getId() == null) {
       if (personNotExists(personDto.getUsername(), personDto.getSaga())) {
         create(personDto);
         return true;
       }
       return sagaNotExists(personDto.getSaga());
     } else {
-      personDto.setId((Integer) person.getId());
+      personDto.setId(person.getId());
       update(personDto);
       return true;
     }
