@@ -34,3 +34,20 @@ CREATE TABLE `release_user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
+
+
+INSERT INTO team_management.release_note (version, `text`, `role`) 
+VALUES('1.1.0', '<i>Fix</i>: Issue in the user edit service.', null);
+
+INSERT INTO team_management.release_note (version, `text`, `role`) 
+VALUES('1.1.0', '<i>Feature</i>: Added release notes popup.', null);
+
+INSERT INTO team_management.release_note (version, `text`, `role`) 
+VALUES('1.1.0', '<i>Feature</i>: Added group name in the Forecast detail.', 'GESTOR');
+
+INSERT INTO team_management.release_note (version, `text`, `role`) 
+VALUES('1.1.0', '<i>Feature</i>: A group can be made visible to all group members without them being managers.', 'GESTOR');
+
+insert into release_user(username, last_read)
+select username, 0 from `user` u;
+
