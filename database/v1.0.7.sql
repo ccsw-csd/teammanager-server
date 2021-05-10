@@ -13,3 +13,24 @@ ALTER TABLE team_management.person ADD created_by_ldap BIT default 0 NULL;
 update person set created_by_ldap = 1;
 
 commit;
+
+
+
+CREATE TABLE `release_note` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `version` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `text` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci null,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;	
+	
+
+CREATE TABLE `release_user` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `username` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_read` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `I_RELEASE_USER_1` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
