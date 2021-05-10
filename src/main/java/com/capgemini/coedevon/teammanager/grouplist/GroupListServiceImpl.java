@@ -32,7 +32,7 @@ public class GroupListServiceImpl implements GroupListService {
       return this.groupListRepository.filtrarGestor(dto.getPageable(), UserUtils.getUserDetails().getUsername());
     }
 
-    return null;
+    return this.groupListRepository.filtrarGruposPublicos(dto.getPageable(), UserUtils.getUserDetails().getUsername());
   }
 
   /**

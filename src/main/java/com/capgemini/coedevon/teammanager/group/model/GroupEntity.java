@@ -26,6 +26,25 @@ public class GroupEntity {
   @Column(name = "external_id")
   private String externalId;
 
+  @Column(name = "public")
+  private boolean publicGroup;
+
+  /**
+   * @return the publicGroup
+   */
+  public boolean isPublicGroup() {
+
+    return publicGroup;
+  }
+
+  /**
+   * @param publicGroup the publicGroup to set
+   */
+  public void setPublicGroup(boolean publicGroup) {
+
+    this.publicGroup = publicGroup;
+  }
+
   /**
    * @return id
    */

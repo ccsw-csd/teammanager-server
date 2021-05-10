@@ -12,6 +12,10 @@ public class GroupDto {
 
   private String name;
 
+  private String externalId;
+
+  private Boolean publicGroup;
+
   private List<GroupMemberEntity> members;
 
   private List<GroupManagerEntity> managers;
@@ -96,6 +100,32 @@ public class GroupDto {
   public void setSubgroups(List<GroupSubgroupEntity> subgroups) {
 
     this.subgroups = subgroups;
+  }
+
+  public Boolean getPublicGroup() {
+
+    return publicGroup;
+  }
+
+  public void setPublicGroup(Boolean publicGroup) {
+
+    this.publicGroup = publicGroup;
+  }
+
+  /**
+   * @return the externalId
+   */
+  public String getExternalId() {
+
+    return externalId;
+  }
+
+  /**
+   * @param externalId the externalId to set
+   */
+  public void setExternalId(String externalId) {
+
+    this.externalId = externalId;
   }
 
 }

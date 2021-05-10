@@ -13,6 +13,10 @@ public class EditGroupDto {
 
   private String name;
 
+  private boolean publicGroup;
+
+  private String externalId;
+
   private List<PersonEntity> managers;
 
   private List<PersonEntity> members;
@@ -97,6 +101,38 @@ public class EditGroupDto {
   public void setSubgroups(List<GroupEntity> subgroups) {
 
     this.subgroups = subgroups;
+  }
+
+  /**
+   * @return the externalId
+   */
+  public String getExternalId() {
+
+    return externalId;
+  }
+
+  /**
+   * @param externalId the externalId to set
+   */
+  public void setExternalId(String externalId) {
+
+    this.externalId = externalId;
+  }
+
+  /**
+   * @return the publicGroup
+   */
+  public Boolean getPublicGroup() {
+
+    return publicGroup;
+  }
+
+  /**
+   * @param publicGroup the publicGroup to set
+   */
+  public void setPublicGroup(Boolean publicGroup) {
+
+    this.publicGroup = publicGroup;
   }
 
 }
