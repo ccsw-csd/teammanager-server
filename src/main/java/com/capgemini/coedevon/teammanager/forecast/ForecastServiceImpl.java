@@ -37,6 +37,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.capgemini.coedevon.teammanager.config.security.UserUtils;
+import com.capgemini.coedevon.teammanager.forecast.model.ForecastDetailDto;
 import com.capgemini.coedevon.teammanager.forecast.model.ForecastDto;
 import com.capgemini.coedevon.teammanager.person.PersonRepository;
 import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
@@ -79,7 +80,7 @@ public class ForecastServiceImpl implements ForecastService {
    * {@inheritDoc}
    */
   @Override
-  public Map<String, List<ForecastDto>> getGroupAbsenceByDate(Long groupId, Date init, Date end) {
+  public Map<String, ForecastDetailDto> getGroupAbsenceByDate(Long groupId, Date init, Date end) {
 
     String userGrade = getUserGrade();
     List<PersonEntity> groupMembersList = this.personRepository.findPersonByGroupId(groupId);
@@ -88,17 +89,19 @@ public class ForecastServiceImpl implements ForecastService {
     List<PersonAbsenceEntity> absenceList = this.personAbsenceRepository.findByPerson_IdInAndDateBetween(personIds,
         init, end);
 
-    SortedMap<String, List<ForecastDto>> hashAbsence = new TreeMap<>();
+    SortedMap<String, ForecastDetailDto> hashAbsence = new TreeMap<>();
 
     for (PersonEntity member : groupMembersList) {
-
+      ForecastDetailDto absence = new ForecastDetailDto();
       String key = member.getLastname() + ", " + member.getName();
+      List<ForecastDto> forecastList = new ArrayList<>();
+      absence.setVisible(isVisibleByGrade(userGrade, member));
 
-      boolean onlyFestives = false;
-      if (isVisibleByGrade(userGrade, member) == false)
-        onlyFestives = true;
-
-      hashAbsence.put(key, extractAbsencesFromList(member.getId(), absenceList, onlyFestives));
+      if (absence.isVisible())
+        absence.setAbsences(extractAbsencesFromList(member.getId(), absenceList));
+      else
+        absence.setAbsences(forecastList);
+      hashAbsence.put(key, absence);
     }
 
     return hashAbsence;
@@ -121,7 +124,7 @@ public class ForecastServiceImpl implements ForecastService {
     List<String> months = Arrays.asList(new String[] { "January", "February", "March", "April", "May", "June", "July",
     "August", "September", "October", "November", "December" });
     Integer[] monthsDays = { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    Map<String, List<ForecastDto>> absences = getGroupAbsenceByDate(groupId, init, end);
+    Map<String, ForecastDetailDto> absences = getGroupAbsenceByDate(groupId, init, end);
     LocalDate initDate = init.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     LocalDate endDate = end.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     Integer initMonth = initDate.getMonthValue();
@@ -220,7 +223,7 @@ public class ForecastServiceImpl implements ForecastService {
    * @param headerCellStyleWeekend
    * @param sheet
    */
-  private void headerCaptionColor(Map<String, List<ForecastDto>> absences, XSSFCellStyle headerCellStyleAusencia,
+  private void headerCaptionColor(Map<String, ForecastDetailDto> absences, XSSFCellStyle headerCellStyleAusencia,
       XSSFCellStyle headerCellStyleFestivo, XSSFCellStyle headerCellStyleWeekend, XSSFSheet sheet) {
 
     org.apache.poi.ss.usermodel.Cell cellName;
@@ -252,7 +255,7 @@ public class ForecastServiceImpl implements ForecastService {
    * @param headerCellStyleFestivo
    * @param headerCellStyleWeekend
    */
-  private void generateRowsOneTab(Map<String, List<ForecastDto>> absences, LocalDate initDate, LocalDate endDate,
+  private void generateRowsOneTab(Map<String, ForecastDetailDto> absences, LocalDate initDate, LocalDate endDate,
       XSSFWorkbook workbook, XSSFCellStyle headerCellStyleAusencia, XSSFCellStyle headerCellStyleFestivo,
       XSSFCellStyle headerCellStyleWeekend, XSSFSheet sheet) {
 
@@ -280,11 +283,11 @@ public class ForecastServiceImpl implements ForecastService {
     cellTotalAu.setCellStyle(totalCellStyle);
 
     headerCaptionColor(absences, headerCellStyleAusencia, headerCellStyleFestivo, headerCellStyleWeekend, sheet);
-    for (Map.Entry<String, List<ForecastDto>> entry : absences.entrySet()) {
+    for (Map.Entry<String, ForecastDetailDto> entry : absences.entrySet()) {
       int dateCellCount = 4;
       Row absencesRow = sheet.createRow(rowCount);
-      long countAusencia = countAusenciasOFestivos(true, entry.getValue(), initDate, endDate);
-      long countFestivos = countAusenciasOFestivos(false, entry.getValue(), initDate, endDate);
+      long countAusencia = countAusenciasOFestivos(true, entry.getValue().getAbsences(), initDate, endDate);
+      long countFestivos = countAusenciasOFestivos(false, entry.getValue().getAbsences(), initDate, endDate);
       long countLaborales = (countBusinessDaysBetween(initDate, endDate, Optional.empty()))
           - (countAusencia + countFestivos);
       org.apache.poi.ss.usermodel.Cell cellName = absencesRow.createCell(0);
@@ -297,12 +300,16 @@ public class ForecastServiceImpl implements ForecastService {
       cellAu.setCellValue(countAusencia);
       totalRow = sheet.getRow(absences.size() + 2);
 
+      XSSFCellStyle headerCellStyleBlocked = workbook.createCellStyle();
+      headerCellStyleBlocked.setFillForegroundColor(new XSSFColor(new java.awt.Color(234, 234, 234)));
+      headerCellStyleBlocked.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
       cellTotalLab.setCellValue(countLaborales + cellTotalLab.getNumericCellValue());
       cellTotalAu.setCellValue(countAusencia + cellTotalAu.getNumericCellValue());
       cellTotalFes.setCellValue(countFestivos + cellTotalFes.getNumericCellValue());
       for (LocalDate date = initDate; date.isAfter(endDate) == false; date = date.plusDays(1)) {
         org.apache.poi.ss.usermodel.Cell dateCell = absencesRow.createCell(dateCellCount);
-        String typeDay = typeOfDay(date, entry.getValue());
+        String typeDay = typeOfDay(date, entry.getValue().getAbsences(), entry.getValue().isVisible());
         switch (typeDay) {
           case "A":
             dateCell.setCellStyle(headerCellStyleAusencia);
@@ -316,6 +323,9 @@ public class ForecastServiceImpl implements ForecastService {
           case "W":
             dateCell.setCellStyle(headerCellStyleWeekend);
             break;
+          case "B":
+            dateCell.setCellStyle(headerCellStyleBlocked);
+            break;
           default:
             // code block
         }
@@ -328,8 +338,10 @@ public class ForecastServiceImpl implements ForecastService {
     // dsheet.autoSizeColumn(0);
   }
 
-  private String typeOfDay(LocalDate date, List<ForecastDto> absences) {
+  private String typeOfDay(LocalDate date, List<ForecastDto> absences, boolean visible) {
 
+    if (!visible)
+      return "B";
     DayOfWeek d = date.getDayOfWeek();
     if (d == DayOfWeek.SATURDAY || d == DayOfWeek.SUNDAY)
       return "W";
@@ -443,8 +455,7 @@ public class ForecastServiceImpl implements ForecastService {
 
   }
 
-  private List<ForecastDto> extractAbsencesFromList(Integer integer, List<PersonAbsenceEntity> absenceList,
-      boolean onlyFestives) {
+  private List<ForecastDto> extractAbsencesFromList(Integer integer, List<PersonAbsenceEntity> absenceList) {
 
     List<ForecastDto> listAbsence = new ArrayList<>();
     Map<Date, ForecastDto> mapAbsences = new HashMap<>();
@@ -467,10 +478,9 @@ public class ForecastServiceImpl implements ForecastService {
         absenceDto.setYear(absence.getYear());
         absenceDto.setType(absenceType);
 
-        if (absenceType.equals("F") || (onlyFestives == false && absenceType.equals("F") == false)) {
-          listAbsence.add(absenceDto);
-          mapAbsences.put(absence.getDate(), absenceDto);
-        }
+        listAbsence.add(absenceDto);
+        mapAbsences.put(absence.getDate(), absenceDto);
+
       }
 
       String absenceDtoType = absenceDto.getType();
