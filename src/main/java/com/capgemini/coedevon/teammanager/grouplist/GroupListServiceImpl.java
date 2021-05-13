@@ -35,6 +35,16 @@ public class GroupListServiceImpl implements GroupListService {
     return this.groupListRepository.filtrarGruposPublicos(dto.getPageable(), UserUtils.getUserDetails().getUsername());
   }
 
+  @Override
+  public Page<GroupListEntity> findPageManager(GroupListSearchDto dto) {
+
+    if (isAdmin() && dto.getViewAdmin()) {
+      return this.groupListRepository.findAll(dto.getPageable());
+    }
+
+    return this.groupListRepository.filtrarManager(dto.getPageable(), UserUtils.getUserDetails().getUsername());
+  }
+
   /**
    * @return
    */
