@@ -3,7 +3,6 @@ package com.capgemini.coedevon.teammanager.forecast;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.capgemini.coedevon.teammanager.config.mapper.BeanMapper;
-import com.capgemini.coedevon.teammanager.forecast.model.ForecastDto;
+import com.capgemini.coedevon.teammanager.forecast.model.ForecastDetailDto;
 import com.capgemini.coedevon.teammanager.forecast.model.ForecastExportDto;
 import com.capgemini.coedevon.teammanager.forecast.model.ForecastSearchDto;
 
@@ -43,7 +42,7 @@ public class ForecastController {
    * @return
    */
   @RequestMapping(path = "/", method = RequestMethod.POST)
-  public Map<String, List<ForecastDto>> getGroupAbsenceByDate(@RequestBody ForecastSearchDto dto) {
+  public Map<String, ForecastDetailDto> getGroupAbsenceByDate(@RequestBody ForecastSearchDto dto) {
 
     return this.vAbsenceService.getGroupAbsenceByDate(dto.getGroupId(), dto.getInit(), dto.getEnd());
   }
