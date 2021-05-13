@@ -54,6 +54,9 @@ public class PersonServiceImpl implements PersonService {
     PersonEntity personEntity = new PersonEntity();
     BeanUtils.copyProperties(personDto, personEntity, "id");
     personEntity.setActive(true);
+    if (personEntity.getSaga() == null)
+      personEntity.setSaga("N/A");
+
     this.personRepository.save(personEntity);
 
   }
