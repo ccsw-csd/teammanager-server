@@ -41,6 +41,12 @@ public class GroupListController {
     return this.beanMapper.mapPage(this.groupListService.findPage(dto), GroupListDto.class);
   }
 
+  @RequestMapping(path = "/managed", method = RequestMethod.POST)
+  public Page<GroupListDto> findPageManager(@RequestBody GroupListSearchDto dto) {
+
+    return this.beanMapper.mapPage(this.groupListService.findPageManager(dto), GroupListDto.class);
+  }
+
   /**
    * @param name
    * @return
