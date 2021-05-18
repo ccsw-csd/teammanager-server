@@ -22,6 +22,7 @@ import java.util.stream.Stream;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -123,6 +124,7 @@ public class ForecastServiceImpl implements ForecastService {
 
     List<String> months = Arrays.asList(new String[] { "January", "February", "March", "April", "May", "June", "July",
     "August", "September", "October", "November", "December" });
+    List<String> partialMonths = new ArrayList();
     Integer[] monthsDays = { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     Map<String, ForecastDetailDto> absences = getGroupAbsenceByDate(groupId, init, end);
     LocalDate initDate = init.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -155,14 +157,19 @@ public class ForecastServiceImpl implements ForecastService {
 
       int actualMonth = initMonth;
       int actualYear = initDate.getYear();
-
+      XSSFSheet sheetTotal = workbook.createSheet("Forecast Detail");
+      Map<String, List<Integer>> totals = new HashMap<String, List<Integer>>();
+      for (Map.Entry<String, ForecastDetailDto> entry : absences.entrySet()) {
+        List<Integer> myList = new ArrayList();
+        totals.put(entry.getKey(), myList);
+      }
       int endMonth = endDate.getMonthValue();
       int endYear = endDate.getYear();
 
       boolean complete = false;
 
       do {
-
+        Map<String, List<Integer>> partialTotals = new HashMap<String, List<Integer>>();
         String tabName = months.get(actualMonth - 1) + " " + actualYear;
 
         LocalDate partialInitDate = null;
@@ -185,12 +192,16 @@ public class ForecastServiceImpl implements ForecastService {
         XSSFSheet sheet = workbook.createSheet(tabName);
         createHeaders(months, monthsDays, partialInitDate, partialEndDate, actualMonth, 0, workbook, sheet);
 
-        generateRowsOneTab(absences, partialInitDate, partialEndDate, workbook, headerCellStyleAusencia,
+        partialTotals = generateRowsOneTab(absences, partialInitDate, partialEndDate, workbook, headerCellStyleAusencia,
             headerCellStyleFestivo, headerCellStyleWeekend, sheet);
+
+        for (Map.Entry<String, List<Integer>> entry : totals.entrySet()) {
+          entry.getValue().addAll(partialTotals.get(entry.getKey()));
+        }
 
         if (actualYear == endYear && actualMonth == endMonth)
           complete = true;
-
+        partialMonths.add(months.get(actualMonth - 1));
         actualMonth++;
         if (actualMonth > 12) {
           actualMonth = 1;
@@ -198,6 +209,7 @@ public class ForecastServiceImpl implements ForecastService {
         }
 
       } while (complete == false);
+      summarySheet(sheetTotal, totals, partialMonths, workbook);
     }
 
     try {
@@ -214,6 +226,86 @@ public class ForecastServiceImpl implements ForecastService {
     }
     return null;
 
+  }
+
+  private void summarySheet(XSSFSheet sheet, Map<String, List<Integer>> totals, List<String> months,
+      XSSFWorkbook workbook) {
+
+    int headerLoop = 1;
+    int valuesCellLoop = 1;
+    int valuesLoopRow = 2;
+    int summsTotal[] = new int[(months.size() * 3) + 3];
+
+    CellStyle style = workbook.createCellStyle();// Create style
+    Font font = workbook.createFont();// Create font
+    font.setBold(true);// Make font bold
+    style.setFont(font);// set it to bold
+    style.setAlignment(HorizontalAlignment.CENTER);
+    Row upperHeaderRow = sheet.createRow(0);
+    Row headerRow = sheet.createRow(1);
+    org.apache.poi.ss.usermodel.Cell cell = headerRow.createCell(0);
+    cell.setCellValue("Name");
+    for (int j = 0; j < 3; j++) {
+      for (int i = 0; i < months.size(); i++) {
+        cell = headerRow.createCell(headerLoop);
+        cell.setCellValue(months.get(i));
+        headerLoop++;
+      }
+      cell = headerRow.createCell(headerLoop);
+      cell.setCellValue("Total");
+      headerLoop++;
+    }
+
+    for (Map.Entry<String, List<Integer>> entry : totals.entrySet()) {
+      int summs[] = new int[3];
+      Row valuesRow = sheet.createRow(valuesLoopRow);
+      cell = valuesRow.createCell(0);
+      cell.setCellValue(entry.getKey());
+      int loop = 0;
+      int upperLoop = 0;
+      for (int i = 0; i < entry.getValue().size(); i++) {
+        if (loop < 3) {
+          cell = valuesRow.createCell((months.size() * loop) + 1 + upperLoop + loop);
+          cell.setCellValue(entry.getValue().get(i));
+          summsTotal[(months.size() * loop) + upperLoop + loop] += entry.getValue().get(i);
+          summs[loop] += entry.getValue().get(i);
+          if (loop == 2) {
+            upperLoop++;
+            loop = 0;
+          } else
+            loop++;
+        }
+
+      }
+      cell = valuesRow.createCell((months.size() * 1) + 1);
+      cell.setCellValue(summs[0]);
+      summsTotal[(months.size() * 1)] += summs[0];
+      cell = valuesRow.createCell((months.size() * 2) + 2);
+      cell.setCellValue(summs[1]);
+      summsTotal[(months.size() * 2) + 1] += summs[1];
+      cell = valuesRow.createCell((months.size() * 3) + 3);
+      cell.setCellValue(summs[2]);
+      summsTotal[(months.size() * 3) + 2] += summs[2];
+      valuesLoopRow++;
+    }
+    cell = upperHeaderRow.createCell(1);
+    cell.setCellValue("Working Days");
+    sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, (months.size() + 1)));
+    cell.setCellStyle(style);
+    cell = upperHeaderRow.createCell((months.size() + 2));
+    cell.setCellValue("Festives");
+    sheet.addMergedRegion(new CellRangeAddress(0, 0, (months.size() + 2), ((months.size() * 2) + 2)));
+    cell.setCellStyle(style);
+    cell = upperHeaderRow.createCell((months.size() * 2) + 3);
+    cell.setCellValue("Inactivities");
+    sheet.addMergedRegion(new CellRangeAddress(0, 0, (months.size() * 2) + 3, (months.size() * 3) + 3));
+    cell.setCellStyle(style);
+    Row totalsRow = sheet.createRow(totals.size() + 2);
+    for (int i = 0; i < summsTotal.length; i++) {
+      cell = totalsRow.createCell(i + 1);
+      cell.setCellValue(summsTotal[i]);
+    }
+    sheet.autoSizeColumn(0);
   }
 
   /**
@@ -255,9 +347,9 @@ public class ForecastServiceImpl implements ForecastService {
    * @param headerCellStyleFestivo
    * @param headerCellStyleWeekend
    */
-  private void generateRowsOneTab(Map<String, ForecastDetailDto> absences, LocalDate initDate, LocalDate endDate,
-      XSSFWorkbook workbook, XSSFCellStyle headerCellStyleAusencia, XSSFCellStyle headerCellStyleFestivo,
-      XSSFCellStyle headerCellStyleWeekend, XSSFSheet sheet) {
+  private Map<String, List<Integer>> generateRowsOneTab(Map<String, ForecastDetailDto> absences, LocalDate initDate,
+      LocalDate endDate, XSSFWorkbook workbook, XSSFCellStyle headerCellStyleAusencia,
+      XSSFCellStyle headerCellStyleFestivo, XSSFCellStyle headerCellStyleWeekend, XSSFSheet sheet) {
 
     XSSFFont headerFont = workbook.createFont();
     headerFont.setBold(true);
@@ -281,6 +373,7 @@ public class ForecastServiceImpl implements ForecastService {
     cellTotalLab.setCellStyle(totalCellStyle);
     cellTotalFes.setCellStyle(totalCellStyle);
     cellTotalAu.setCellStyle(totalCellStyle);
+    Map<String, List<Integer>> partialTotal = new HashMap<String, List<Integer>>();
 
     headerCaptionColor(absences, headerCellStyleAusencia, headerCellStyleFestivo, headerCellStyleWeekend, sheet);
     for (Map.Entry<String, ForecastDetailDto> entry : absences.entrySet()) {
@@ -300,6 +393,12 @@ public class ForecastServiceImpl implements ForecastService {
       cellAu.setCellValue(countAusencia);
       totalRow = sheet.getRow(absences.size() + 2);
 
+      List<Integer> partial = new ArrayList<Integer>();
+      partial.add((int) countLaborales);
+      partial.add((int) countFestivos);
+      partial.add((int) countAusencia);
+      partialTotal.put(entry.getKey(), partial);
+
       XSSFCellStyle headerCellStyleBlocked = workbook.createCellStyle();
       headerCellStyleBlocked.setFillForegroundColor(new XSSFColor(new java.awt.Color(234, 234, 234)));
       headerCellStyleBlocked.setFillPattern(FillPatternType.SOLID_FOREGROUND);
@@ -307,6 +406,7 @@ public class ForecastServiceImpl implements ForecastService {
       cellTotalLab.setCellValue(countLaborales + cellTotalLab.getNumericCellValue());
       cellTotalAu.setCellValue(countAusencia + cellTotalAu.getNumericCellValue());
       cellTotalFes.setCellValue(countFestivos + cellTotalFes.getNumericCellValue());
+
       for (LocalDate date = initDate; date.isAfter(endDate) == false; date = date.plusDays(1)) {
         org.apache.poi.ss.usermodel.Cell dateCell = absencesRow.createCell(dateCellCount);
         String typeDay = typeOfDay(date, entry.getValue().getAbsences(), entry.getValue().isVisible());
@@ -336,6 +436,8 @@ public class ForecastServiceImpl implements ForecastService {
 
     }
     // dsheet.autoSizeColumn(0);
+
+    return partialTotal;
   }
 
   private String typeOfDay(LocalDate date, List<ForecastDto> absences, boolean visible) {
