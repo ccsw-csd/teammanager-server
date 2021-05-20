@@ -94,7 +94,7 @@ public class ForecastServiceImpl implements ForecastService {
 
     for (PersonEntity member : groupMembersList) {
       ForecastDetailDto absence = new ForecastDetailDto();
-      String key = member.getLastname() + ", " + member.getName();
+      String key = member.getName() + ", " + member.getLastname();
       List<ForecastDto> forecastList = new ArrayList<>();
       absence.setVisible(isVisibleByGrade(userGrade, member));
 

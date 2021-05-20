@@ -43,14 +43,18 @@ public class UserController {
 
     UserInfoAppDto userDetails = UserUtils.getUserDetails();
     UserDto dto = this.beanMapper.map(userDetails, UserDto.class);
-    PersonEntity person = this.personService.getManager(userDetails.getUsername());
 
     List<PublicGroupEntity> publicGroups = this.groupService.findPublicGroupsFromConnectedUser();
     dto.setWithPublicGroups(publicGroups != null && publicGroups.size() > 0);
-    if (person.getGrade().equals("D") || person.getGrade().equals("E") || person.getGrade().equals("F")) {
-      if (!dto.getRole().equals("GESTOR") && !dto.getRole().equals("ADMIN"))
-        dto.setRole("GESTOR");
-    }
+
+    PersonEntity person = this.personService.getManager(userDetails.getUsername());
+    if (person != null)
+      if (person.getGrade() != null) {
+        if (person.getGrade().equals("D") || person.getGrade().equals("E") || person.getGrade().equals("F")) {
+          if (!dto.getRole().equals("GESTOR") && !dto.getRole().equals("ADMIN"))
+            dto.setRole("GESTOR");
+        }
+      }
 
     return dto;
 
