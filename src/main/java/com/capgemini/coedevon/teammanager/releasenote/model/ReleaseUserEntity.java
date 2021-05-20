@@ -22,12 +22,15 @@ public class ReleaseUserEntity {
   @Column(name = "last_read", nullable = false)
   private Long lastReadId;
 
+  @Column(name = "last_connection")
+  private String lastConnection;
+
   /**
    * @return the id
    */
   public Long getId() {
 
-    return id;
+    return this.id;
   }
 
   /**
@@ -43,7 +46,7 @@ public class ReleaseUserEntity {
    */
   public String getUsername() {
 
-    return username;
+    return this.username;
   }
 
   /**
@@ -59,7 +62,7 @@ public class ReleaseUserEntity {
    */
   public Long getLastReadId() {
 
-    return lastReadId;
+    return this.lastReadId;
   }
 
   /**
@@ -68,6 +71,22 @@ public class ReleaseUserEntity {
   public void setLastReadId(Long lastReadId) {
 
     this.lastReadId = lastReadId;
+  }
+
+  /**
+   * @return lastConnection
+   */
+  public String getLastConnection() {
+
+    return this.lastConnection;
+  }
+
+  /**
+   * @param lastConnection new value of {@link #getlastConnection}.
+   */
+  public void setLastConnection(String lastConnection) {
+
+    this.lastConnection = lastConnection;
   }
 
 }

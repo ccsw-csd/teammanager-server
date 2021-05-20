@@ -1,5 +1,7 @@
 package com.capgemini.coedevon.teammanager.releasenote;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +28,9 @@ public class ReleaseNoteServiceImpl implements ReleaseNoteService {
 
     String username = UserUtils.getUserDetails().getUsername();
 
-    ReleaseUserEntity releaseUser = releaseUserRepository.getByUsername(username);
+    ReleaseUserEntity releaseUser = this.releaseUserRepository.getByUsername(username);
     Long lastRead = Long.MAX_VALUE;
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
     if (releaseUser != null) {
       lastRead = releaseUser.getLastReadId();
@@ -35,17 +38,16 @@ public class ReleaseNoteServiceImpl implements ReleaseNoteService {
       releaseUser = new ReleaseUserEntity();
       releaseUser.setUsername(username);
     }
-
-    List<ReleaseNoteEntity> list = releaseNoteRepository.findByRoleAndLastRead(UserUtils.getUserDetails().getRole(),
-        lastRead);
+    releaseUser.setLastConnection(dtf.format(LocalDateTime.now()));
+    List<ReleaseNoteEntity> list = this.releaseNoteRepository
+        .findByRoleAndLastRead(UserUtils.getUserDetails().getRole(), lastRead);
 
     if (lastRead.equals(Long.MAX_VALUE) || (list != null && list.size() > 0)) {
 
-      lastRead = releaseNoteRepository.getMaxId();
+      lastRead = this.releaseNoteRepository.getMaxId();
       releaseUser.setLastReadId(lastRead);
-
-      releaseUserRepository.save(releaseUser);
     }
+    this.releaseUserRepository.save(releaseUser);
 
     return list;
   }
