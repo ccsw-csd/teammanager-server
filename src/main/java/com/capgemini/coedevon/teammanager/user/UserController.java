@@ -12,6 +12,8 @@ import com.capgemini.coedevon.teammanager.config.security.UserInfoAppDto;
 import com.capgemini.coedevon.teammanager.config.security.UserUtils;
 import com.capgemini.coedevon.teammanager.group.GroupService;
 import com.capgemini.coedevon.teammanager.group.model.PublicGroupEntity;
+import com.capgemini.coedevon.teammanager.person.PersonService;
+import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
 import com.capgemini.coedevon.teammanager.user.model.UserDto;
 
 /**
@@ -26,10 +28,14 @@ public class UserController {
   private GroupService groupService;
 
   @Autowired
+  private PersonService personService;
+
+  @Autowired
   private BeanMapper beanMapper;
 
   /**
    * Recupera el usuario logado
+   *
    * @return
    */
   @RequestMapping(path = "/", method = RequestMethod.GET)
@@ -38,8 +44,17 @@ public class UserController {
     UserInfoAppDto userDetails = UserUtils.getUserDetails();
     UserDto dto = this.beanMapper.map(userDetails, UserDto.class);
 
-    List<PublicGroupEntity> publicGroups = groupService.findPublicGroupsFromConnectedUser();
+    List<PublicGroupEntity> publicGroups = this.groupService.findPublicGroupsFromConnectedUser();
     dto.setWithPublicGroups(publicGroups != null && publicGroups.size() > 0);
+
+    PersonEntity person = this.personService.getManager(userDetails.getUsername());
+    if (person != null)
+      if (person.getGrade() != null) {
+        if (person.getGrade().equals("D") || person.getGrade().equals("E") || person.getGrade().equals("F")) {
+          if (!dto.getRole().equals("GESTOR") && !dto.getRole().equals("ADMIN"))
+            dto.setRole("GESTOR");
+        }
+      }
 
     return dto;
 
