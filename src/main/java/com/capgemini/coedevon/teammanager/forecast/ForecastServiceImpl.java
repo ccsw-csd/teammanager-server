@@ -94,7 +94,7 @@ public class ForecastServiceImpl implements ForecastService {
 
     for (PersonEntity member : groupMembersList) {
       ForecastDetailDto absence = new ForecastDetailDto();
-      String key = member.getName() + ", " + member.getLastname();
+      String key = member.getName() + " " + member.getLastname();
       List<ForecastDto> forecastList = new ArrayList<>();
       absence.setVisible(isVisibleByGrade(userGrade, member));
 
@@ -305,7 +305,7 @@ public class ForecastServiceImpl implements ForecastService {
       cell = totalsRow.createCell(i + 1);
       cell.setCellValue(summsTotal[i]);
     }
-    sheet.autoSizeColumn(0);
+    sheet.setColumnWidth(0, 50 * 256);
   }
 
   /**
