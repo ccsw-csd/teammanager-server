@@ -1,7 +1,10 @@
 package com.capgemini.coedevon.teammanager.person;
 
+import java.util.List;
+
 import com.capgemini.coedevon.teammanager.person.model.PersonDto;
 import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
+import com.capgemini.coedevon.teammanager.person.model.TPersonEntity;
 
 /**
  * @author aolmosca
@@ -16,6 +19,8 @@ public interface PersonService {
   void create(PersonDto personDto);
 
   void update(PersonDto personDto);
+
+  public List<TPersonEntity> notInPerson();
 
   /**
    * @param username

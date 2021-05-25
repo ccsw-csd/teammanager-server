@@ -26,6 +26,8 @@ public interface PersonRepository extends CrudRepository<PersonEntity, Long> {
 
   PersonEntity findByUsernameAndActiveTrue(String username);
 
+  List<PersonEntity> findByUsernameNotIn(List<String> username);
+
   @Query(value = "select * from person where concat(name, ' ', lastname, ' ', username) LIKE %:name% LIMIT 15", nativeQuery = true)
   public List<PersonEntity> filtrarPersonas(@Param("name") String name);
 
