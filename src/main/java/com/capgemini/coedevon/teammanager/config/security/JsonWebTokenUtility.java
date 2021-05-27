@@ -136,20 +136,28 @@ public class JsonWebTokenUtility {
     userDetails.setUsername(username);
     userDetails.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME));
     userDetails.setJwt(jwtToken);
-
-    UserEntity user = this.userService.getByUsername(username);
-    if (user == null)
-      userDetails.setRole("USER");
-    else {
-      userDetails.setRole(user.getRole());
-    }
-
     PersonEntity person = this.personService.personExists(username);
+
     if (person != null) {
       userDetails.setWithPON(person.isWithPON());
     } else {
       userDetails.setWithPON(false);
     }
+
+    UserEntity user = this.userService.getByUsername(username);
+
+    if (user == null)
+      if (person != null)
+        if (person.getGrade() != null) {
+          if (person.getGrade().equals("D") || person.getGrade().equals("E") || person.getGrade().equals("F")) {
+            userDetails.setRole("GESTOR");
+          } else
+            userDetails.setRole("USER");
+        }
+
+        else {
+          userDetails.setRole(user.getRole());
+        }
 
     return userDetails;
   }
