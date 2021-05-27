@@ -22,6 +22,10 @@ public interface PersonService {
 
   public List<TPersonEntity> notInPerson();
 
+  public List<PersonEntity> personWithoutCenter();
+
+  public List<PersonEntity> personWithSagaOrUserDuplicated();
+
   /**
    * @param username
    * @return

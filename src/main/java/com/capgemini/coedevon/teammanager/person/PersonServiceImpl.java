@@ -91,6 +91,22 @@ public class PersonServiceImpl implements PersonService {
     return tPersonList;
   }
 
+  @Override
+  public List<PersonEntity> personWithoutCenter() {
+
+    List<PersonEntity> personList = this.personRepository.findByCenterIsNull();
+
+    return personList;
+  }
+
+  @Override
+  public List<PersonEntity> personWithSagaOrUserDuplicated() {
+
+    List<PersonEntity> personList = this.personRepository.sagaOrusernameDuplicated();
+
+    return personList;
+  }
+
   private boolean personNotExists(String username, String saga) {
 
     if (this.personRepository.findByUsernameOrSaga(username, saga) == null)

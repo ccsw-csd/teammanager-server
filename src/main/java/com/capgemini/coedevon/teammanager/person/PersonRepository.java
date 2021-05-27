@@ -28,6 +28,11 @@ public interface PersonRepository extends CrudRepository<PersonEntity, Long> {
 
   List<PersonEntity> findByUsernameNotIn(List<String> username);
 
+  List<PersonEntity> findByCenterIsNull();
+
+  @Query(value = "select * from person p2 where saga in (select sub.saga from (select p.saga, count(p.saga) from person p GROUP BY p.saga HAVING COUNT(p.saga)>1)sub) or username in (select sub.username from (select p.username, count(p.username) from person p GROUP BY p.username HAVING COUNT(p.username)>1)sub)", nativeQuery = true)
+  public List<PersonEntity> sagaOrusernameDuplicated();
+
   @Query(value = "select * from person where concat(name, ' ', lastname, ' ', username) LIKE %:name% LIMIT 15", nativeQuery = true)
   public List<PersonEntity> filtrarPersonas(@Param("name") String name);
 
