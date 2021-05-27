@@ -146,18 +146,19 @@ public class JsonWebTokenUtility {
 
     UserEntity user = this.userService.getByUsername(username);
 
-    if (user == null)
-      if (person != null)
+    if (user == null) {
+      if (person != null) {
         if (person.getGrade() != null) {
           if (person.getGrade().equals("D") || person.getGrade().equals("E") || person.getGrade().equals("F")) {
             userDetails.setRole("GESTOR");
-          } else
+          } else {
             userDetails.setRole("USER");
+          }
         }
-
-        else {
-          userDetails.setRole(user.getRole());
-        }
+      }
+    } else {
+      userDetails.setRole(user.getRole());
+    }
 
     return userDetails;
   }
