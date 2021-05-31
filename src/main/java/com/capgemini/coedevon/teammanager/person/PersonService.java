@@ -2,9 +2,13 @@ package com.capgemini.coedevon.teammanager.person;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.capgemini.coedevon.teammanager.person.model.PersonDto;
 import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
-import com.capgemini.coedevon.teammanager.person.model.TPersonEntity;
+import com.capgemini.coedevon.teammanager.person.model.PersonInconsistencyEntity;
+import com.capgemini.coedevon.teammanager.person.model.PersonViewDto;
 
 /**
  * @author aolmosca
@@ -20,11 +24,13 @@ public interface PersonService {
 
   void update(PersonDto personDto);
 
-  public List<TPersonEntity> notInPerson();
+  public List<PersonViewDto> notInPerson();
 
-  public List<PersonEntity> personWithoutCenter();
+  public Page<PersonEntity> personWithoutCenter(Pageable pageable);
 
-  public List<PersonEntity> personWithSagaOrUserDuplicated();
+  public Page<PersonEntity> personWithSagaOrUserDuplicated(Pageable pageable);
+
+  public Page<PersonInconsistencyEntity> personInconsistencies(Pageable pageable, Integer center);
 
   /**
    * @param username

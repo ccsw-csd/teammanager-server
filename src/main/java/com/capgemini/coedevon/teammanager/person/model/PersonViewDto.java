@@ -4,38 +4,18 @@ package com.capgemini.coedevon.teammanager.person.model;
  * @author aolmosca
  *
  */
-public class PersonInconsistencyDto {
-  private String saga;
-
+public class PersonViewDto {
   private String username;
 
   private String name;
 
   private String lastname;
 
-  private Integer centerId;
-
-  private String businesscode;
+  private String center;
 
   private String email;
 
   private Integer numberAbsences;
-
-  /**
-   * @return saga
-   */
-  public String getSaga() {
-
-    return this.saga;
-  }
-
-  /**
-   * @param saga new value of {@link #getsaga}.
-   */
-  public void setSaga(String saga) {
-
-    this.saga = saga;
-  }
 
   /**
    * @return username
@@ -86,51 +66,19 @@ public class PersonInconsistencyDto {
   }
 
   /**
-   * @return centerId
+   * @return center
    */
-  public Integer getCenterId() {
+  public String getCenter() {
 
-    return this.centerId;
+    return this.center;
   }
 
   /**
-   * @param centerId new value of {@link #getcenterId}.
+   * @param center new value of {@link #getcenter}.
    */
-  public void setCenterId(Integer centerId) {
+  public void setCenter(String center) {
 
-    this.centerId = centerId;
-  }
-
-  /**
-   * @return businesscode
-   */
-  public String getBusinesscode() {
-
-    return this.businesscode;
-  }
-
-  /**
-   * @param businesscode new value of {@link #getbusinesscode}.
-   */
-  public void setBusinesscode(String businesscode) {
-
-    this.businesscode = businesscode;
-  }
-
-  /**
-   * @return number_absences
-   */
-  public Integer getNumberAbsences() {
-
-    return this.numberAbsences;
-  }
-
-  /**
-   * @param number_absences new value of {@link #getnumber_absences}.
-   */
-  public void setNumberAbsences(Integer numberAbsences) {
-
-    this.numberAbsences = numberAbsences;
+    this.center = center;
   }
 
   /**
@@ -147,6 +95,22 @@ public class PersonInconsistencyDto {
   public void setEmail(String email) {
 
     this.email = email;
+  }
+
+  /**
+   * @return numberAbsences
+   */
+  public Integer getNumberAbsences() {
+
+    return this.numberAbsences;
+  }
+
+  /**
+   * @param numberAbsences new value of {@link #getnumberAbsences}.
+   */
+  public void setNumberAbsences(Integer numberAbsences) {
+
+    this.numberAbsences = numberAbsences;
   }
 
 }

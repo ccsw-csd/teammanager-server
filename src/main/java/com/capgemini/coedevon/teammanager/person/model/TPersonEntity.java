@@ -2,6 +2,7 @@ package com.capgemini.coedevon.teammanager.person.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -12,6 +13,7 @@ import javax.persistence.Table;
 @Table(name = "t_person")
 public class TPersonEntity {
 
+  @Id
   @Column(name = "saga", nullable = false)
   private String saga;
 
