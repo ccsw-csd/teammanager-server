@@ -149,16 +149,52 @@ public class ForecastServiceImpl implements ForecastService {
     headerCellStyleWeekend.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
     if (type == 2) {
+
+      XSSFSheet sheetTotal = workbook.createSheet("Forecast Summary");
+
+      SortedMap<String, List<Integer>> totals = new TreeMap<>();
+      for (Map.Entry<String, ForecastDetailDto> entry : absences.entrySet()) {
+        List<Integer> myList = new ArrayList();
+        totals.put(entry.getKey(), myList);
+      }
+
       XSSFSheet sheet = workbook.createSheet("Forecast Detail");
       createHeaders(months, monthsDays, initDate, endDate, initMonth, merges, workbook, sheet);
-      generateRowsOneTab(absences, initDate, endDate, workbook, headerCellStyleAusencia, headerCellStyleFestivo,
-          headerCellStyleWeekend, sheet);
+      Map<String, List<Integer>> partialTotals = generateRowsOneTab(absences, initDate, endDate, workbook,
+          headerCellStyleAusencia, headerCellStyleFestivo, headerCellStyleWeekend, sheet);
+
+      int month = initDate.getMonthValue();
+      int year = initDate.getYear();
+
+      int monthEnd = endDate.getMonthValue();
+      int yearEnd = endDate.getYear();
+
+      extractPartialTotals(absences, initDate, endDate, totals, month, year);
+      partialMonths.add(months.get(month - 1));
+      boolean completed = false;
+      do {
+
+        month++;
+        if (month > 12) {
+          month = 1;
+          year++;
+        }
+
+        extractPartialTotals(absences, initDate, endDate, totals, month, year);
+        partialMonths.add(months.get(month - 1));
+
+        if (month == monthEnd && year == yearEnd)
+          completed = true;
+
+      } while (completed == false);
+
+      summarySheet(sheetTotal, totals, partialMonths, workbook);
     } else {
 
       int actualMonth = initMonth;
       int actualYear = initDate.getYear();
-      XSSFSheet sheetTotal = workbook.createSheet("Forecast Detail");
-      Map<String, List<Integer>> totals = new HashMap<String, List<Integer>>();
+      XSSFSheet sheetTotal = workbook.createSheet("Forecast Summary");
+      SortedMap<String, List<Integer>> totals = new TreeMap<>();
       for (Map.Entry<String, ForecastDetailDto> entry : absences.entrySet()) {
         List<Integer> myList = new ArrayList();
         totals.put(entry.getKey(), myList);
@@ -226,6 +262,35 @@ public class ForecastServiceImpl implements ForecastService {
     }
     return null;
 
+  }
+
+  private void extractPartialTotals(Map<String, ForecastDetailDto> absences, LocalDate initDate, LocalDate endDate,
+      Map<String, List<Integer>> totals, int month, int year) {
+
+    LocalDate partialInitDate = LocalDate.of(year, month, 1);
+    if (initDate.isAfter(partialInitDate))
+      partialInitDate = initDate;
+
+    LocalDate partialEndDate = LocalDate.of(year, month, 1);
+    partialEndDate = partialEndDate.withDayOfMonth(partialEndDate.lengthOfMonth());
+    if (endDate.isBefore(partialEndDate))
+      partialEndDate = endDate;
+
+    for (Map.Entry<String, ForecastDetailDto> entry : absences.entrySet()) {
+      long countAusencia = countAusenciasOFestivos(true, entry.getValue().getAbsences(), partialInitDate,
+          partialEndDate);
+      long countFestivos = countAusenciasOFestivos(false, entry.getValue().getAbsences(), partialInitDate,
+          partialEndDate);
+      long countLaborales = (countBusinessDaysBetween(partialInitDate, partialEndDate, Optional.empty()))
+          - (countAusencia + countFestivos);
+
+      List<Integer> partial = new ArrayList<Integer>();
+      partial.add((int) countLaborales);
+      partial.add((int) countFestivos);
+      partial.add((int) countAusencia);
+
+      totals.get(entry.getKey()).addAll(partial);
+    }
   }
 
   private void summarySheet(XSSFSheet sheet, Map<String, List<Integer>> totals, List<String> months,
@@ -518,7 +583,11 @@ public class ForecastServiceImpl implements ForecastService {
       int actualDays = monthsDays[i];
 
       if (i > 0) {
-        actualDays = monthsDays[initMonth + i - 1];
+        int actualMonth = initMonth + i - 1;
+        if (actualMonth > 12)
+          actualMonth -= 12;
+
+        actualDays = monthsDays[actualMonth];
       }
 
       cell = headerRowUpper.createCell(accumulatedPosition);
