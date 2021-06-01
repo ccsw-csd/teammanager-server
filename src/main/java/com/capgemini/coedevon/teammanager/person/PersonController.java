@@ -1,7 +1,10 @@
 package com.capgemini.coedevon.teammanager.person;
 
+import java.util.List;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.capgemini.coedevon.teammanager.config.mapper.BeanMapper;
 import com.capgemini.coedevon.teammanager.person.model.PersonDto;
 import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
+import com.capgemini.coedevon.teammanager.person.model.PersonInconsistencyDto;
+import com.capgemini.coedevon.teammanager.person.model.PersonInconsistencySearchDto;
+import com.capgemini.coedevon.teammanager.person.model.PersonViewDto;
 
 /**
  * @author aolmosca
@@ -44,4 +50,35 @@ public class PersonController {
     return this.personService.createOrUpdate(dto);
 
   }
+
+  @RequestMapping(path = "/inconsistencies/", method = RequestMethod.POST)
+  public Page<PersonInconsistencyDto> getInconsistencies(@RequestBody PersonInconsistencySearchDto dto) {
+
+    return this.beanMapper.mapPage(this.personService.personInconsistencies(dto.getPageable(), dto.getCenter()),
+        PersonInconsistencyDto.class);
+
+  }
+
+  @RequestMapping(path = "/inconsistencies/duplicated", method = RequestMethod.POST)
+  public Page<PersonDto> getInconsistenciesDuplicated(@RequestBody PersonInconsistencySearchDto dto) {
+
+    return this.beanMapper.mapPage(this.personService.personWithSagaOrUserDuplicated(dto.getPageable()),
+        PersonDto.class);
+
+  }
+
+  @RequestMapping(path = "/inconsistencies/center", method = RequestMethod.POST)
+  public Page<PersonDto> getInconsistenciesCenter(@RequestBody PersonInconsistencySearchDto dto) {
+
+    return this.beanMapper.mapPage(this.personService.personWithoutCenter(dto.getPageable()), PersonDto.class);
+
+  }
+
+  @RequestMapping(path = "/inconsistencies/notInPerson", method = RequestMethod.POST)
+  public List<PersonViewDto> getInconsistenciesNotInPerson() {
+
+    return this.personService.notInPerson();
+
+  }
+
 }
