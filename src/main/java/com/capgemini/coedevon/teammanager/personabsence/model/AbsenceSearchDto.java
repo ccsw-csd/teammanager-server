@@ -8,25 +8,10 @@ import java.util.List;
  *
  */
 public class AbsenceSearchDto {
-  private List<Date> dates;
 
   private Integer year;
-
-  /**
-   * @return dates
-   */
-  public List<Date> getDates() {
-
-    return this.dates;
-  }
-
-  /**
-   * @param dates new value of {@link #getdates}.
-   */
-  public void setDates(List<Date> dates) {
-
-    this.dates = dates;
-  }
+  
+  private List<PersonAbsenceDto> dtos;
 
   /**
    * @return year
@@ -42,6 +27,16 @@ public class AbsenceSearchDto {
   public void setYear(Integer year) {
 
     this.year = year;
+  }
+  
+  public List<PersonAbsenceDto> getDtos() {
+
+	  return this.dtos;
+  }
+
+  public void setDtos(List<PersonAbsenceDto> dtos) {
+
+	  this.dtos = dtos;
   }
 
 }
