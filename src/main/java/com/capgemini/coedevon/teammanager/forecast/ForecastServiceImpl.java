@@ -43,6 +43,7 @@ import com.capgemini.coedevon.teammanager.forecast.model.ForecastDto;
 import com.capgemini.coedevon.teammanager.person.PersonRepository;
 import com.capgemini.coedevon.teammanager.person.model.PersonEntity;
 import com.capgemini.coedevon.teammanager.personabsence.PersonAbsenceRepository;
+import com.capgemini.coedevon.teammanager.personabsence.model.AbsenceEntity;
 import com.capgemini.coedevon.teammanager.personabsence.model.PersonAbsenceEntity;
 
 /**
@@ -89,6 +90,12 @@ public class ForecastServiceImpl implements ForecastService {
     List<Integer> personIds = extractListPersonId(groupMembersList);
     List<PersonAbsenceEntity> absenceList = this.personAbsenceRepository.findByPerson_IdInAndDateBetween(personIds,
         init, end);
+    
+    for(PersonAbsenceEntity vabsencedto : absenceList) {
+    	if(vabsencedto.getAbsence_type() != null)
+    		if(vabsencedto.getAbsence_type().equals(AbsenceEntity.other)) 
+    			vabsencedto.setType("O");
+    }
 
     SortedMap<String, ForecastDetailDto> hashAbsence = new TreeMap<>();
 
