@@ -58,16 +58,18 @@ public class PersonAbsenceServiceImpl implements PersonAbsenceService {
 
   @Transactional(readOnly = false)
   @Override
-  public void save(Integer year, List<PersonAbsenceDto> dtos, String username) {
+  public void save(Integer year, List<PersonAbsenceDto> dtos, List<Date> dates, String username) {
 
     PersonEntity personEntity = this.personRepository.findByUsernameAndActiveTrue(username);
     this.absenceRepository.deleteBySagaAndYear(personEntity.getSaga(), year);
 
-    for (int i = 0; i < dtos.size(); i++) {
+    for (int i = 0; i < dates.size(); i++) {
       AbsenceEntity newAbsenceEntity = new AbsenceEntity();
-      Calendar calendar = dateToCalendar(dtos.get(i).getDate());
+      
+      Calendar calendar = dateToCalendar(dates.get(i));
 
-      newAbsenceEntity.setDate(dtos.get(i).getDate());
+      newAbsenceEntity.setDate(dates.get(i));
+
       newAbsenceEntity.setSaga(personEntity.getSaga());
       newAbsenceEntity.setMonth(calendar.get(Calendar.MONTH) + 1);
       newAbsenceEntity.setYear(calendar.get(Calendar.YEAR));
