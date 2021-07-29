@@ -67,7 +67,7 @@ public class GroupServiceImpl implements GroupService {
   public List<PersonEntity> getPersons(String name) {
 
     name = name.replaceAll(" ", "%");
-    return this.personRepository.filtrarPersonas(name);
+    return this.personRepository.filtrarPersonasActivas(name);
   }
 
   @Override
