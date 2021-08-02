@@ -41,4 +41,7 @@ public interface PersonRepository extends CrudRepository<PersonEntity, Long> {
   @Query(value = "select * from person where id in (select person_id from V_GROUP_MEMBERS_ALL where group_id = :groupId)", nativeQuery = true)
   public List<PersonEntity> findPersonByGroupId(@Param("groupId") Long groupId);
 
+  @Query(value = "select * from person where concat(name, ' ', lastname, ' ', username) LIKE %:name% AND active = TRUE LIMIT 15", nativeQuery = true)
+  public List<PersonEntity> filtrarPersonasActivas(String name);
+
 }

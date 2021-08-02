@@ -23,6 +23,8 @@ public class PersonAbsenceDto {
   private Date date;
 
   private String type;
+  
+  private String absence_type;
 
   /**
    * @return id
@@ -118,6 +120,16 @@ public class PersonAbsenceDto {
   public void setType(String type) {
 
     this.type = type;
+  }
+
+  public String getAbsence_type() {
+	  
+	  return this.absence_type;
+  }
+  
+  public void setAbsence_type(String absence_type) {
+	  
+	  this.absence_type = absence_type;
   }
 
 }

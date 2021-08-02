@@ -8,9 +8,12 @@ import java.util.List;
  *
  */
 public class AbsenceSearchDto {
-  private List<Date> dates;
 
   private Integer year;
+  
+  private List<Date> dates;
+  
+  private List<PersonAbsenceDto> dtos;
 
   /**
    * @return dates
@@ -27,7 +30,7 @@ public class AbsenceSearchDto {
 
     this.dates = dates;
   }
-
+  
   /**
    * @return year
    */
@@ -42,6 +45,16 @@ public class AbsenceSearchDto {
   public void setYear(Integer year) {
 
     this.year = year;
+  }
+  
+  public List<PersonAbsenceDto> getDtos() {
+
+	  return this.dtos;
+  }
+
+  public void setDtos(List<PersonAbsenceDto> dtos) {
+
+	  this.dtos = dtos;
   }
 
 }

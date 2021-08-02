@@ -53,7 +53,7 @@ public class PersonAbsenceController {
   public void save(@RequestBody AbsenceSearchDto dto) {
 
     String username = UserUtils.getUserDetails().getUsername();
-    this.vAbsenceService.save(dto.getYear(), dto.getDates(), username);
+    this.vAbsenceService.save(dto.getYear(), dto.getDtos(), dto.getDates(), username);
   }
 
 }

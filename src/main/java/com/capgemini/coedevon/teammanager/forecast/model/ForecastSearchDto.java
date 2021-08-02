@@ -2,6 +2,8 @@ package com.capgemini.coedevon.teammanager.forecast.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 /**
  * @author aolmosca
  *
@@ -10,8 +12,10 @@ public class ForecastSearchDto {
 
   private Long groupId;
 
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Europe/Madrid")
   private Date init;
 
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Europe/Madrid")
   private Date end;
 
   /**

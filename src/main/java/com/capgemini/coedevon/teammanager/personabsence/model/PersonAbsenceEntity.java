@@ -41,6 +41,9 @@ public class PersonAbsenceEntity {
 
   @Column(name = "type")
   private String type;
+  
+  @Column(name = "absence_type")
+  private String absence_type;
 
   /**
    * @return id
@@ -135,7 +138,17 @@ public class PersonAbsenceEntity {
    */
   public void setType(String type) {
 
-    this.type = type;
+	  this.type = type;
+  }
+  
+  public String getAbsence_type() {
+
+	  return this.absence_type;
+  }
+
+  public void setAbsence_type(String absence_type) {
+
+	  this.absence_type = absence_type;
   }
 
 }
