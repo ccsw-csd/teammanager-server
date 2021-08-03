@@ -46,10 +46,6 @@ public class PersonAbsenceServiceImpl implements PersonAbsenceService {
         .mapList(this.vabsenceRepository.findByYearAndPersonUsername(year, username), PersonAbsenceDto.class);
 
     for (PersonAbsenceDto vabsencedto : listAbsence) {
-    	if(vabsencedto.getAbsence_type() != null)
-    		if(vabsencedto.getAbsence_type().equals(AbsenceEntity.other)) 
-    			vabsencedto.setType("O");
-
       hashAbsence.computeIfAbsent(vabsencedto.getMonth(), k -> new ArrayList<>()).add(vabsencedto);
     }
 
@@ -73,11 +69,8 @@ public class PersonAbsenceServiceImpl implements PersonAbsenceService {
       newAbsenceEntity.setSaga(personEntity.getSaga());
       newAbsenceEntity.setMonth(calendar.get(Calendar.MONTH) + 1);
       newAbsenceEntity.setYear(calendar.get(Calendar.YEAR));
-      
-      String tipo = dtos.get(i).getType();
-      
-      if (tipo.compareTo("A") == 0) newAbsenceEntity.setType(AbsenceEntity.holiday);
-      else if (tipo.compareTo("O") == 0) newAbsenceEntity.setType(AbsenceEntity.other);
+      //newAbsenceEntity.setType("A");
+      newAbsenceEntity.setAbsence_type(dtos.get(i).getAbsence_type());
       
       this.absenceRepository.save(newAbsenceEntity);
     }
