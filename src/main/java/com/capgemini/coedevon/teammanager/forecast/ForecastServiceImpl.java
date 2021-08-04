@@ -551,7 +551,7 @@ public class ForecastServiceImpl implements ForecastService {
       LocalDate datAbsence = absence.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
       String absenceType = absence.getAbsence_type();
       if (datAbsence.equals(date)) {
-    	if(absenceType.equals("OTH"))
+    	if("OTH".equals(absenceType))
     		return "O";
     	else
     		return absence.getType();
