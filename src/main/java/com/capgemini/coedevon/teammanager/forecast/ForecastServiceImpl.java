@@ -764,18 +764,22 @@ public class ForecastServiceImpl implements ForecastService {
         continue;
 
       if (countAbsences) {
-        if ((absence.getAbsence_type().equals("VAC") || absence.getType().equals("P"))) {
-        	count++;
-        } else if(absence.getAbsence_type().equals("OTH")) {
-        	countO++;
+        if ((absence.getType().equals("A") || absence.getType().equals("P"))) {
+        	if(absence.getAbsence_type() != null) {
+        		if(absence.getAbsence_type().equals("VAC")) {
+        			count++;
+        		} else if(absence.getAbsence_type().equals("OTH")) {
+        			countO++;
+        		}
+            }
+        	else { count++; }
         }
       } else {
         if ((absence.getType().equals("F")))
           count++;
-
       }
-
     }
+    
     if(typeO) return countO;
     else return count;
   }
