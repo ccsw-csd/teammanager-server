@@ -91,12 +91,6 @@ public class ForecastServiceImpl implements ForecastService {
     List<PersonAbsenceEntity> absenceList = this.personAbsenceRepository.findByPerson_IdInAndDateBetween(personIds,
         init, end);
     
-    for(PersonAbsenceEntity vabsencedto : absenceList) {
-    	if(vabsencedto.getAbsence_type() != null)
-    		if(vabsencedto.getAbsence_type().equals(AbsenceEntity.other)) 
-    			vabsencedto.setType("O");
-    }
-
     SortedMap<String, ForecastDetailDto> hashAbsence = new TreeMap<>();
 
     for (PersonEntity member : groupMembersList) {
@@ -469,6 +463,7 @@ public class ForecastServiceImpl implements ForecastService {
     cellTotalFes.setCellStyle(totalCellStyle);
     cellTotalA.setCellStyle(totalCellStyle);
     cellTotalO.setCellStyle(totalCellStyle);
+    
     Map<String, List<Integer>> partialTotal = new HashMap<String, List<Integer>>();
 
     headerCaptionColor(absences, headerCellStyleVacaciones, headerCellStyleFestivo, headerCellStyleWeekend, headerCellStyleOtros, sheet);
@@ -554,8 +549,12 @@ public class ForecastServiceImpl implements ForecastService {
       return "W";
     for (ForecastDto absence : absences) {
       LocalDate datAbsence = absence.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+      String absenceType = absence.getAbsence_type();
       if (datAbsence.equals(date)) {
-        return absence.getType();
+    	if("OTH".equals(absenceType))
+    		return "O";
+    	else
+    		return absence.getType();
       }
     }
     return "L";
@@ -689,7 +688,7 @@ public class ForecastServiceImpl implements ForecastService {
         absenceDto.setDate(absence.getDate());
         absenceDto.setMonth(absence.getMonth());
         absenceDto.setYear(absence.getYear());
-        
+        absenceDto.setAbsence_type(absence.getAbsence_type());
         absenceDto.setType(absenceType);
 
         listAbsence.add(absenceDto);
@@ -702,12 +701,14 @@ public class ForecastServiceImpl implements ForecastService {
       if (absenceType.equals("F")) {
         absenceDto.setType(absenceType);
       } //
-      else if (absenceType.equals("P") || absenceType.equals("A") || absenceType.equals("O")) {
-        if (absenceDtoType.equals("P") || absenceDtoType.equals("A") || absenceDtoType.equals("O")) {
+      else if (absenceType.equals("P") || absenceType.equals("A")) {
+        if (absenceDtoType.equals("P") || absenceDtoType.equals("A")) {
           absenceDto.setType(absenceType);
         }
-      } else if(absenceDto.getAbsence_type() != null)
-    	  if(absenceDto.getAbsence_type().equals(AbsenceEntity.other)) absenceDto.setType("O");
+      }
+      
+      if(absenceDto.getAbsence_type() != null)
+    	  absenceDto.setAbsence_type(absence.getAbsence_type());
     }
 
     return listAbsence;
@@ -764,17 +765,21 @@ public class ForecastServiceImpl implements ForecastService {
 
       if (countAbsences) {
         if ((absence.getType().equals("A") || absence.getType().equals("P"))) {
-        	count++;
-        } else if(absence.getType().equals("O")) {
-        	countO++;
+        	if(absence.getAbsence_type() != null) {
+        		if(absence.getAbsence_type().equals("VAC")) {
+        			count++;
+        		} else if(absence.getAbsence_type().equals("OTH")) {
+        			countO++;
+        		}
+            }
+        	else { count++; }
         }
       } else {
         if ((absence.getType().equals("F")))
           count++;
-
       }
-
     }
+    
     if(typeO) return countO;
     else return count;
   }

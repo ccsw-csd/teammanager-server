@@ -17,9 +17,6 @@ import javax.persistence.Table;
 @Table(name = "absence_local")
 public class AbsenceEntity {
 
-  public final static String holiday = "VAC";
-  public final static String other = "OTH";
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
@@ -38,8 +35,8 @@ public class AbsenceEntity {
   private Date date;
 
   @Column(name = "type")
-  private String type;
-  
+  private String absence_type;
+
   /**
    * @return id
    */
@@ -120,14 +117,14 @@ public class AbsenceEntity {
     this.date = date;
   }
   
-  public String getType() {
+  public String getAbsence_type() {
 
-	    return this.type;
-	  }
+	  return this.absence_type;
+  }
 
-  public void setType(String type) {
+  public void setAbsence_type(String absence_type) {
 
-	  this.type = type;
+	  this.absence_type = absence_type;
   }
 
 }
