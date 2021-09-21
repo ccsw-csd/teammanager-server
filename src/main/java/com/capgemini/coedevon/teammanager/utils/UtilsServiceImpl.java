@@ -1,6 +1,5 @@
 package com.capgemini.coedevon.teammanager.utils;
 
-import java.io.IOException;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
@@ -26,9 +25,9 @@ public class UtilsServiceImpl implements UtilsService {
   public String getVersion() {
 
     try {
-      return new Manifest(Application.class.getResourceAsStream("/META-INF/MANIFEST.MF")).getMainAttributes()
-          .get(Attributes.Name.IMPLEMENTATION_VERSION).toString();
-    } catch (IOException e) {
+      return new Manifest(Application.class.getResourceAsStream("/META-INF/MANIFEST.MF")).getMainAttributes().get(Attributes.Name.IMPLEMENTATION_VERSION)
+          .toString();
+    } catch (Exception e) {
       LOG.error("Error al extraer la version", e);
     }
 
