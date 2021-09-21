@@ -1,3 +1,4 @@
+package com.capgemini.coedevon.teammanager;
 import org.junit.Assert;
 import org.junit.Test;
 
