@@ -1,147 +1,156 @@
 package com.ccsw.teammanager.user.model;
 
+import org.springframework.util.StringUtils;
+
 /**
  * @author pajimene
  *
  */
 public class UserDto {
 
-  private String username;
+    private String username;
 
-  private String role;
+    private String role;
 
-  private String displayName;
+    private String displayName;
 
-  private String mail;
+    private String mail;
 
-  private String lastName;
+    private String lastName;
 
-  private String firstName;
+    private String firstName;
 
-  private boolean withPON;
+    private boolean withPON;
 
-  private boolean withPublicGroups;
+    private boolean withPublicGroups;
 
-  /**
-   * @return username
-   */
-  public String getUsername() {
+    public void addRole(String role) {
+        if (StringUtils.hasText(role) == false)
+            role = "USER";
 
-    return this.username;
-  }
+        this.role += "," + role;
+    }
 
-  /**
-   * @param username new value of {@link #getusername}.
-   */
-  public void setUsername(String username) {
+    /**
+     * @return username
+     */
+    public String getUsername() {
 
-    this.username = username;
-  }
+        return this.username;
+    }
 
-  /**
-   * @return role
-   */
-  public String getRole() {
+    /**
+     * @param username new value of {@link #getusername}.
+     */
+    public void setUsername(String username) {
 
-    return this.role;
-  }
+        this.username = username;
+    }
 
-  /**
-   * @param role new value of {@link #getrole}.
-   */
-  public void setRole(String role) {
+    /**
+     * @return role
+     */
+    public String getRole() {
 
-    this.role = role;
-  }
+        return this.role;
+    }
 
-  /**
-   * @return displayName
-   */
-  public String getDisplayName() {
+    /**
+     * @param role new value of {@link #getrole}.
+     */
+    public void setRole(String role) {
 
-    return this.displayName;
-  }
+        this.role = role;
+    }
 
-  /**
-   * @param displayName new value of {@link #getdisplayName}.
-   */
-  public void setDisplayName(String displayName) {
+    /**
+     * @return displayName
+     */
+    public String getDisplayName() {
 
-    this.displayName = displayName;
-  }
+        return this.displayName;
+    }
 
-  /**
-   * @return mail
-   */
-  public String getMail() {
+    /**
+     * @param displayName new value of {@link #getdisplayName}.
+     */
+    public void setDisplayName(String displayName) {
 
-    return this.mail;
-  }
+        this.displayName = displayName;
+    }
 
-  /**
-   * @param mail new value of {@link #getmail}.
-   */
-  public void setMail(String mail) {
+    /**
+     * @return mail
+     */
+    public String getMail() {
 
-    this.mail = mail;
-  }
+        return this.mail;
+    }
 
-  /**
-   * @return lastName
-   */
-  public String getLastName() {
+    /**
+     * @param mail new value of {@link #getmail}.
+     */
+    public void setMail(String mail) {
 
-    return this.lastName;
-  }
+        this.mail = mail;
+    }
 
-  /**
-   * @param lastName new value of {@link #getlastName}.
-   */
-  public void setLastName(String lastName) {
+    /**
+     * @return lastName
+     */
+    public String getLastName() {
 
-    this.lastName = lastName;
-  }
+        return this.lastName;
+    }
 
-  /**
-   * @return firstName
-   */
-  public String getFirstName() {
+    /**
+     * @param lastName new value of {@link #getlastName}.
+     */
+    public void setLastName(String lastName) {
 
-    return this.firstName;
-  }
+        this.lastName = lastName;
+    }
 
-  /**
-   * @param firstName new value of {@link #getfirstName}.
-   */
-  public void setFirstName(String firstName) {
+    /**
+     * @return firstName
+     */
+    public String getFirstName() {
 
-    this.firstName = firstName;
-  }
+        return this.firstName;
+    }
 
-  /**
-   * @return withPON
-   */
-  public boolean isWithPON() {
+    /**
+     * @param firstName new value of {@link #getfirstName}.
+     */
+    public void setFirstName(String firstName) {
 
-    return withPON;
-  }
+        this.firstName = firstName;
+    }
 
-  /**
-   * @param withPON new value of {@link #getwithPON}.
-   */
-  public void setWithPON(boolean withPON) {
+    /**
+     * @return withPON
+     */
+    public boolean isWithPON() {
 
-    this.withPON = withPON;
-  }
+        return withPON;
+    }
 
-  public boolean isWithPublicGroups() {
+    /**
+     * @param withPON new value of {@link #getwithPON}.
+     */
+    public void setWithPON(boolean withPON) {
 
-    return withPublicGroups;
-  }
+        this.withPON = withPON;
+    }
 
-  public void setWithPublicGroups(boolean withPublicGroups) {
+    public boolean isWithPublicGroups() {
 
-    this.withPublicGroups = withPublicGroups;
-  }
+        return withPublicGroups;
+    }
+
+    public void setWithPublicGroups(boolean withPublicGroups) {
+
+        this.withPublicGroups = withPublicGroups;
+    }
 
 }

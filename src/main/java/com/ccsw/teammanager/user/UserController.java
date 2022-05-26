@@ -24,40 +24,40 @@ import com.ccsw.teammanager.user.model.UserDto;
 @RestController
 public class UserController {
 
-  @Autowired
-  private GroupService groupService;
+    @Autowired
+    private GroupService groupService;
 
-  @Autowired
-  private PersonService personService;
+    @Autowired
+    private PersonService personService;
 
-  @Autowired
-  private BeanMapper beanMapper;
+    @Autowired
+    private BeanMapper beanMapper;
 
-  /**
-   * Recupera el usuario logado
-   *
-   * @return
-   */
-  @RequestMapping(path = "/", method = RequestMethod.GET)
-  public UserDto get() {
+    /**
+     * Recupera el usuario logado
+     *
+     * @return
+     */
+    @RequestMapping(path = "/", method = RequestMethod.GET)
+    public UserDto get() {
 
-    UserInfoAppDto userDetails = UserUtils.getUserDetails();
-    UserDto dto = this.beanMapper.map(userDetails, UserDto.class);
+        UserInfoAppDto userDetails = UserUtils.getUserDetails();
+        UserDto dto = this.beanMapper.map(userDetails, UserDto.class);
 
-    List<PublicGroupEntity> publicGroups = this.groupService.findPublicGroupsFromConnectedUser();
-    dto.setWithPublicGroups(publicGroups != null && publicGroups.size() > 0);
+        List<PublicGroupEntity> publicGroups = this.groupService.findPublicGroupsFromConnectedUser();
+        dto.setWithPublicGroups(publicGroups != null && publicGroups.size() > 0);
 
-    PersonEntity person = this.personService.getManager(userDetails.getUsername());
-    if (person != null)
-      if (person.getGrade() != null) {
-        if (person.getGrade().equals("D") || person.getGrade().equals("E") || person.getGrade().equals("F")) {
-          if (!dto.getRole().equals("GESTOR") && !dto.getRole().equals("ADMIN"))
-            dto.setRole("GESTOR");
-        }
-      }
+        PersonEntity person = this.personService.getManager(userDetails.getUsername());
+        if (person != null)
+            if (person.getGrade() != null) {
+                if (person.getGrade().equals("D") || person.getGrade().equals("E") || person.getGrade().equals("F")) {
+                    if (!dto.getRole().contains("GESTOR") && !dto.getRole().contains("ADMIN"))
+                        dto.addRole("GESTOR");
+                }
+            }
 
-    return dto;
+        return dto;
 
-  }
+    }
 
 }

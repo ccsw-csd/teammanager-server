@@ -3,6 +3,7 @@ package com.ccsw.teammanager.config.security;
 import java.util.Date;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.util.StringUtils;
 
 /**
  * Class to store user information which is later encapsulated into {@link Authentication} object.
@@ -10,76 +11,83 @@ import org.springframework.security.core.Authentication;
  */
 public class UserInfoAppDto extends UserInfoDto {
 
-  private String role;
+    private String role;
 
-  private String jwt;
+    private String jwt;
 
-  private Date expiration;
+    private Date expiration;
 
-  private boolean withPON;
+    private boolean withPON;
 
-  /**
-   * @return role
-   */
-  public String getRole() {
+    public void addRole(String role) {
+        if (StringUtils.hasText(role) == false)
+            role = "USER";
 
-    return this.role;
-  }
+        this.role += "," + role;
+    }
 
-  /**
-   * @param role new value of {@link #getrole}.
-   */
-  public void setRole(String role) {
+    /**
+     * @return role
+     */
+    public String getRole() {
 
-    this.role = role;
-  }
+        return this.role;
+    }
 
-  /**
-   * @return expiration
-   */
-  public Date getExpiration() {
+    /**
+     * @param role new value of {@link #getrole}.
+     */
+    public void setRole(String role) {
 
-    return this.expiration;
-  }
+        this.role = role;
+    }
 
-  /**
-   * @param expiration new value of {@link #getexpiration}.
-   */
-  public void setExpiration(Date expiration) {
+    /**
+     * @return expiration
+     */
+    public Date getExpiration() {
 
-    this.expiration = expiration;
-  }
+        return this.expiration;
+    }
 
-  /**
-   * @return jwt
-   */
-  public String getJwt() {
+    /**
+     * @param expiration new value of {@link #getexpiration}.
+     */
+    public void setExpiration(Date expiration) {
 
-    return this.jwt;
-  }
+        this.expiration = expiration;
+    }
 
-  /**
-   * @param jwt new value of {@link #getjwt}.
-   */
-  public void setJwt(String jwt) {
+    /**
+     * @return jwt
+     */
+    public String getJwt() {
 
-    this.jwt = jwt;
-  }
+        return this.jwt;
+    }
 
-  /**
-   * @return withPON
-   */
-  public boolean isWithPON() {
+    /**
+     * @param jwt new value of {@link #getjwt}.
+     */
+    public void setJwt(String jwt) {
 
-    return withPON;
-  }
+        this.jwt = jwt;
+    }
 
-  /**
-   * @param withPON new value of {@link #getwithPON}.
-   */
-  public void setWithPON(boolean withPON) {
+    /**
+     * @return withPON
+     */
+    public boolean isWithPON() {
 
-    this.withPON = withPON;
-  }
+        return withPON;
+    }
+
+    /**
+     * @param withPON new value of {@link #getwithPON}.
+     */
+    public void setWithPON(boolean withPON) {
+
+        this.withPON = withPON;
+    }
 
 }

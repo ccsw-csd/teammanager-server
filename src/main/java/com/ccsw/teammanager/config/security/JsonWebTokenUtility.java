@@ -3,6 +3,7 @@ package com.ccsw.teammanager.config.security;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Component;
 import com.ccsw.teammanager.person.PersonService;
 import com.ccsw.teammanager.person.model.PersonEntity;
 import com.ccsw.teammanager.user.UserService;
-import com.ccsw.teammanager.user.model.UserEntity;
+import com.ccsw.teammanager.user.model.UserRoleEntity;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -111,19 +112,18 @@ public class JsonWebTokenUtility {
             userDetails.setWithPON(false);
         }
 
-        UserEntity user = this.userService.getByUsername(username);
         userDetails.setRole("USER");
+        List<UserRoleEntity> userRoles = this.userService.getRolesByUsername(username);
+        for (UserRoleEntity userRole : userRoles) {
+            userDetails.addRole(userRole.getRole().getRole());
+        }
 
-        if (user == null) {
-            if (person != null) {
-                if (person.getGrade() != null) {
-                    if (person.getGrade().equals("D") || person.getGrade().equals("E") || person.getGrade().equals("F")) {
-                        userDetails.setRole("GESTOR");
-                    }
+        if (person != null) {
+            if (person.getGrade() != null) {
+                if (person.getGrade().equals("D") || person.getGrade().equals("E") || person.getGrade().equals("F")) {
+                    userDetails.addRole("GESTOR");
                 }
             }
-        } else {
-            userDetails.setRole(user.getRole());
         }
 
         return userDetails;

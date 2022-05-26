@@ -7,52 +7,44 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- * @author pajimene
- *
- */
 @Entity
-@Table(name = "user")
-public class UserEntity {
+@Table(name = "role")
+public class RoleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "username")
-    private String username;
+    @Column(name = "role")
+    private String role;
 
     /**
-     * @return id
+     * @return the id
      */
     public Long getId() {
-
-        return this.id;
+        return id;
     }
 
     /**
-     * @param id new value of {@link #getid}.
+     * @param id the id to set
      */
     public void setId(Long id) {
-
         this.id = id;
     }
 
     /**
-     * @return username
+     * @return the role
      */
-    public String getUsername() {
-
-        return this.username;
+    public String getRole() {
+        return role;
     }
 
     /**
-     * @param username new value of {@link #getusername}.
+     * @param role the role to set
      */
-    public void setUsername(String username) {
-
-        this.username = username;
+    public void setRole(String role) {
+        this.role = role;
     }
 
 }
