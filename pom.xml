@@ -9,11 +9,11 @@
 		<version>2.4.1</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.capgemini.coedevon</groupId>
+	<groupId>com.ccsw</groupId>
 	<artifactId>team-manager</artifactId>
 	<version>1.3.2</version>
 	<name>teamManager</name>
-	<description>teamManager Capgemini - CoeDevon</description>
+	<description>teamManager CCSW</description>
 
 	<properties>
 		<java.version>1.8</java.version>
