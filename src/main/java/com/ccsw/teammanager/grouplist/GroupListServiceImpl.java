@@ -18,47 +18,47 @@ import com.ccsw.teammanager.grouplist.model.GroupListSearchDto;
 @Transactional
 public class GroupListServiceImpl implements GroupListService {
 
-  @Autowired
-  GroupListRepository groupListRepository;
+    @Autowired
+    GroupListRepository groupListRepository;
 
-  @Override
-  public Page<GroupListEntity> findPage(GroupListSearchDto dto) {
+    @Override
+    public Page<GroupListEntity> findPage(GroupListSearchDto dto) {
 
-    if (isAdmin() && dto.getViewAdmin()) {
-      return this.groupListRepository.findAll(dto.getPageable());
+        if (isAdmin() && dto.getViewAdmin()) {
+            return this.groupListRepository.findAll(dto.getPageable());
+        }
+
+        if (isGestor()) {
+            return this.groupListRepository.filtrarGestor(dto.getPageable(), UserUtils.getUserDetails().getUsername());
+        }
+
+        return this.groupListRepository.filtrarGruposPublicos(dto.getPageable(), UserUtils.getUserDetails().getUsername());
     }
 
-    if (isGestor()) {
-      return this.groupListRepository.filtrarGestor(dto.getPageable(), UserUtils.getUserDetails().getUsername());
+    @Override
+    public Page<GroupListEntity> findPageManager(GroupListSearchDto dto) {
+
+        if (isAdmin() && dto.getViewAdmin()) {
+            return this.groupListRepository.findAll(dto.getPageable());
+        }
+
+        return this.groupListRepository.filtrarManager(dto.getPageable(), UserUtils.getUserDetails().getUsername());
     }
 
-    return this.groupListRepository.filtrarGruposPublicos(dto.getPageable(), UserUtils.getUserDetails().getUsername());
-  }
+    /**
+     * @return
+     */
+    private boolean isGestor() {
 
-  @Override
-  public Page<GroupListEntity> findPageManager(GroupListSearchDto dto) {
-
-    if (isAdmin() && dto.getViewAdmin()) {
-      return this.groupListRepository.findAll(dto.getPageable());
+        return isAdmin() || UserUtils.hasRole("GESTOR");
     }
 
-    return this.groupListRepository.filtrarManager(dto.getPageable(), UserUtils.getUserDetails().getUsername());
-  }
+    /**
+     * @return
+     */
+    private boolean isAdmin() {
 
-  /**
-   * @return
-   */
-  private boolean isGestor() {
-
-    return isAdmin() || UserUtils.getUserDetails().getRole().equalsIgnoreCase("GESTOR");
-  }
-
-  /**
-   * @return
-   */
-  private boolean isAdmin() {
-
-    return UserUtils.getUserDetails().getRole().equalsIgnoreCase("ADMIN");
-  }
+        return UserUtils.hasRole("ADMIN");
+    }
 
 }

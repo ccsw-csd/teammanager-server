@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ccsw.teammanager.config.mapper.BeanMapper;
-import com.ccsw.teammanager.config.security.UserInfoAppDto;
+import com.ccsw.teammanager.config.security.UserInfoDto;
 import com.ccsw.teammanager.config.security.UserUtils;
 import com.ccsw.teammanager.group.GroupService;
 import com.ccsw.teammanager.group.model.PublicGroupEntity;
@@ -41,20 +41,17 @@ public class UserController {
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public UserDto get() {
 
-        UserInfoAppDto userDetails = UserUtils.getUserDetails();
+        UserInfoDto userDetails = UserUtils.getUserDetails();
         UserDto dto = this.beanMapper.map(userDetails, UserDto.class);
+        dto.setWithPerson(false);
+        dto.setRole(UserUtils.getMaximumRole());
 
         List<PublicGroupEntity> publicGroups = this.groupService.findPublicGroupsFromConnectedUser();
         dto.setWithPublicGroups(publicGroups != null && publicGroups.size() > 0);
 
-        PersonEntity person = this.personService.getManager(userDetails.getUsername());
+        PersonEntity person = this.personService.personExists(userDetails.getUsername());
         if (person != null)
-            if (person.getGrade() != null) {
-                if (person.getGrade().equals("D") || person.getGrade().equals("E") || person.getGrade().equals("F")) {
-                    if (!dto.getRole().contains("GESTOR") && !dto.getRole().contains("ADMIN"))
-                        dto.addRole("GESTOR");
-                }
-            }
+            dto.setWithPerson(true);
 
         return dto;
 

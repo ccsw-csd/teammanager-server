@@ -8,43 +8,19 @@ import org.springframework.util.StringUtils;
  */
 public class UserDto {
 
-    private String username;
-
     private String role;
-
-    private String displayName;
-
-    private String mail;
-
-    private String lastName;
-
-    private String firstName;
 
     private boolean withPON;
 
     private boolean withPublicGroups;
+
+    private boolean withPerson;
 
     public void addRole(String role) {
         if (StringUtils.hasText(role) == false)
             role = "USER";
 
         this.role += "," + role;
-    }
-
-    /**
-     * @return username
-     */
-    public String getUsername() {
-
-        return this.username;
-    }
-
-    /**
-     * @param username new value of {@link #getusername}.
-     */
-    public void setUsername(String username) {
-
-        this.username = username;
     }
 
     /**
@@ -61,70 +37,6 @@ public class UserDto {
     public void setRole(String role) {
 
         this.role = role;
-    }
-
-    /**
-     * @return displayName
-     */
-    public String getDisplayName() {
-
-        return this.displayName;
-    }
-
-    /**
-     * @param displayName new value of {@link #getdisplayName}.
-     */
-    public void setDisplayName(String displayName) {
-
-        this.displayName = displayName;
-    }
-
-    /**
-     * @return mail
-     */
-    public String getMail() {
-
-        return this.mail;
-    }
-
-    /**
-     * @param mail new value of {@link #getmail}.
-     */
-    public void setMail(String mail) {
-
-        this.mail = mail;
-    }
-
-    /**
-     * @return lastName
-     */
-    public String getLastName() {
-
-        return this.lastName;
-    }
-
-    /**
-     * @param lastName new value of {@link #getlastName}.
-     */
-    public void setLastName(String lastName) {
-
-        this.lastName = lastName;
-    }
-
-    /**
-     * @return firstName
-     */
-    public String getFirstName() {
-
-        return this.firstName;
-    }
-
-    /**
-     * @param firstName new value of {@link #getfirstName}.
-     */
-    public void setFirstName(String firstName) {
-
-        this.firstName = firstName;
     }
 
     /**
@@ -151,6 +63,20 @@ public class UserDto {
     public void setWithPublicGroups(boolean withPublicGroups) {
 
         this.withPublicGroups = withPublicGroups;
+    }
+
+    /**
+     * @return the withPerson
+     */
+    public boolean isWithPerson() {
+        return withPerson;
+    }
+
+    /**
+     * @param withPerson the withPerson to set
+     */
+    public void setWithPerson(boolean withPerson) {
+        this.withPerson = withPerson;
     }
 
 }
