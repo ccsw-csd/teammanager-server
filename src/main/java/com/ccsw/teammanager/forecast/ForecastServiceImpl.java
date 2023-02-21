@@ -382,7 +382,7 @@ public class ForecastServiceImpl implements ForecastService {
         cell.setCellStyle(style);
 
         cell = upperHeaderRow.createCell((months.size() + 3));
-        cell.setCellValue("Festives");
+        cell.setCellValue("Public Holidays");
         sheet.addMergedRegion(new CellRangeAddress(0, 0, (months.size() + 3), ((months.size() * 2) + 3)));
         cell.setCellStyle(style);
 
@@ -421,7 +421,7 @@ public class ForecastServiceImpl implements ForecastService {
         cellName = leyendaRow.createCell(2);
         cellName.setCellValue("Weekend");
         cellName = leyendaRow.createCell(3);
-        cellName.setCellValue("Festive");
+        cellName.setCellValue("Public Holidays");
         cellName = leyendaRow.createCell(4);
         cellName.setCellValue("Vacations");
         cellName = leyendaRow.createCell(5);
@@ -433,11 +433,11 @@ public class ForecastServiceImpl implements ForecastService {
         cellName = leyendaRowColor.createCell(2);
         cellName.setCellStyle(headerCellStyleWeekend);
         cellName = leyendaRowColor.createCell(3);
-        cellName.setCellStyle(headerCellStyleVacaciones);
-        cellName = leyendaRowColor.createCell(4);
-        cellName.setCellStyle(headerCellStyleOtros);
-        cellName = leyendaRowColor.createCell(5);
         cellName.setCellStyle(headerCellStyleFestivo);
+        cellName = leyendaRowColor.createCell(4);
+        cellName.setCellStyle(headerCellStyleVacaciones);
+        cellName = leyendaRowColor.createCell(5);
+        cellName.setCellStyle(headerCellStyleOtros);
     }
 
     /**
@@ -596,7 +596,7 @@ public class ForecastServiceImpl implements ForecastService {
         headersLower.add("Name");
         headersLower.add("Saga");
         headersLower.add("Working Days");
-        headersLower.add("Festives");
+        headersLower.add("Public Holidays");
         headersLower.add("Vacations");
         headersLower.add("Others");
 
