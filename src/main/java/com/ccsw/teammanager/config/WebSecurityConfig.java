@@ -89,7 +89,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     protected void setupAuthorization(HttpSecurity http) throws Exception {
 
-        String[] unsecuredResources = new String[] { "/", "/public/**", "/api/**" };
+        String[] unsecuredResources = new String[] { "/", "/public/**", "/api/**", "/health", "/actuator/**" };
 
         http.authorizeRequests()
                 // Allow Options request
