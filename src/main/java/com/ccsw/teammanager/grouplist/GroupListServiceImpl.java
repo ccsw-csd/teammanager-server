@@ -1,5 +1,7 @@
 package com.ccsw.teammanager.grouplist;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +24,22 @@ public class GroupListServiceImpl implements GroupListService {
     GroupListRepository groupListRepository;
 
     @Override
+    public List<GroupListEntity> findAll(boolean adminView) {
+        if (userIsAdmin() && adminView) {
+            return this.groupListRepository.findAll();
+        }
+
+        return this.groupListRepository.findManagedGroups(UserUtils.getUserDetails().getUsername());
+    }
+
+    @Override
     public Page<GroupListEntity> findPage(GroupListSearchDto dto) {
 
-        if (isAdmin() && dto.getViewAdmin()) {
+        if (userIsAdmin() && dto.getViewAdmin()) {
             return this.groupListRepository.findAll(dto.getPageable());
         }
 
-        if (isGestor()) {
+        if (userIsGestor()) {
             return this.groupListRepository.filtrarGestor(dto.getPageable(), UserUtils.getUserDetails().getUsername());
         }
 
@@ -38,7 +49,7 @@ public class GroupListServiceImpl implements GroupListService {
     @Override
     public Page<GroupListEntity> findPageManager(GroupListSearchDto dto) {
 
-        if (isAdmin() && dto.getViewAdmin()) {
+        if (userIsAdmin() && dto.getViewAdmin()) {
             return this.groupListRepository.findAll(dto.getPageable());
         }
 
@@ -48,15 +59,15 @@ public class GroupListServiceImpl implements GroupListService {
     /**
      * @return
      */
-    private boolean isGestor() {
+    private boolean userIsGestor() {
 
-        return isAdmin() || UserUtils.hasRole("GESTOR");
+        return userIsAdmin() || UserUtils.hasRole("GESTOR");
     }
 
     /**
      * @return
      */
-    private boolean isAdmin() {
+    private boolean userIsAdmin() {
 
         return UserUtils.hasRole("ADMIN");
     }

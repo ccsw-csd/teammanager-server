@@ -1,5 +1,7 @@
 package com.ccsw.teammanager.grouplist;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 
 import com.ccsw.teammanager.grouplist.model.GroupListEntity;
@@ -10,15 +12,16 @@ import com.ccsw.teammanager.grouplist.model.GroupListSearchDto;
  *
  */
 public interface GroupListService {
-  /**
-   * @return Lista de grupos con id, name, manager, members, subgroups
-   */
-  Page<GroupListEntity> findPage(GroupListSearchDto dto);
+    /**
+     * @return Lista de grupos con id, name, manager, members, subgroups
+     */
+    Page<GroupListEntity> findPage(GroupListSearchDto dto);
 
-  Page<GroupListEntity> findPageManager(GroupListSearchDto dto);
+    /**
+     * @return Lista de grupos con id, name, manager, members, subgroups
+     */
+    Page<GroupListEntity> findPageManager(GroupListSearchDto dto);
 
-  /**
-   * @param data
-   * @return
-   */
+    List<GroupListEntity> findAll(boolean adminView);
+
 }
