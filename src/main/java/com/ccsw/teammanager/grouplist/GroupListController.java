@@ -78,8 +78,8 @@ public class GroupListController {
      * @param name
      * @return
      */
-    @RequestMapping(path = "/editgroup/", method = RequestMethod.POST)
-    public EditGroupDto getGroup(@RequestBody Long id) {
+    @RequestMapping(path = "/editgroup/{id}", method = RequestMethod.GET)
+    public EditGroupDto getGroup(@PathVariable Long id) {
 
         return this.beanMapper.map(this.groupService.getGroup(id), EditGroupDto.class);
     }
