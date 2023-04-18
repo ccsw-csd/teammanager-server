@@ -80,6 +80,49 @@ public class GroupServiceImpl implements GroupService {
         return saveLocalGroup(data);
 
     }
+    
+    @Override
+    public GroupEntity save(GroupDto data){
+        if (data.getId() == null) {
+            throw new EntityNotFoundException();
+        }
+        
+        GroupEntity groupEntity = this.groupRepository.findById(data.getId()).orElse(null);
+        groupEntity.setName(data.getName());
+        this.groupRepository.save(groupEntity);
+               
+        this.groupManagerRepository.deleteAllById(data.getId());
+        this.groupMemberRepository.deleteAllById(data.getId());
+        this.groupSubgroupRepository.deleteAllById(data.getId());
+        
+        ArrayList<GroupManagerEntity> managers= new ArrayList<GroupManagerEntity>();
+        ArrayList<GroupMemberEntity> members = new ArrayList<GroupMemberEntity>();
+        ArrayList<GroupSubgroupEntity> subgroups = new ArrayList<GroupSubgroupEntity>();
+        
+        for (int i = 0; i < data.getManagers().size(); i++) {
+        	GroupManagerEntity groupManagerEntity = new GroupManagerEntity();
+        	groupManagerEntity.setPerson_id(data.getManagers().get(i).getId());
+        	this.groupManagerRepository.save(groupManagerEntity);        	
+        	managers.add(groupManagerEntity);
+        }
+        
+        for (int i = 0; i < data.getMembers().size(); i++) {
+        	GroupMemberEntity groupMemberEntity = new GroupMemberEntity();
+        	groupMemberEntity.setId(data.getMembers().get(i).getId());
+        	this.groupMemberRepository.save(groupMemberEntity);
+        	members.add(groupMemberEntity);
+        }
+        
+        for (int i = 0; i < data.getSubgroups().size(); i++) {
+        	GroupSubgroupEntity groupSubgroupEntity = new GroupSubgroupEntity();
+        	groupSubgroupEntity.setId(data.getSubgroups().get(i).getId());
+        	this.groupSubgroupRepository.save(groupSubgroupEntity);
+        	subgroups.add(groupSubgroupEntity);
+        }
+        
+        return groupEntity;
+    }  
+
 
     @Override
     public EditGroupDto getGroup(long id) {
