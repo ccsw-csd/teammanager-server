@@ -71,17 +71,6 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupEntity save(GroupDto data) {
-
-        if (StringUtils.hasText(data.getExternalId())) {
-            return saveExternalGroup(data);
-        }
-
-        return saveLocalGroup(data);
-
-    }
-    
-    @Override
     public GroupEntity save(GroupDto data){
         if (data.getId() == null) {
             throw new EntityNotFoundException();
@@ -89,11 +78,12 @@ public class GroupServiceImpl implements GroupService {
         
         GroupEntity groupEntity = this.groupRepository.findById(data.getId()).orElse(null);
         groupEntity.setName(data.getName());
-        this.groupRepository.save(groupEntity);
-               
+                       
         this.groupManagerRepository.deleteAllById(data.getId());
         this.groupMemberRepository.deleteAllById(data.getId());
         this.groupSubgroupRepository.deleteAllById(data.getId());
+        
+        this.groupRepository.save(groupEntity);
         
         ArrayList<GroupManagerEntity> managers= new ArrayList<GroupManagerEntity>();
         ArrayList<GroupMemberEntity> members = new ArrayList<GroupMemberEntity>();
@@ -102,27 +92,29 @@ public class GroupServiceImpl implements GroupService {
         for (int i = 0; i < data.getManagers().size(); i++) {
         	GroupManagerEntity groupManagerEntity = new GroupManagerEntity();
         	groupManagerEntity.setPerson_id(data.getManagers().get(i).getId());
+        	groupManagerEntity.setGroup_id(groupEntity.getId());
         	this.groupManagerRepository.save(groupManagerEntity);        	
         	managers.add(groupManagerEntity);
         }
         
         for (int i = 0; i < data.getMembers().size(); i++) {
         	GroupMemberEntity groupMemberEntity = new GroupMemberEntity();
-        	groupMemberEntity.setId(data.getMembers().get(i).getId());
+        	groupMemberEntity.setMember_id(data.getMembers().get(i).getId());
+        	groupMemberEntity.setGroup_id(groupEntity.getId());
         	this.groupMemberRepository.save(groupMemberEntity);
         	members.add(groupMemberEntity);
         }
         
         for (int i = 0; i < data.getSubgroups().size(); i++) {
         	GroupSubgroupEntity groupSubgroupEntity = new GroupSubgroupEntity();
-        	groupSubgroupEntity.setId(data.getSubgroups().get(i).getId());
+        	groupSubgroupEntity.setSubgroup_id(data.getSubgroups().get(i).getId());
+        	groupSubgroupEntity.setGroup_id(groupEntity.getId());
         	this.groupSubgroupRepository.save(groupSubgroupEntity);
         	subgroups.add(groupSubgroupEntity);
         }
         
         return groupEntity;
     }  
-
 
     @Override
     public EditGroupDto getGroup(long id) {
