@@ -71,18 +71,21 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    @Transactional
     public GroupEntity save(GroupDto data){
         if (data.getId() == null) {
             throw new EntityNotFoundException();
         }
         
-        GroupEntity groupEntity = this.groupRepository.findById(data.getId()).orElse(null);
+        GroupEntity groupEntity = new GroupEntity();
+        groupEntity=this.groupRepository.findById(data.getId()).orElse(null);
         groupEntity.setName(data.getName());
                        
         this.groupManagerRepository.deleteAllById(data.getId());
         this.groupMemberRepository.deleteAllById(data.getId());
         this.groupSubgroupRepository.deleteAllById(data.getId());
         
+        BeanUtils.copyProperties(data, groupEntity);
         this.groupRepository.save(groupEntity);
         
         ArrayList<GroupManagerEntity> managers= new ArrayList<GroupManagerEntity>();
@@ -115,7 +118,7 @@ public class GroupServiceImpl implements GroupService {
         
         return groupEntity;
     }  
-
+    
     @Override
     public EditGroupDto getGroup(long id) {
 
