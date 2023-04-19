@@ -5,8 +5,6 @@ import java.util.List;
 import com.ccsw.teammanager.group.model.EditGroupDto;
 import com.ccsw.teammanager.group.model.GroupDto;
 import com.ccsw.teammanager.group.model.GroupEntity;
-import com.ccsw.teammanager.group.model.PublicGroupEntity;
-import com.ccsw.teammanager.group.model.RespuestaValidarBorradoDto;
 import com.ccsw.teammanager.person.model.PersonEntity;
 
 /**
@@ -15,38 +13,32 @@ import com.ccsw.teammanager.person.model.PersonEntity;
  */
 public interface GroupService {
 
-  EditGroupDto getGroup(long id);
+    /**
+     * Recupera un grupo para su edición
+     * @param id
+     * @return
+     */
+    EditGroupDto getGroup(long id);
 
-  /**
-   * @param inicioNombre
-   * @return
-   */
-  List<GroupEntity> getSubgroups(String name);
+    /**
+     * Recupera un listado de grupos por su nombre
+     * @param name
+     * @return
+     */
+    List<GroupEntity> getSubgroups(String name);
 
-  List<PersonEntity> getPersons(String name);
+    /**
+     * Recupera un listado de personas por su nombre
+     * @param name
+     * @return
+     */
+    List<PersonEntity> getPersons(String name);
 
-  /**
-   * @param data
-   * @return
-   */
-  GroupEntity save(GroupDto data);
-
-  /**
-   * @param data
-   * @return
-   */
-  RespuestaValidarBorradoDto validarUsuario(Long id);
-
-  /**
-   * @param data
-   * @return
-   */
-  void borrarGrupo(Long data);
-
-  /**
-   * Recupera los grupos publicos del usuario conectado
-   * @return
-   */
-  List<PublicGroupEntity> findPublicGroupsFromConnectedUser();
+    /**
+     * Guarda la información de un grupo
+     * @param data
+     * @return
+     */
+    GroupEntity save(GroupDto data);
 
 }

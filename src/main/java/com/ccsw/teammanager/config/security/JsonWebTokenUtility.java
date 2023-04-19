@@ -84,7 +84,7 @@ public class JsonWebTokenUtility {
         if (userDetails == null)
             return;
 
-        PersonEntity person = this.personService.personExists(userDetails.getUsername());
+        PersonEntity person = this.personService.getByUsername(userDetails.getUsername());
 
         if (person != null) {
             userDetails.setWithPON(person.isWithPON());

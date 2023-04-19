@@ -17,24 +17,18 @@ import com.ccsw.teammanager.person.model.PersonEntity;
  */
 @Repository
 public interface GroupManagerRepository extends CrudRepository<GroupManagerEntity, Long> {
-  /**
-   * @param id
-   * @return
-   */
-  @Query(value = "select p from PersonEntity p where p.id in (select gman.person_id from GroupManagerEntity gman where gman.group_id = :id)")
-  public List<PersonEntity> filtrarManagersDelGrupo(@Param("id") long id);
 
-  /**
-   * @param id
-   */
-  @Modifying
-  @Query(value = "delete from GroupManagerEntity where group_id = :id")
-  void deleteAllById(Long id);
+    /**
+     * @param id
+     * @return
+     */
+    @Query(value = "select p from PersonEntity p where p.id in (select gman.person_id from GroupManagerEntity gman where gman.group_id = :id)")
+    public List<PersonEntity> findManagersByGroupId(@Param("id") long id);
 
-  /**
-   * @param id
-   * @return
-   */
-  @Query(value = "select count(gm) from GroupManagerEntity gm where group_id = :idg and person_id = :idp")
-  public Long validarGestor(@Param("idg") Long idg, @Param("idp") Long idp);
+    /**
+     * @param id
+     */
+    @Modifying
+    @Query(value = "delete from GroupManagerEntity where group_id = :id")
+    void deleteByGroupId(Long id);
 }

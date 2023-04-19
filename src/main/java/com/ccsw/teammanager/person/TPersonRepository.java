@@ -1,7 +1,5 @@
 package com.ccsw.teammanager.person;
 
-import java.util.List;
-
 import org.springframework.data.repository.CrudRepository;
 
 import com.ccsw.teammanager.person.model.TPersonEntity;
@@ -11,5 +9,4 @@ import com.ccsw.teammanager.person.model.TPersonEntity;
  *
  */
 public interface TPersonRepository extends CrudRepository<TPersonEntity, Long> {
-  List<TPersonEntity> findByUsernameNotIn(List<String> username);
 }

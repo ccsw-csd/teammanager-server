@@ -1,6 +1,5 @@
 package com.ccsw.teammanager.group;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -8,117 +7,59 @@ import javax.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import com.ccsw.teammanager.config.security.UserUtils;
 import com.ccsw.teammanager.group.model.EditGroupDto;
 import com.ccsw.teammanager.group.model.GroupDto;
 import com.ccsw.teammanager.group.model.GroupEntity;
 import com.ccsw.teammanager.group.model.GroupManagerEntity;
 import com.ccsw.teammanager.group.model.GroupMemberEntity;
 import com.ccsw.teammanager.group.model.GroupSubgroupEntity;
-import com.ccsw.teammanager.group.model.PublicGroupEntity;
-import com.ccsw.teammanager.group.model.RespuestaValidarBorradoDto;
 import com.ccsw.teammanager.person.PersonRepository;
 import com.ccsw.teammanager.person.model.PersonEntity;
-import com.ccsw.teammanager.user.UserRepository;
 
 @Service
 @Transactional
 public class GroupServiceImpl implements GroupService {
 
     @Autowired
-    PersonRepository personRepository;
+    private PersonRepository personRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private GroupRepository groupRepository;
 
     @Autowired
-    GroupRepository groupRepository;
+    private GroupSubgroupRepository groupSubgroupRepository;
 
     @Autowired
-    GroupSubgroupRepository groupSubgroupRepository;
+    private GroupManagerRepository groupManagerRepository;
 
     @Autowired
-    GroupManagerRepository groupManagerRepository;
-
-    @Autowired
-    GroupMemberRepository groupMemberRepository;
-
-    @Autowired
-    PublicGroupRepository publicGroupRepository;
-
-    @Override
-    public List<PublicGroupEntity> findPublicGroupsFromConnectedUser() {
-
-        String username = UserUtils.getUserDetails().getUsername();
-
-        return publicGroupRepository.findByUsername(username);
-    }
+    private GroupMemberRepository groupMemberRepository;
 
     @Override
     public List<GroupEntity> getSubgroups(String name) {
 
         name = name.replaceAll(" ", "%");
-        return this.groupRepository.filtrarGrupos(name);
+        return this.groupRepository.findByName(name);
     }
 
     @Override
     public List<PersonEntity> getPersons(String name) {
 
         name = name.replaceAll(" ", "%");
-        return this.personRepository.filtrarPersonasActivas(name);
+        return this.personRepository.findByTextAndActive(name);
     }
 
     @Override
     @Transactional
-    public GroupEntity save(GroupDto data){
-        if (data.getId() == null) {
-            throw new EntityNotFoundException();
+    public GroupEntity save(GroupDto data) {
+        if (data.getExternalId() != null) {
+            return saveExternalGroup(data);
         }
-        
-        GroupEntity groupEntity = new GroupEntity();
-        groupEntity=this.groupRepository.findById(data.getId()).orElse(null);
-        groupEntity.setName(data.getName());
-                       
-        this.groupManagerRepository.deleteAllById(data.getId());
-        this.groupMemberRepository.deleteAllById(data.getId());
-        this.groupSubgroupRepository.deleteAllById(data.getId());
-        
-        BeanUtils.copyProperties(data, groupEntity);
-        this.groupRepository.save(groupEntity);
-        
-        ArrayList<GroupManagerEntity> managers= new ArrayList<GroupManagerEntity>();
-        ArrayList<GroupMemberEntity> members = new ArrayList<GroupMemberEntity>();
-        ArrayList<GroupSubgroupEntity> subgroups = new ArrayList<GroupSubgroupEntity>();
-        
-        for (int i = 0; i < data.getManagers().size(); i++) {
-        	GroupManagerEntity groupManagerEntity = new GroupManagerEntity();
-        	groupManagerEntity.setPerson_id(data.getManagers().get(i).getId());
-        	groupManagerEntity.setGroup_id(groupEntity.getId());
-        	this.groupManagerRepository.save(groupManagerEntity);        	
-        	managers.add(groupManagerEntity);
-        }
-        
-        for (int i = 0; i < data.getMembers().size(); i++) {
-        	GroupMemberEntity groupMemberEntity = new GroupMemberEntity();
-        	groupMemberEntity.setMember_id(data.getMembers().get(i).getId());
-        	groupMemberEntity.setGroup_id(groupEntity.getId());
-        	this.groupMemberRepository.save(groupMemberEntity);
-        	members.add(groupMemberEntity);
-        }
-        
-        for (int i = 0; i < data.getSubgroups().size(); i++) {
-        	GroupSubgroupEntity groupSubgroupEntity = new GroupSubgroupEntity();
-        	groupSubgroupEntity.setSubgroup_id(data.getSubgroups().get(i).getId());
-        	groupSubgroupEntity.setGroup_id(groupEntity.getId());
-        	this.groupSubgroupRepository.save(groupSubgroupEntity);
-        	subgroups.add(groupSubgroupEntity);
-        }
-        
-        return groupEntity;
-    }  
-    
+
+        return saveInternalGroup(data);
+    }
+
     @Override
     public EditGroupDto getGroup(long id) {
 
@@ -131,9 +72,9 @@ public class GroupServiceImpl implements GroupService {
         editGroup.setExternalId(group.getExternalId());
         editGroup.setPublicGroup(group.isPublicGroup());
 
-        List<PersonEntity> managers = this.groupManagerRepository.filtrarManagersDelGrupo(id);
-        List<PersonEntity> members = this.groupMemberRepository.filtrarMiembrosDelGrupo(id);
-        List<GroupEntity> subgroups = this.groupSubgroupRepository.filtrarSubgruposDelGrupo(id);
+        List<PersonEntity> managers = this.groupManagerRepository.findManagersByGroupId(id);
+        List<PersonEntity> members = this.groupMemberRepository.findMembersByGroupId(id);
+        List<GroupEntity> subgroups = this.groupSubgroupRepository.findSubgroupsByGroupId(id);
 
         editGroup.setManagers(managers);
         editGroup.setMembers(members);
@@ -142,46 +83,41 @@ public class GroupServiceImpl implements GroupService {
         return editGroup;
     }
 
-    @Override
-    public RespuestaValidarBorradoDto validarUsuario(Long group_id) {
+    private GroupEntity saveInternalGroup(GroupDto data) {
 
-        RespuestaValidarBorradoDto response = new RespuestaValidarBorradoDto();
-        response.setTitulo("Error de validacion.");
-        PersonEntity userId = new PersonEntity();
-        userId = this.personRepository.findIdByUsername(UserUtils.getUserDetails().getUsername());
-        Long existe = this.groupManagerRepository.validarGestor(Long.valueOf(group_id), Long.valueOf(userId.getId()));
+        GroupEntity groupEntity = new GroupEntity();
+        groupEntity = this.groupRepository.findById(data.getId()).orElse(null);
+        groupEntity.setName(data.getName());
 
-        if (UserUtils.hasRole("ADMIN")) {
-            if (this.groupSubgroupRepository.comprobarSubgrupo(group_id) != 0) {
-                response.setInformacion("El grupo tiene subgrupos asignados. No se puede borrar.");
-                response.setActivo(true);
-            } else {
-                borrarGrupo(group_id);
-                response.setActivo(false);
-            }
-        } else if (existe != 0) {
-            if (this.groupSubgroupRepository.comprobarSubgrupo(group_id) != 0) {
-                response.setInformacion("El grupo tiene subgrupos asignados. No se puede borrar.");
-                response.setActivo(true);
-            } else {
-                borrarGrupo(group_id);
-                response.setActivo(false);
-            }
-        } else {
-            response.setInformacion("No eres ni gestor ni admin, no puedes borrar el grupo.");
-            response.setActivo(true);
+        this.groupManagerRepository.deleteByGroupId(data.getId());
+        this.groupMemberRepository.deleteByGroupId(data.getId());
+        this.groupSubgroupRepository.deleteByGroupId(data.getId());
+
+        BeanUtils.copyProperties(data, groupEntity);
+        this.groupRepository.save(groupEntity);
+
+        for (int i = 0; i < data.getManagers().size(); i++) {
+            GroupManagerEntity groupManagerEntity = new GroupManagerEntity();
+            groupManagerEntity.setPerson_id(data.getManagers().get(i).getId());
+            groupManagerEntity.setGroup_id(groupEntity.getId());
+            this.groupManagerRepository.save(groupManagerEntity);
         }
 
-        return response;
-    }
+        for (int i = 0; i < data.getMembers().size(); i++) {
+            GroupMemberEntity groupMemberEntity = new GroupMemberEntity();
+            groupMemberEntity.setMember_id(data.getMembers().get(i).getId());
+            groupMemberEntity.setGroup_id(groupEntity.getId());
+            this.groupMemberRepository.save(groupMemberEntity);
+        }
 
-    @Override
-    public void borrarGrupo(Long subgroup_id) {
+        for (int i = 0; i < data.getSubgroups().size(); i++) {
+            GroupSubgroupEntity groupSubgroupEntity = new GroupSubgroupEntity();
+            groupSubgroupEntity.setSubgroup_id(data.getSubgroups().get(i).getId());
+            groupSubgroupEntity.setGroup_id(groupEntity.getId());
+            this.groupSubgroupRepository.save(groupSubgroupEntity);
+        }
 
-        this.groupManagerRepository.deleteAllById(subgroup_id);
-        this.groupMemberRepository.deleteAllById(subgroup_id);
-        this.groupSubgroupRepository.deleteAllById(subgroup_id);
-        this.groupRepository.deleteById(subgroup_id);
+        return groupEntity;
     }
 
     private GroupEntity saveExternalGroup(GroupDto data) {
@@ -193,57 +129,6 @@ public class GroupServiceImpl implements GroupService {
 
         return group;
 
-    }
-
-    private GroupEntity saveLocalGroup(GroupDto data) {
-
-        GroupEntity group = new GroupEntity();
-        ArrayList<GroupManagerEntity> managersGuardados = new ArrayList<GroupManagerEntity>();
-        ArrayList<GroupMemberEntity> membersGuardados = new ArrayList<GroupMemberEntity>();
-        ArrayList<GroupSubgroupEntity> subgroupsGuardados = new ArrayList<GroupSubgroupEntity>();
-
-        if (data.getId() != null) {
-            group = this.groupRepository.findById(data.getId()).orElse(null);
-            group.setName(data.getName());
-            this.groupManagerRepository.deleteAllById(data.getId());
-            this.groupMemberRepository.deleteAllById(data.getId());
-            if (this.groupSubgroupRepository.findById(data.getId()) != null)
-                this.groupSubgroupRepository.deleteAllById(data.getId());
-        }
-
-        BeanUtils.copyProperties(data, group);
-
-        this.groupRepository.save(group);
-
-        for (int i = 0; i < data.getManagers().size(); i++) {
-            GroupManagerEntity groupManager = new GroupManagerEntity();
-            groupManager.setPerson_id(data.getManagers().get(i).getId());
-            groupManager.setGroup_id(group.getId());
-            if (!managersGuardados.contains(groupManager))
-                this.groupManagerRepository.save(groupManager);
-            managersGuardados.add(groupManager);
-        }
-        if (data.getMembers() != null) {
-            for (int i = 0; i < data.getMembers().size(); i++) {
-                GroupMemberEntity groupMember = new GroupMemberEntity();
-                groupMember.setMember_id(data.getMembers().get(i).getId());
-                groupMember.setGroup_id(group.getId());
-                if (!membersGuardados.contains(groupMember))
-                    this.groupMemberRepository.save(groupMember);
-                membersGuardados.add(groupMember);
-            }
-        }
-        if (data.getSubgroups() != null) {
-            for (int i = 0; i < data.getSubgroups().size(); i++) {
-                GroupSubgroupEntity groupSubgroups = new GroupSubgroupEntity();
-                groupSubgroups.setSubgroup_id(data.getSubgroups().get(i).getId());
-                groupSubgroups.setGroup_id(group.getId());
-                if (!subgroupsGuardados.contains(groupSubgroups))
-                    this.groupSubgroupRepository.save(groupSubgroups);
-                subgroupsGuardados.add(groupSubgroups);
-            }
-        }
-        return group;
     }
 
 }

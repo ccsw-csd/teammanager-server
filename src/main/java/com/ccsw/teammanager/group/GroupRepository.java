@@ -13,5 +13,5 @@ import com.ccsw.teammanager.group.model.GroupEntity;
 public interface GroupRepository extends CrudRepository<GroupEntity, Long> {
 
   @Query(value = "select * from `group` where name LIKE %:name% LIMIT 15", nativeQuery = true)
-  public List<GroupEntity> filtrarGrupos(@Param("name") String name);
+  public List<GroupEntity> findByName(@Param("name") String name);
 }

@@ -16,24 +16,18 @@ import com.ccsw.teammanager.group.model.GroupSubgroupEntity;
  */
 public interface GroupSubgroupRepository extends CrudRepository<GroupSubgroupEntity, Long> {
 
-  /**
-   * @param id
-   * @return
-   */
-  @Query(value = "select sg from GroupEntity sg where sg.id in (select gsub.subgroup_id from GroupSubgroupEntity gsub where gsub.group_id = :id)")
-  public List<GroupEntity> filtrarSubgruposDelGrupo(@Param("id") long id);
+    /**
+     * @param id
+     * @return
+     */
+    @Query(value = "select sg from GroupEntity sg where sg.id in (select gsub.subgroup_id from GroupSubgroupEntity gsub where gsub.group_id = :id)")
+    public List<GroupEntity> findSubgroupsByGroupId(@Param("id") long id);
 
-  /**
-   * @param id
-   */
-  @Modifying
-  @Query(value = "delete from GroupSubgroupEntity where group_id = :id")
-  void deleteAllById(Long id);
+    /**
+     * @param id
+     */
+    @Modifying
+    @Query(value = "delete from GroupSubgroupEntity where group_id = :id")
+    void deleteByGroupId(Long id);
 
-  /**
-   * @param subgroup_id
-   * @return
-   */
-  @Query("select count(sg) from GroupSubgroupEntity sg where subgroup_id = :sbgr")
-  public int comprobarSubgrupo(@Param("sbgr") Long sbgr);
 }

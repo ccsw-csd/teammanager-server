@@ -8,6 +8,6 @@ import com.ccsw.teammanager.centerFestive.model.FestiveAuditEntity;
  * @author aolmosca
  *
  */
-public interface FestiveAuditRepository extends CrudRepository<FestiveAuditEntity, String> {
+public interface FestiveAuditRepository extends CrudRepository<FestiveAuditEntity, Long> {
 
 }

@@ -20,12 +20,12 @@ public interface GroupMemberRepository extends CrudRepository<GroupMemberEntity,
    * @return
    */
   @Query(value = "select p from PersonEntity p where id in (select gmem.person_id from GroupMemberEntity gmem where gmem.group_id = :id)")
-  public List<PersonEntity> filtrarMiembrosDelGrupo(@Param("id") long id);
+  public List<PersonEntity> findMembersByGroupId(@Param("id") long id);
 
   /**
    * @param id
    */
   @Modifying
   @Query(value = "delete from GroupMemberEntity where group_id = :id")
-  void deleteAllById(Long id);
+  void deleteByGroupId(Long id);
 }
