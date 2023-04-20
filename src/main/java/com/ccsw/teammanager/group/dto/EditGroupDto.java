@@ -1,7 +1,8 @@
-package com.ccsw.teammanager.group.model;
+package com.ccsw.teammanager.group.dto;
 
 import java.util.List;
 
+import com.ccsw.teammanager.group.model.GroupEntity;
 import com.ccsw.teammanager.person.model.PersonEntity;
 
 /**

@@ -1,38 +1,20 @@
-package com.ccsw.teammanager.grouplist.model;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+package com.ccsw.teammanager.group.dto;
 
 /**
- * @author apastorm
+ * TODO apastorm This type ...
  *
  */
-@Entity
-@Table(name = "v_group_list")
-public class GroupListEntity {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "id", nullable = false)
+public class GroupListDto {
   private Long id;
 
-  @Column(name = "name", nullable = false)
   private String name;
 
-  @Column(name = "manager")
   private String manager;
 
-  @Column(name = "members")
   private Long members;
 
-  @Column(name = "subgroups")
   private Long subgroups;
 
-  @Column(name = "external_id")
   private String externalId;
 
   /**
@@ -76,7 +58,7 @@ public class GroupListEntity {
   }
 
   /**
-   * @param managers new value of {@link #getmanager}.
+   * @param manager new value of {@link #getmanager}.
    */
   public void setManager(String manager) {
 
@@ -84,7 +66,7 @@ public class GroupListEntity {
   }
 
   /**
-   * @return members
+   * @return users
    */
   public Long getMembers() {
 
@@ -92,7 +74,7 @@ public class GroupListEntity {
   }
 
   /**
-   * @param members new value of {@link #getmembers}.
+   * @param users new value of {@link #getusers}.
    */
   public void setMembers(Long members) {
 
@@ -120,7 +102,7 @@ public class GroupListEntity {
    */
   public String getExternalId() {
 
-    return this.externalId;
+    return externalId;
   }
 
   /**

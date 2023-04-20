@@ -1,4 +1,4 @@
-package com.ccsw.teammanager.grouplist.model;
+package com.ccsw.teammanager.group.dto;
 
 import org.springframework.data.domain.Pageable;
 

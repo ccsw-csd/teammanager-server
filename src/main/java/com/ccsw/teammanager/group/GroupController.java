@@ -1,4 +1,4 @@
-package com.ccsw.teammanager.grouplist;
+package com.ccsw.teammanager.group;
 
 import java.util.List;
 
@@ -11,18 +11,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ccsw.teammanager.config.mapper.BeanMapper;
-import com.ccsw.teammanager.group.GroupService;
-import com.ccsw.teammanager.group.model.EditGroupDto;
-import com.ccsw.teammanager.group.model.GroupDto;
-import com.ccsw.teammanager.grouplist.model.GroupListDto;
-import com.ccsw.teammanager.person.model.PersonDto;
+import com.ccsw.teammanager.group.dto.EditGroupDto;
+import com.ccsw.teammanager.group.dto.GroupDto;
+import com.ccsw.teammanager.group.dto.GroupListDto;
 
-@RequestMapping(value = "/grouplist")
+@RequestMapping(value = "/group")
 @RestController
-public class GroupListController {
-
-    @Autowired
-    private GroupListService groupListService;
+public class GroupController {
 
     @Autowired
     private GroupService groupService;
@@ -33,15 +28,15 @@ public class GroupListController {
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public List<GroupListDto> findAll(@RequestParam(defaultValue = "false", value = "adminView") boolean adminView) {
 
-        return this.beanMapper.mapList(this.groupListService.findAll(adminView), GroupListDto.class);
+        return this.beanMapper.mapList(this.groupService.findAll(adminView), GroupListDto.class);
     }
 
     /**
      * @param name
      * @return
      */
-    @RequestMapping(path = "/subgroups/", method = RequestMethod.POST)
-    public List<GroupDto> getSubgroups(@RequestBody String name) {
+    @RequestMapping(path = "/find/{name}", method = RequestMethod.GET)
+    public List<GroupDto> getSubgroups(@PathVariable String name) {
 
         return this.beanMapper.mapList(this.groupService.getSubgroups(name), GroupDto.class);
     }
@@ -50,20 +45,10 @@ public class GroupListController {
      * @param name
      * @return
      */
-    @RequestMapping(path = "/editgroup/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
     public EditGroupDto getGroup(@PathVariable Long id) {
 
         return this.beanMapper.map(this.groupService.getGroup(id), EditGroupDto.class);
-    }
-
-    /**
-     * @param prefix
-     * @return
-     */
-    @RequestMapping(path = "/persons/", method = RequestMethod.POST)
-    public List<PersonDto> getPersons(@RequestBody String name) {
-
-        return this.beanMapper.mapList(this.groupService.getPersons(name), PersonDto.class);
     }
 
     /**

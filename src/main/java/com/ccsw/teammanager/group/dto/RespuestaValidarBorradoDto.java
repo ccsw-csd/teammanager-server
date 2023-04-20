@@ -1,4 +1,4 @@
-package com.ccsw.teammanager.group.model;
+package com.ccsw.teammanager.group.dto;
 
 /**
  * TODO apastorm This type ...

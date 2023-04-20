@@ -8,21 +8,24 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ccsw.teammanager.group.model.EditGroupDto;
-import com.ccsw.teammanager.group.model.GroupDto;
+import com.ccsw.teammanager.config.security.UserUtils;
+import com.ccsw.teammanager.group.dto.EditGroupDto;
+import com.ccsw.teammanager.group.dto.GroupDto;
 import com.ccsw.teammanager.group.model.GroupEntity;
+import com.ccsw.teammanager.group.model.GroupListEntity;
 import com.ccsw.teammanager.group.model.GroupManagerEntity;
 import com.ccsw.teammanager.group.model.GroupMemberEntity;
 import com.ccsw.teammanager.group.model.GroupSubgroupEntity;
-import com.ccsw.teammanager.person.PersonRepository;
+import com.ccsw.teammanager.group.repository.GroupListRepository;
+import com.ccsw.teammanager.group.repository.GroupManagerRepository;
+import com.ccsw.teammanager.group.repository.GroupMemberRepository;
+import com.ccsw.teammanager.group.repository.GroupRepository;
+import com.ccsw.teammanager.group.repository.GroupSubgroupRepository;
 import com.ccsw.teammanager.person.model.PersonEntity;
 
 @Service
 @Transactional
 public class GroupServiceImpl implements GroupService {
-
-    @Autowired
-    private PersonRepository personRepository;
 
     @Autowired
     private GroupRepository groupRepository;
@@ -36,18 +39,14 @@ public class GroupServiceImpl implements GroupService {
     @Autowired
     private GroupMemberRepository groupMemberRepository;
 
+    @Autowired
+    private GroupListRepository groupListRepository;
+
     @Override
     public List<GroupEntity> getSubgroups(String name) {
 
         name = name.replaceAll(" ", "%");
         return this.groupRepository.findByName(name);
-    }
-
-    @Override
-    public List<PersonEntity> getPersons(String name) {
-
-        name = name.replaceAll(" ", "%");
-        return this.personRepository.findByTextAndActive(name);
     }
 
     @Override
@@ -81,6 +80,23 @@ public class GroupServiceImpl implements GroupService {
         editGroup.setSubgroups(subgroups);
 
         return editGroup;
+    }
+
+    @Override
+    public List<GroupListEntity> findAll(boolean adminView) {
+        if (userIsAdmin() && adminView) {
+            return this.groupListRepository.findAll();
+        }
+
+        return this.groupListRepository.findManagedGroups(UserUtils.getUserDetails().getUsername());
+    }
+
+    /**
+     * @return
+     */
+    private boolean userIsAdmin() {
+
+        return UserUtils.hasRole("ADMIN");
     }
 
     private GroupEntity saveInternalGroup(GroupDto data) {

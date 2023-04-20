@@ -2,10 +2,10 @@ package com.ccsw.teammanager.group;
 
 import java.util.List;
 
-import com.ccsw.teammanager.group.model.EditGroupDto;
-import com.ccsw.teammanager.group.model.GroupDto;
+import com.ccsw.teammanager.group.dto.EditGroupDto;
+import com.ccsw.teammanager.group.dto.GroupDto;
 import com.ccsw.teammanager.group.model.GroupEntity;
-import com.ccsw.teammanager.person.model.PersonEntity;
+import com.ccsw.teammanager.group.model.GroupListEntity;
 
 /**
  * TODO apastorm This type ...
@@ -28,17 +28,16 @@ public interface GroupService {
     List<GroupEntity> getSubgroups(String name);
 
     /**
-     * Recupera un listado de personas por su nombre
-     * @param name
-     * @return
-     */
-    List<PersonEntity> getPersons(String name);
-
-    /**
      * Guarda la información de un grupo
      * @param data
      * @return
      */
     GroupEntity save(GroupDto data);
 
+    /**
+     * Recupera los grupos
+     * @param adminView
+     * @return
+     */
+    List<GroupListEntity> findAll(boolean adminView);
 }

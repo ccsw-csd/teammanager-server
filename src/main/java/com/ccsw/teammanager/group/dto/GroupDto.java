@@ -1,6 +1,10 @@
-package com.ccsw.teammanager.group.model;
+package com.ccsw.teammanager.group.dto;
 
 import java.util.List;
+
+import com.ccsw.teammanager.group.model.GroupManagerEntity;
+import com.ccsw.teammanager.group.model.GroupMemberEntity;
+import com.ccsw.teammanager.group.model.GroupSubgroupEntity;
 
 /**
  * TODO apastorm This type ...

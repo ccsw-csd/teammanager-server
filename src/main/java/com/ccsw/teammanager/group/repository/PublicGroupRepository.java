@@ -1,4 +1,4 @@
-package com.ccsw.teammanager.group;
+package com.ccsw.teammanager.group.repository;
 
 import org.springframework.data.repository.CrudRepository;
 

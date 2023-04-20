@@ -1,4 +1,4 @@
-package com.ccsw.teammanager.grouplist;
+package com.ccsw.teammanager.group.repository;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.ccsw.teammanager.grouplist.model.GroupListEntity;
+import com.ccsw.teammanager.group.model.GroupListEntity;
 
 @Repository
 public interface GroupListRepository extends CrudRepository<GroupListEntity, Long> {
