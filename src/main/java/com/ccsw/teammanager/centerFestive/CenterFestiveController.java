@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,6 +45,16 @@ public class CenterFestiveController {
         return this.beanMapper.mapList(festiveList, CenterFestiveDto.class);
         // return this.beanMapper.mapList(this.centerFestiveService.findAll(),
         // CenterFestiveDto.class);
+    }
+
+    /**
+     * @param data
+     * @return
+     */
+    @RequestMapping(path = "", method = RequestMethod.PUT)
+    public CenterFestiveDto save(@RequestBody CenterFestiveDto data) {
+
+        return this.beanMapper.map(this.centerFestiveService.save(data), CenterFestiveDto.class);
     }
 
 }
