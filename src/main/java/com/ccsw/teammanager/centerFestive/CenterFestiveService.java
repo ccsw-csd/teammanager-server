@@ -28,4 +28,12 @@ public interface CenterFestiveService {
      * @return
      */
     CenterFestiveEntity save(CenterFestiveDto data);
+
+    /**
+     * Método para eliminar un festivo
+     * 
+     * @param data
+     * @return
+     */
+    void delete(Long id) throws Exception;
 }

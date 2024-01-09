@@ -47,4 +47,14 @@ public class CenterFestiveServiceImpl implements CenterFestiveService {
         System.out.println("Centro: " + festive.getCenterId());
         return this.centerFestiveRepository.save(festive);
     }
+
+    @Override
+    public void delete(Long id) throws Exception {
+
+        if (this.centerFestiveRepository.findById(id).orElse(null) == null) {
+            throw new Exception("Not exists");
+        }
+
+        this.centerFestiveRepository.deleteById(id);
+    }
 }

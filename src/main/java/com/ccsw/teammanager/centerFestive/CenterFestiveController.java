@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -55,6 +56,17 @@ public class CenterFestiveController {
     public CenterFestiveDto save(@RequestBody CenterFestiveDto data) {
 
         return this.beanMapper.map(this.centerFestiveService.save(data), CenterFestiveDto.class);
+    }
+
+    /**
+     * Método para borrar un {@link CenterFestiveEntity}
+     *
+     * @param id PK del festivo
+     */
+    @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable("id") Long id) throws Exception {
+
+        this.centerFestiveService.delete(id);
     }
 
 }
