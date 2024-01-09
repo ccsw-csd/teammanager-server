@@ -44,8 +44,6 @@ public class CenterFestiveController {
         }
 
         return this.beanMapper.mapList(festiveList, CenterFestiveDto.class);
-        // return this.beanMapper.mapList(this.centerFestiveService.findAll(),
-        // CenterFestiveDto.class);
     }
 
     /**
