@@ -34,17 +34,11 @@ public class CenterFestiveServiceImpl implements CenterFestiveService {
     @Transactional
     public CenterFestiveEntity save(CenterFestiveDto data) {
 
-        System.out.println("Entro al metodo de insercion");
         CenterFestiveEntity festive = new CenterFestiveEntity();
         festive.setDate(data.getDate());
         festive.setMonth(data.getMonth());
         festive.setYear(data.getYear());
         festive.setCenterId(data.getCenterId());
-        System.out.println("-----FESTIVO-----");
-        System.out.println("Fecha: " + festive.getDate());
-        System.out.println("Anyo: " + festive.getYear());
-        System.out.println("Mes: " + festive.getMonth());
-        System.out.println("Centro: " + festive.getCenterId());
         return this.centerFestiveRepository.save(festive);
     }
 
