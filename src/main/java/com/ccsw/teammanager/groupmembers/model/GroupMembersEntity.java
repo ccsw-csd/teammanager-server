@@ -17,7 +17,7 @@ public class GroupMembersEntity {
     private String id;
 
     @Column(name = "group_id")
-    private Long group_id;
+    private Long groupId;
 
     @Column(name = "person_id")
     private Long person_id;
@@ -30,12 +30,12 @@ public class GroupMembersEntity {
         this.id = id;
     }
 
-    public Long getGroup_id() {
-        return group_id;
+    public Long getGroupId() {
+        return groupId;
     }
 
-    public void setGroup_id(Long group_id) {
-        this.group_id = group_id;
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
     }
 
     public Long getPerson_id() {
