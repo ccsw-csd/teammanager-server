@@ -21,7 +21,7 @@ public class PersonAbsenceServiceImpl implements PersonAbsenceService {
     @Override
     public List<PersonAbsenceEntity> findAbsences(Long personId, Date startDate, Date endDate) {
         PersonEntity person = new PersonEntity();
-        person.setId(personId.intValue());
+        person.setId(personId);
         return personAbsenceRepository.findByPersonAndDateBetween(person, startDate, endDate);
     }
 

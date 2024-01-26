@@ -1,6 +1,7 @@
 package com.ccsw.teammanager.person;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.ccsw.teammanager.person.model.PersonEntity;
 
@@ -13,4 +14,6 @@ public interface PersonService {
     PersonEntity getByUsername(String username);
 
     List<PersonEntity> findByTextAndActive(String name);
+
+    Optional<PersonEntity> findById(Long id);
 }

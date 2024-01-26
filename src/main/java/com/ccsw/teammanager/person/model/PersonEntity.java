@@ -14,209 +14,235 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "person")
 public class PersonEntity {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
-  private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-  @Column(name = "saga", nullable = false)
-  private String saga;
+    @Column(name = "saga", nullable = false)
+    private String saga;
 
-  @Column(name = "username", nullable = false)
-  private String username;
+    @Column(name = "username", nullable = false)
+    private String username;
 
-  @Column(name = "email", nullable = false)
-  private String email;
+    @Column(name = "email", nullable = false)
+    private String email;
 
-  @Column(name = "name", nullable = false)
-  private String name;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-  @Column(name = "lastname", nullable = false)
-  private String lastname;
+    @Column(name = "lastname", nullable = false)
+    private String lastname;
 
-  @Column(name = "center_id")
-  private Integer centerId;
+    @Column(name = "center_id")
+    private Long centerId;
 
-  @Column(name = "businesscode")
-  private String businesscode;
+    @Column(name = "businesscode")
+    private String businesscode;
 
-  @Column(name = "active", nullable = false)
-  private boolean active;
+    @Column(name = "active", nullable = false)
+    private Integer active;
 
-  @Column(name = "with_pon", nullable = false)
-  private boolean withPON;
+    @Column(name = "with_pon", nullable = false)
+    private boolean withPON;
 
-  @Column(name = "grade")
-  private String grade;
+    @Column(name = "grade")
+    private String grade;
 
-  /**
-   * @return id
-   */
-  public Integer getId() {
+    @Column(name = "created_by_ldap")
+    private boolean createdByldap;
 
-    return this.id;
-  }
+    @Column(name = "global_employee_id")
+    private String globalEmployeeId;
 
-  /**
-   * @param id new value of {@link #getid}.
-   */
-  public void setId(Integer id) {
+    /**
+     * @return id
+     */
+    public Long getId() {
 
-    this.id = id;
-  }
+        return this.id;
+    }
 
-  /**
-   * @return saga
-   */
-  public String getSaga() {
+    /**
+     * @param id new value of {@link #getid}.
+     */
+    public void setId(Long id) {
 
-    return this.saga;
-  }
+        this.id = id;
+    }
 
-  /**
-   * @param saga new value of {@link #getsaga}.
-   */
-  public void setSaga(String saga) {
+    /**
+     * @return saga
+     */
+    public String getSaga() {
 
-    this.saga = saga;
-  }
+        return this.saga;
+    }
 
-  /**
-   * @return username
-   */
-  public String getUsername() {
+    /**
+     * @param saga new value of {@link #getsaga}.
+     */
+    public void setSaga(String saga) {
 
-    return this.username;
-  }
+        this.saga = saga;
+    }
 
-  /**
-   * @param username new value of {@link #getusername}.
-   */
-  public void setUsername(String username) {
+    /**
+     * @return username
+     */
+    public String getUsername() {
 
-    this.username = username;
-  }
+        return this.username;
+    }
 
-  /**
-   * @return email
-   */
-  public String getEmail() {
+    /**
+     * @param username new value of {@link #getusername}.
+     */
+    public void setUsername(String username) {
 
-    return this.email;
-  }
+        this.username = username;
+    }
 
-  /**
-   * @param email new value of {@link #getemail}.
-   */
-  public void setEmail(String email) {
+    /**
+     * @return email
+     */
+    public String getEmail() {
 
-    this.email = email;
-  }
+        return this.email;
+    }
 
-  /**
-   * @return name
-   */
-  public String getName() {
+    /**
+     * @param email new value of {@link #getemail}.
+     */
+    public void setEmail(String email) {
 
-    return this.name;
-  }
+        this.email = email;
+    }
 
-  /**
-   * @param name new value of {@link #getname}.
-   */
-  public void setName(String name) {
+    /**
+     * @return name
+     */
+    public String getName() {
 
-    this.name = name;
-  }
+        return this.name;
+    }
 
-  /**
-   * @return lastname
-   */
-  public String getLastname() {
+    /**
+     * @param name new value of {@link #getname}.
+     */
+    public void setName(String name) {
 
-    return this.lastname;
-  }
+        this.name = name;
+    }
 
-  /**
-   * @param lastname new value of {@link #getlastname}.
-   */
-  public void setLastname(String lastname) {
+    /**
+     * @return lastname
+     */
+    public String getLastname() {
 
-    this.lastname = lastname;
-  }
+        return this.lastname;
+    }
 
-  /**
-   * @return centerId
-   */
-  public Integer getCenterId() {
+    /**
+     * @param lastname new value of {@link #getlastname}.
+     */
+    public void setLastname(String lastname) {
 
-    return this.centerId;
-  }
+        this.lastname = lastname;
+    }
 
-  /**
-   * @param centeId new value of {@link #getcenter_id}.
-   */
-  public void setCenterId(Integer centerId) {
+    /**
+     * @return centerId
+     */
+    public Long getCenterId() {
 
-    this.centerId = centerId;
-  }
+        return this.centerId;
+    }
 
-  /**
-   * @return businesscode
-   */
-  public String getBusinesscode() {
+    /**
+     * @param centeId new value of {@link #getcenter_id}.
+     */
+    public void setCenterId(Long centerId) {
 
-    return this.businesscode;
-  }
+        this.centerId = centerId;
+    }
 
-  /**
-   * @param businesscode new value of {@link #getbusinesscode}.
-   */
-  public void setBusinesscode(String businesscode) {
+    /**
+     * @return businesscode
+     */
+    public String getBusinesscode() {
 
-    this.businesscode = businesscode;
-  }
+        return this.businesscode;
+    }
 
-  /**
-   * @return active
-   */
-  public boolean getActive() {
+    /**
+     * @param businesscode new value of {@link #getbusinesscode}.
+     */
+    public void setBusinesscode(String businesscode) {
 
-    return this.active;
-  }
+        this.businesscode = businesscode;
+    }
 
-  /**
-   * @param active new value of {@link #getactive}.
-   */
-  public void setActive(boolean active) {
+    /**
+     * @return active
+     */
+    public Integer getActive() {
 
-    this.active = active;
-  }
+        return this.active;
+    }
 
-  /**
-   * @return withPON
-   */
-  public boolean isWithPON() {
+    /**
+     * @param active new value of {@link #getactive}.
+     */
+    public void setActive(Integer active) {
 
-    return this.withPON;
-  }
+        this.active = active;
+    }
 
-  /**
-   * @param withPON new value of {@link #getwithPON}.
-   */
-  public void setWithPON(boolean withPON) {
+    /**
+     * @return withPON
+     */
+    public boolean isWithPON() {
 
-    this.withPON = withPON;
-  }
+        return this.withPON;
+    }
 
-  public String getGrade() {
+    /**
+     * @param withPON new value of {@link #getwithPON}.
+     */
+    public void setWithPON(boolean withPON) {
 
-    return grade;
-  }
+        this.withPON = withPON;
+    }
 
-  public void setGrade(String grade) {
+    public String getGrade() {
 
-    this.grade = grade;
-  }
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+
+        this.grade = grade;
+    }
+
+    public boolean isCreatedByldap() {
+        return createdByldap;
+    }
+
+    public void setCreatedByldap(boolean createdByldap) {
+        this.createdByldap = createdByldap;
+    }
+
+    public String getGlobalEmployeeId() {
+        return globalEmployeeId;
+    }
+
+    public void setGlobalEmployeeId(String globalEmployeeId) {
+        this.globalEmployeeId = globalEmployeeId;
+    }
+
+    public boolean getWithPON() {
+        return withPON;
+    }
 
 }
