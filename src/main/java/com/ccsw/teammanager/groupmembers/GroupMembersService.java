@@ -6,6 +6,6 @@ import com.ccsw.teammanager.groupmembers.model.GroupMembersEntity;
 
 public interface GroupMembersService {
 
-    List<GroupMembersEntity> findByGroupId(Long group_id);
+    List<GroupMembersEntity> findByGroupId(Long groupId);
 
 }

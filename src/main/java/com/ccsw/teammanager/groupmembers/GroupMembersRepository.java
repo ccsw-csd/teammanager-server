@@ -11,5 +11,5 @@ import com.ccsw.teammanager.groupmembers.model.GroupMembersEntity;
 */
 public interface GroupMembersRepository extends CrudRepository<GroupMembersEntity, Long> {
 
-    List<GroupMembersEntity> findByGroupId(Long group_id);
+    List<GroupMembersEntity> findByGroupId(Long groupId);
 }

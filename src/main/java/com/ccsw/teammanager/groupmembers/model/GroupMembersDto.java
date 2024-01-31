@@ -4,9 +4,9 @@ public class GroupMembersDto {
 
     private String id;
 
-    private Long group_id;
+    private Long groupId;
 
-    private Long person_id;
+    private Long personId;
 
     public String getId() {
         return id;
@@ -16,20 +16,20 @@ public class GroupMembersDto {
         this.id = id;
     }
 
-    public Long getGroup_id() {
-        return group_id;
+    public Long getGroupId() {
+        return groupId;
     }
 
-    public void setGroup_id(Long group_id) {
-        this.group_id = group_id;
+    public void setGroup_id(Long groupId) {
+        this.groupId = groupId;
     }
 
-    public Long getPerson_id() {
-        return person_id;
+    public Long getPersonId() {
+        return personId;
     }
 
-    public void setPerson_id(Long person_id) {
-        this.person_id = person_id;
+    public void setPersonId(Long personId) {
+        this.personId = personId;
     }
 
 }

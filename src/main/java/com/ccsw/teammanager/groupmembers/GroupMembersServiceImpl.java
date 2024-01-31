@@ -17,8 +17,8 @@ public class GroupMembersServiceImpl implements GroupMembersService {
     GroupMembersRepository groupMembersRepository;
 
     @Override
-    public List<GroupMembersEntity> findByGroupId(Long group_id) {
-        return groupMembersRepository.findByGroupId(group_id);
+    public List<GroupMembersEntity> findByGroupId(Long groupId) {
+        return groupMembersRepository.findByGroupId(groupId);
     }
 
 }

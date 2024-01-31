@@ -20,7 +20,7 @@ public class GroupMembersEntity {
     private Long groupId;
 
     @Column(name = "person_id")
-    private Long person_id;
+    private Long personId;
 
     public String getId() {
         return id;
@@ -38,12 +38,12 @@ public class GroupMembersEntity {
         this.groupId = groupId;
     }
 
-    public Long getPerson_id() {
-        return person_id;
+    public Long getPersonId() {
+        return personId;
     }
 
-    public void setPerson_id(Long person_id) {
-        this.person_id = person_id;
+    public void setPersonId(Long personId) {
+        this.personId = personId;
     }
 
 }
