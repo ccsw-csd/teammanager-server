@@ -14,4 +14,6 @@ import com.ccsw.teammanager.personabsence.model.PersonAbsenceEntity;
 public interface PersonAbsenceRepository extends CrudRepository<PersonAbsenceEntity, String> {
 
     List<PersonAbsenceEntity> findByPersonAndDateBetween(PersonEntity person, Date startDate, Date endDate);
+
+    List<PersonAbsenceEntity> findByPersonIdAndYearAndMonth(Long person_id, Integer year, Integer month);
 }
