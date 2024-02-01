@@ -16,4 +16,6 @@ public interface PersonService {
     List<PersonEntity> findByTextAndActive(String name);
 
     Optional<PersonEntity> findById(Long id);
+
+    List<PersonEntity> findAllById(List<Long> idMembers);
 }

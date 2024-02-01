@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -63,45 +64,81 @@ public class GroupMembersController {
         List<GroupMembersDto> members = this.beanMapper.mapList(this.groupMembersService.findByGroupId(group_id),
                 GroupMembersDto.class);
 
+        LocalDate date = LocalDate.now();
+        Integer year = date.getYear();
+        Integer month = date.getMonthValue();
+
+        int workingDays;
+        int festives;
+        int others;
+        int vacations;
+
         List<Detail> details = new ArrayList<>();
 
-        LocalDate date = LocalDate.now();
-        int year = date.getYear();
-        int month = date.getMonthValue();
+        // Formo lista con los ID de los miembros del grupo
+        List<Long> idMembers = members.stream().map(GroupMembersDto::getPersonId).collect(Collectors.toList());
 
-        int workingDays = 0;
-        int festives = 0;
-        int others = 0;
-        int vacations = 0;
+        // Recoger nombre de los miembros del grupo
+
+        List<PersonEntity> persons = personService.findAllById(idMembers);
+
+        // Recoger las ausencias de todos los miembros del grupo
+
+        List<PersonAbsenceEntity> membersAbsences = personAbsenceService.findAllByPersonIdInAndYearAndMonth(idMembers,
+                year, month);
+
+        System.out.println("Todas ausencias: " + membersAbsences);
+
         for (GroupMembersDto member : members) {
-            // 1º Get Person Data para recoger el nombre y asignarlo al detail
-            // 2º Get Ausencias de cada persona y asignarlo al detail
+            // 1º Asignar nombre de cada persona a su detail
+            // 2º Asignar las ausencias de cada persona a su absences
             // 3º Devolver lista details
             Detail detail = new Detail();
+            workingDays = 0;
+            festives = 0;
+            others = 0;
+            vacations = 0;
 
-            System.out.println("ID: " + member.getPersonId());
-            Optional<PersonEntity> person = personService.findById(member.getPersonId());
-            person.ifPresent(personPresent -> {
-                detail.setPerson(personPresent);
-                detail.setFullName(personPresent.getName() + " " + personPresent.getLastname());
+            // Obtener datos del miembro
+            Optional<PersonEntity> personOptional = persons.stream()
+                    .filter(person -> person.getId().equals(member.getPersonId())).findFirst();
+
+            personOptional.ifPresent(person -> {
+                detail.setPerson(person);
+                detail.setFullName(person.getName() + " " + person.getLastname());
             });
 
-            System.out.println(detail.getFullName());
-            List<PersonAbsenceEntity> memberAbsences = personAbsenceService
-                    .findAbsencesByIdAndDate(member.getPersonId(), year, month);
+            // Obtener las ausencias correspondientes al miembro
+            List<PersonAbsenceEntity> absences = membersAbsences.stream()
+                    .filter(absence -> absence.getPerson().getId().equals(member.getPersonId()))
+                    .collect(Collectors.toList());
 
-            detail.setAbsences(memberAbsences);
-
-            // for(PersonAbsenceEntity absence: memberAbsences) {
-            // TODO: Realizar comprobacion del tipo de festivo
+            detail.setAbsences(absences);
 
             detail.setWorkingDays(workingDays);
+
+            for (PersonAbsenceEntity absence : absences) {
+                // TODO: Realizar comprobacion del tipo de festivo
+
+                switch (absence.getType()) {
+                case "VAC":
+                    vacations++;
+                    break;
+                case "OTH":
+                    others++;
+                    break;
+                default:
+                    festives++;
+                    break;
+
+                }
+
+            }
+
+            detail.setWorkingDays(29);
             detail.setFestives(festives);
             detail.setOthers(others);
             detail.setVacations(vacations);
-
-            // }
-
             details.add(detail);
 
         }

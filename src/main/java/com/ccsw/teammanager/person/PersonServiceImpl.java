@@ -36,4 +36,9 @@ public class PersonServiceImpl implements PersonService {
         return this.personRepository.findById(id);
     }
 
+    @Override
+    public List<PersonEntity> findAllById(List<Long> idMembers) {
+        return personRepository.findAllByIdIn(idMembers);
+    }
+
 }

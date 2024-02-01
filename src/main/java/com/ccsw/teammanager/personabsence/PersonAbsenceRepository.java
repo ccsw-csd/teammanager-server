@@ -16,4 +16,6 @@ public interface PersonAbsenceRepository extends CrudRepository<PersonAbsenceEnt
     List<PersonAbsenceEntity> findByPersonAndDateBetween(PersonEntity person, Date startDate, Date endDate);
 
     List<PersonAbsenceEntity> findByPersonIdAndYearAndMonth(Long person_id, Integer year, Integer month);
+
+    List<PersonAbsenceEntity> findAllByPersonIdInAndYearAndMonth(List<Long> personIds, Integer year, Integer month);
 }

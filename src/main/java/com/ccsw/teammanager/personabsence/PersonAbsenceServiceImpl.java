@@ -30,4 +30,10 @@ public class PersonAbsenceServiceImpl implements PersonAbsenceService {
         return personAbsenceRepository.findByPersonIdAndYearAndMonth(person_id, year, month);
     }
 
+    @Override
+    public List<PersonAbsenceEntity> findAllByPersonIdInAndYearAndMonth(List<Long> idMembers, Integer year,
+            Integer month) {
+        return personAbsenceRepository.findAllByPersonIdInAndYearAndMonth(idMembers, year, month);
+    }
+
 }
