@@ -1,12 +1,15 @@
 package com.ccsw.teammanager.groupmembers;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -59,7 +62,9 @@ public class GroupMembersController {
      */
 
     @RequestMapping(path = "", method = RequestMethod.GET)
-    public List<Detail> findDetailsMembers(@RequestParam(name = "group_id", required = true) Long group_id) {
+    public List<Detail> findDetailsMembers(@RequestParam(name = "group_id", required = true) Long group_id,
+            @RequestParam(name = "start_date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @RequestParam(name = "end_date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
 
         List<GroupMembersDto> members = this.beanMapper.mapList(this.groupMembersService.findByGroupId(group_id),
                 GroupMembersDto.class);
@@ -68,7 +73,8 @@ public class GroupMembersController {
         Integer year = date.getYear();
         Integer month = date.getMonthValue();
 
-        int workingDays;
+        int workingDays = (int) ChronoUnit.DAYS.between(startDate, endDate) + 1;
+
         int festives;
         int others;
         int vacations;
@@ -84,13 +90,13 @@ public class GroupMembersController {
 
         // Recoger las ausencias de todos los miembros del grupo
 
+        // TODO: Cambiar búsqueda a ausencias entre fechas
         month = 1;
         List<PersonAbsenceEntity> membersAbsences = personAbsenceService.findAllByPersonIdInAndYearAndMonth(membersId,
                 year, month);
 
         for (GroupMembersDto member : members) {
             Detail detail = new Detail();
-            workingDays = 0;
             festives = 0;
             others = 0;
             vacations = 0;
@@ -111,9 +117,6 @@ public class GroupMembersController {
 
             detail.setAbsences(absences);
 
-            // TODO: Calcular dias trabajados
-            detail.setWorkingDays(workingDays);
-
             for (PersonAbsenceEntity absence : absences) {
 
                 switch (absence.getType()) {
@@ -131,7 +134,7 @@ public class GroupMembersController {
 
             }
 
-            detail.setWorkingDays(29);
+            detail.setWorkingDays(workingDays - festives - others - vacations);
             detail.setFestives(festives);
             detail.setOthers(others);
             detail.setVacations(vacations);
