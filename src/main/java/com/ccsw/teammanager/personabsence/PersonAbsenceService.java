@@ -11,5 +11,5 @@ public interface PersonAbsenceService {
 
     List<PersonAbsenceEntity> findAbsencesByIdAndDate(Long person_id, Integer year, Integer month);
 
-    List<PersonAbsenceEntity> findAllByPersonIdInAndYearAndMonth(List<Long> idMembers, Integer year, Integer month);
+    List<PersonAbsenceEntity> findAllByPersonIdInAndYearAndMonth(List<Long> membersId, Integer year, Integer month);
 }

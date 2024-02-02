@@ -76,23 +76,19 @@ public class GroupMembersController {
         List<Detail> details = new ArrayList<>();
 
         // Formo lista con los ID de los miembros del grupo
-        List<Long> idMembers = members.stream().map(GroupMembersDto::getPersonId).collect(Collectors.toList());
+        List<Long> membersId = members.stream().map(GroupMembersDto::getPersonId).collect(Collectors.toList());
 
         // Recoger nombre de los miembros del grupo
 
-        List<PersonEntity> persons = personService.findAllById(idMembers);
+        List<PersonEntity> persons = personService.findAllById(membersId);
 
         // Recoger las ausencias de todos los miembros del grupo
 
-        List<PersonAbsenceEntity> membersAbsences = personAbsenceService.findAllByPersonIdInAndYearAndMonth(idMembers,
+        month = 1;
+        List<PersonAbsenceEntity> membersAbsences = personAbsenceService.findAllByPersonIdInAndYearAndMonth(membersId,
                 year, month);
 
-        System.out.println("Todas ausencias: " + membersAbsences);
-
         for (GroupMembersDto member : members) {
-            // 1º Asignar nombre de cada persona a su detail
-            // 2º Asignar las ausencias de cada persona a su absences
-            // 3º Devolver lista details
             Detail detail = new Detail();
             workingDays = 0;
             festives = 0;
@@ -115,10 +111,10 @@ public class GroupMembersController {
 
             detail.setAbsences(absences);
 
+            // TODO: Calcular dias trabajados
             detail.setWorkingDays(workingDays);
 
             for (PersonAbsenceEntity absence : absences) {
-                // TODO: Realizar comprobacion del tipo de festivo
 
                 switch (absence.getType()) {
                 case "VAC":
