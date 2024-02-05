@@ -1,5 +1,6 @@
 package com.ccsw.teammanager.groupmembers;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -90,10 +91,8 @@ public class GroupMembersController {
 
         // Recoger las ausencias de todos los miembros del grupo
 
-        // TODO: Cambiar búsqueda a ausencias entre fechas
-        month = 1;
-        List<PersonAbsenceEntity> membersAbsences = personAbsenceService.findAllByPersonIdInAndYearAndMonth(membersId,
-                year, month);
+        List<PersonAbsenceEntity> membersAbsences = personAbsenceService.findAllByPersonIdInAndDateBetween(membersId,
+                Date.valueOf(startDate.toLocalDate()), Date.valueOf(endDate.toLocalDate()));
 
         for (GroupMembersDto member : members) {
             Detail detail = new Detail();
