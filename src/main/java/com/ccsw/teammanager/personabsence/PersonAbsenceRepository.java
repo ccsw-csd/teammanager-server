@@ -1,5 +1,6 @@
 package com.ccsw.teammanager.personabsence;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -19,5 +20,6 @@ public interface PersonAbsenceRepository extends CrudRepository<PersonAbsenceEnt
 
     List<PersonAbsenceEntity> findAllByPersonIdInAndYearAndMonth(List<Long> membersId, Integer year, Integer month);
 
-    List<PersonAbsenceEntity> findAllByPersonIdInAndDateBetween(List<Long> membersId, Date startDate, Date endDate);
+    List<PersonAbsenceEntity> findAllByPersonIdInAndDateBetween(List<Long> membersId, Date startDate,
+            Date endDate);
 }
