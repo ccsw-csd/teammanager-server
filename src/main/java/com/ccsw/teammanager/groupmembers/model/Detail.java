@@ -2,12 +2,12 @@ package com.ccsw.teammanager.groupmembers.model;
 
 import java.util.List;
 
-import com.ccsw.teammanager.person.model.PersonEntity;
-import com.ccsw.teammanager.personabsence.model.PersonAbsenceEntity;
+import com.ccsw.teammanager.person.model.PersonDto;
+import com.ccsw.teammanager.personabsence.model.PersonAbsenceDto;
 
 public class Detail {
 
-    private PersonEntity person;
+    private PersonDto person;
 
     private Integer workingDays;
 
@@ -17,15 +17,15 @@ public class Detail {
 
     private Integer others;
 
-    private List<PersonAbsenceEntity> absences;
+    private List<PersonAbsenceDto> absences;
 
     private String fullName;
 
-    public PersonEntity getPerson() {
+    public PersonDto getPerson() {
         return person;
     }
 
-    public void setPerson(PersonEntity person) {
+    public void setPerson(PersonDto person) {
         this.person = person;
     }
 
@@ -61,11 +61,11 @@ public class Detail {
         this.others = others;
     }
 
-    public List<PersonAbsenceEntity> getAbsences() {
+    public List<PersonAbsenceDto> getAbsences() {
         return absences;
     }
 
-    public void setAbsences(List<PersonAbsenceEntity> absences) {
+    public void setAbsences(List<PersonAbsenceDto> absences) {
         this.absences = absences;
     }
 

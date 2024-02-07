@@ -1,7 +1,6 @@
 package com.ccsw.teammanager.groupmembers;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -11,7 +10,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,13 +19,14 @@ import com.ccsw.teammanager.config.mapper.BeanMapper;
 import com.ccsw.teammanager.groupmembers.model.Detail;
 import com.ccsw.teammanager.groupmembers.model.GroupMembersDto;
 import com.ccsw.teammanager.person.PersonService;
+import com.ccsw.teammanager.person.model.PersonDto;
 import com.ccsw.teammanager.person.model.PersonEntity;
 import com.ccsw.teammanager.personabsence.PersonAbsenceService;
+import com.ccsw.teammanager.personabsence.model.PersonAbsenceDto;
 import com.ccsw.teammanager.personabsence.model.PersonAbsenceEntity;
 
-@RequestMapping(value = "/v_group_members_all")
+@RequestMapping(value = "/group_members")
 @RestController
-@CrossOrigin(origins = "*")
 public class GroupMembersController {
 
     @Autowired
@@ -49,16 +48,12 @@ public class GroupMembersController {
      */
 
     @RequestMapping(path = "", method = RequestMethod.GET)
-    public List<Detail> findDetailsMembers(@RequestParam(name = "group_id", required = true) Long group_id,
+    public List<Detail> findDetailsMembers(@RequestParam(name = "group_id", required = true) Long groupId,
             @RequestParam(name = "start_date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
             @RequestParam(name = "end_date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
 
-        List<GroupMembersDto> members = this.beanMapper.mapList(this.groupMembersService.findByGroupId(group_id),
+        List<GroupMembersDto> members = this.beanMapper.mapList(this.groupMembersService.findByGroupId(groupId),
                 GroupMembersDto.class);
-
-        LocalDate date = LocalDate.now();
-        Integer year = date.getYear();
-        Integer month = date.getMonthValue();
 
         int workingDays = (int) ChronoUnit.DAYS.between(startDate, endDate) + 1;
 
@@ -91,7 +86,7 @@ public class GroupMembersController {
                     .filter(person -> person.getId().equals(member.getPersonId())).findFirst();
 
             personOptional.ifPresent(person -> {
-                detail.setPerson(person);
+                detail.setPerson(this.beanMapper.map(person, PersonDto.class));
                 detail.setFullName(person.getName() + " " + person.getLastname());
             });
 
@@ -100,7 +95,7 @@ public class GroupMembersController {
                     .filter(absence -> absence.getPerson().getId().equals(member.getPersonId()))
                     .collect(Collectors.toList());
 
-            detail.setAbsences(absences);
+            detail.setAbsences(this.beanMapper.mapList(absences, PersonAbsenceDto.class));
 
             for (PersonAbsenceEntity absence : absences) {
 
