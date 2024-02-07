@@ -47,20 +47,6 @@ public class GroupMembersController {
      *
      * @return {@link List} de {@link GroupMembersDto}
      */
-    /*
-     * @RequestMapping(path = "", method = RequestMethod.GET) public
-     * List<GroupMembersDto> findByGroupId(@RequestParam(name = "group_id", required
-     * = true) Long group_id) { return
-     * this.beanMapper.mapList(this.groupMembersService.findByGroupId(group_id),
-     * GroupMembersDto.class); }
-     * 
-     */
-
-    /**
-     * Método para recuperar registros a partir del group_id
-     *
-     * @return {@link List} de {@link GroupMembersDto}
-     */
 
     @RequestMapping(path = "", method = RequestMethod.GET)
     public List<Detail> findDetailsMembers(@RequestParam(name = "group_id", required = true) Long group_id,
