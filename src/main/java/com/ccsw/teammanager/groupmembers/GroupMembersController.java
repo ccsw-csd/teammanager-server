@@ -118,7 +118,7 @@ public class GroupMembersController {
 
             for (PersonAbsenceEntity absence : absences) {
 
-                switch (absence.getType()) {
+                switch (absence.getAbsence_type()) {
                 case "VAC":
                     vacations++;
                     break;
