@@ -5,166 +5,215 @@ package com.ccsw.teammanager.person.model;
  *
  */
 public class PersonDto {
-  private Integer id;
+    private Long id;
 
-  private String saga;
+    private String saga;
 
-  private String username;
+    private String username;
 
-  private String email;
+    private String email;
 
-  private String name;
+    private String name;
 
-  private String lastname;
+    private String lastname;
 
-  private Integer centerId;
+    private Long centerId;
 
-  private String businesscode;
+    private String businesscode;
 
-  private boolean active;
+    private Integer active;
 
-  /**
-   * @return id
-   */
-  public Integer getId() {
+    private boolean withPON;
 
-    return this.id;
-  }
+    private String grade;
 
-  /**
-   * @param id new value of {@link #getid}.
-   */
-  public void setId(Integer id) {
+    private boolean createdByldap;
 
-    this.id = id;
-  }
+    private String globalEmployeeId;
 
-  /**
-   * @return saga
-   */
-  public String getSaga() {
+    /**
+     * @return id
+     */
+    public Long getId() {
 
-    return this.saga;
-  }
+        return this.id;
+    }
 
-  /**
-   * @param saga new value of {@link #getsaga}.
-   */
-  public void setSaga(String saga) {
+    /**
+     * @param id new value of {@link #getid}.
+     */
+    public void setId(Long id) {
 
-    this.saga = saga;
-  }
+        this.id = id;
+    }
 
-  /**
-   * @return username
-   */
-  public String getUsername() {
+    /**
+     * @return saga
+     */
+    public String getSaga() {
 
-    return this.username;
-  }
+        return this.saga;
+    }
 
-  /**
-   * @param username new value of {@link #getusername}.
-   */
-  public void setUsername(String username) {
+    /**
+     * @param saga new value of {@link #getsaga}.
+     */
+    public void setSaga(String saga) {
 
-    this.username = username;
-  }
+        this.saga = saga;
+    }
 
-  /**
-   * @return email
-   */
-  public String getEmail() {
+    /**
+     * @return username
+     */
+    public String getUsername() {
 
-    return this.email;
-  }
+        return this.username;
+    }
 
-  /**
-   * @param email new value of {@link #getemail}.
-   */
-  public void setEmail(String email) {
+    /**
+     * @param username new value of {@link #getusername}.
+     */
+    public void setUsername(String username) {
 
-    this.email = email;
-  }
+        this.username = username;
+    }
 
-  /**
-   * @return name
-   */
-  public String getName() {
+    /**
+     * @return email
+     */
+    public String getEmail() {
 
-    return this.name;
-  }
+        return this.email;
+    }
 
-  /**
-   * @param name new value of {@link #getname}.
-   */
-  public void setName(String name) {
+    /**
+     * @param email new value of {@link #getemail}.
+     */
+    public void setEmail(String email) {
 
-    this.name = name;
-  }
+        this.email = email;
+    }
 
-  /**
-   * @return lastname
-   */
-  public String getLastname() {
+    /**
+     * @return name
+     */
+    public String getName() {
 
-    return this.lastname;
-  }
+        return this.name;
+    }
 
-  /**
-   * @param lastname new value of {@link #getlastname}.
-   */
-  public void setLastname(String lastname) {
+    /**
+     * @param name new value of {@link #getname}.
+     */
+    public void setName(String name) {
 
-    this.lastname = lastname;
-  }
+        this.name = name;
+    }
 
-  /**
-   * @return center_id
-   */
-  public Integer getCenterId() {
+    /**
+     * @return lastname
+     */
+    public String getLastname() {
 
-    return this.centerId;
-  }
+        return this.lastname;
+    }
 
-  /**
-   * @param center_id new value of {@link #getcenter_id}.
-   */
-  public void setCenterId(Integer centerId) {
+    /**
+     * @param lastname new value of {@link #getlastname}.
+     */
+    public void setLastname(String lastname) {
 
-    this.centerId = centerId;
-  }
+        this.lastname = lastname;
+    }
 
-  /**
-   * @return businesscode
-   */
-  public String getBusinesscode() {
+    /**
+     * @return center_id
+     */
+    public Long getCenterId() {
 
-    return this.businesscode;
-  }
+        return this.centerId;
+    }
 
-  /**
-   * @param businesscode new value of {@link #getbusinesscode}.
-   */
-  public void setBusinesscode(String businesscode) {
+    /**
+     * @param center_id new value of {@link #getcenter_id}.
+     */
+    public void setCenterId(Long centerId) {
 
-    this.businesscode = businesscode;
-  }
+        this.centerId = centerId;
+    }
 
-  /**
-   * @return active
-   */
-  public boolean getActive() {
+    /**
+     * @return businesscode
+     */
+    public String getBusinesscode() {
 
-    return this.active;
-  }
+        return this.businesscode;
+    }
 
-  /**
-   * @param active new value of {@link #getactive}.
-   */
-  public void setActive(boolean active) {
+    /**
+     * @param businesscode new value of {@link #getbusinesscode}.
+     */
+    public void setBusinesscode(String businesscode) {
 
-    this.active = active;
-  }
+        this.businesscode = businesscode;
+    }
+
+    /**
+     * @return active
+     */
+    public Integer getActive() {
+
+        return this.active;
+    }
+
+    /**
+     * @param active new value of {@link #getactive}.
+     */
+    public void setActive(Integer active) {
+
+        this.active = active;
+    }
+
+    public boolean isWithPON() {
+        return withPON;
+    }
+
+    public void setWithPON(boolean withPON) {
+        this.withPON = withPON;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+
+    public boolean isCreatedByldap() {
+        return createdByldap;
+    }
+
+    public void setCreatedByldap(boolean createdByldap) {
+        this.createdByldap = createdByldap;
+    }
+
+    public String getGlobalEmployeeId() {
+        return globalEmployeeId;
+    }
+
+    public void setGlobalEmployeeId(String globalEmployeeId) {
+        this.globalEmployeeId = globalEmployeeId;
+    }
+
+    public boolean getWithPON() {
+        return withPON;
+    }
+
+    @Override
+    public String toString() {
+        return "PersonDto{" + "id=" + id + ", name='" + name + '\'' + '}';
+    }
 
 }

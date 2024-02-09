@@ -18,4 +18,6 @@ public interface PersonRepository extends CrudRepository<PersonEntity, Long> {
     @Query(value = "select * from person where concat(name, ' ', lastname, ' ', username) LIKE %:name% AND active = TRUE LIMIT 15", nativeQuery = true)
     public List<PersonEntity> findByTextAndActive(String name);
 
+    List<PersonEntity> findAllByIdIn(List<Long> idMembers);
+
 }

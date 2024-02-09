@@ -76,7 +76,8 @@ public class JsonWebTokenAuthenticationProvider implements AuthenticationProvide
     @Override
     public boolean supports(Class<?> authentication) {
 
-        return authentication.isAssignableFrom(PreAuthenticatedAuthenticationToken.class) || authentication.isAssignableFrom(JsonWebTokenAuthentication.class);
+        return authentication.isAssignableFrom(PreAuthenticatedAuthenticationToken.class)
+                || authentication.isAssignableFrom(JsonWebTokenAuthentication.class);
     }
 
 }
