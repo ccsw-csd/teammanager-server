@@ -20,5 +20,5 @@ public interface PersonService {
 
     List<PersonEntity> findAllById(List<Long> idMembers);
 
-    Detail findUserDetails(String username, String year);
+    Detail findUserDetails(String year);
 }

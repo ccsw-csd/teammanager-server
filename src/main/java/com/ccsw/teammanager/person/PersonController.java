@@ -40,10 +40,9 @@ public class PersonController {
      */
 
     @RequestMapping(path = "", method = RequestMethod.GET)
-    public Detail findUserDetails(@RequestParam(name = "username", required = true) String username,
-            @RequestParam(name = "year", required = true) String year) {
+    public Detail findUserDetails(@RequestParam(name = "year", required = true) String year) {
 
-        return this.personService.findUserDetails(username, year);
+        return this.personService.findUserDetails(year);
 
     }
 

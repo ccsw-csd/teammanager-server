@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ccsw.teammanager.config.mapper.BeanMapper;
+import com.ccsw.teammanager.config.security.UserInfoDto;
+import com.ccsw.teammanager.config.security.UserUtils;
 import com.ccsw.teammanager.groupmembers.model.Detail;
 import com.ccsw.teammanager.person.model.PersonDto;
 import com.ccsw.teammanager.person.model.PersonEntity;
@@ -54,11 +56,12 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Detail findUserDetails(String username, String year) {
+    public Detail findUserDetails(String year) {
         Detail detail = new Detail();
+        UserInfoDto username = UserUtils.getUserDetails();
 
         // Recoger datos del usuario
-        detail.setPerson(this.beanMapper.map(personRepository.findByUsername(username), PersonDto.class));
+        detail.setPerson(this.beanMapper.map(personRepository.findByUsername(username.getUsername()), PersonDto.class));
 
         // Recoger ausencias del usuario
 
