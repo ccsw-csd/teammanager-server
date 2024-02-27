@@ -6,7 +6,15 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ccsw.teammanager.config.mapper.BeanMapper;
+import com.ccsw.teammanager.config.security.UserInfoDto;
+import com.ccsw.teammanager.config.security.UserUtils;
+import com.ccsw.teammanager.groupmembers.model.Detail;
+import com.ccsw.teammanager.person.model.PersonDto;
 import com.ccsw.teammanager.person.model.PersonEntity;
+import com.ccsw.teammanager.personabsence.PersonAbsenceService;
+import com.ccsw.teammanager.personabsence.model.PersonAbsenceDto;
+import com.ccsw.teammanager.personabsence.model.PersonAbsenceEntity;
 
 /**
  * @author aolmosca
@@ -17,6 +25,12 @@ public class PersonServiceImpl implements PersonService {
 
     @Autowired
     private PersonRepository personRepository;
+
+    @Autowired
+    private BeanMapper beanMapper;
+
+    @Autowired
+    private PersonAbsenceService personAbsenceService;
 
     @Override
     public PersonEntity getByUsername(String username) {
@@ -39,6 +53,24 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public List<PersonEntity> findAllById(List<Long> idMembers) {
         return personRepository.findAllByIdIn(idMembers);
+    }
+
+    @Override
+    public Detail findUserDetails(String year) {
+        Detail detail = new Detail();
+        UserInfoDto username = UserUtils.getUserDetails();
+
+        // Recoger datos del usuario
+        detail.setPerson(this.beanMapper.map(personRepository.findByUsername(username.getUsername()), PersonDto.class));
+
+        // Recoger ausencias del usuario
+
+        List<PersonAbsenceEntity> userAbsences = personAbsenceService
+                .findAllByPersonIdAndYear(detail.getPerson().getId(), Integer.parseInt(year));
+
+        detail.setAbsences(this.beanMapper.mapList(userAbsences, PersonAbsenceDto.class));
+
+        return detail;
     }
 
 }
