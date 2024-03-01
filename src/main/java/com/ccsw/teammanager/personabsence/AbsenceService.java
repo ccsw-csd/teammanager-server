@@ -8,6 +8,6 @@ public interface AbsenceService {
 
     void save(List<PersonAbsenceDto> data);
 
-    void delete(List<PersonAbsenceDto> data) throws Exception;
+    void delete(List<PersonAbsenceDto> data);
 
 }

@@ -1,6 +1,8 @@
 package com.ccsw.teammanager.personabsence;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -43,10 +45,17 @@ public class AbsenceServiceImpl implements AbsenceService {
     }
 
     @Override
-    public void delete(List<PersonAbsenceDto> data) throws Exception {
-
+    public void delete(List<PersonAbsenceDto> data) {
         for (PersonAbsenceDto personAbsence : data) {
-            this.absenceRepository.deleteBySagaAndDate(personAbsence.getPerson().getSaga(), personAbsence.getDate());
+            Date date = personAbsence.getDate();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            date = calendar.getTime();
+            this.absenceRepository.deleteBySagaAndDate(personAbsence.getPerson().getSaga(), date);
         }
 
     }

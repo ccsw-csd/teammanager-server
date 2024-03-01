@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ccsw.teammanager.config.mapper.BeanMapper;
-import com.ccsw.teammanager.personabsence.model.AbsenceEntity;
 import com.ccsw.teammanager.personabsence.model.PersonAbsenceDto;
+import com.ccsw.teammanager.personabsence.model.UpdateAbsences;
 
 @RequestMapping(value = "/absence")
 @RestController
@@ -19,27 +18,21 @@ public class AbsenceController {
     @Autowired
     private AbsenceService absenceService;
 
-    @Autowired
-    private BeanMapper beanMapper;
-
-    /**
-     * @param data
-     * @return
-     */
     @RequestMapping(path = "", method = RequestMethod.PUT)
-    public void save(@RequestBody List<PersonAbsenceDto> data) {
+    public boolean update(@RequestBody UpdateAbsences updateAbsences) {
 
-        this.absenceService.save(data);
-    }
+        List<PersonAbsenceDto> vacations = updateAbsences.getVacations();
+        List<PersonAbsenceDto> vacationsToDelete = updateAbsences.getVacationsToDelete();
 
-    /**
-     * Método para borrar una lista de {@link AbsenceEntity}
-     *
-     * @param id PK de la ausencia
-     */
-    @RequestMapping(path = "", method = RequestMethod.DELETE)
-    public void delete(@RequestBody List<PersonAbsenceDto> data) throws Exception {
+        if (!vacations.isEmpty()) {
+            this.absenceService.save(vacations);
+        }
 
-        this.absenceService.delete(data);
+        if (!vacationsToDelete.isEmpty()) {
+            this.absenceService.delete(vacationsToDelete);
+        }
+
+        return true;
+
     }
 }
