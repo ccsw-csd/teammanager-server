@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ccsw.teammanager.config.mapper.BeanMapper;
 import com.ccsw.teammanager.personabsence.model.PersonAbsenceEntity;
 
 @Service
@@ -16,6 +17,9 @@ public class PersonAbsenceServiceImpl implements PersonAbsenceService {
 
     @Autowired
     PersonAbsenceRepository personAbsenceRepository;
+
+    @Autowired
+    private BeanMapper beanMapper;
 
     @Override
     public List<PersonAbsenceEntity> findAllByPersonIdInAndDateBetween(List<Long> membersId, Date startDate,

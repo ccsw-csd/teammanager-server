@@ -10,4 +10,5 @@ public interface PersonAbsenceService {
     List<PersonAbsenceEntity> findAllByPersonIdInAndDateBetween(List<Long> membersId, Date startDate, Date endDate);
 
     List<PersonAbsenceEntity> findAllByPersonIdAndYear(Long personId, int year);
+
 }
